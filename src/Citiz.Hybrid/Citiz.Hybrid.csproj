@@ -76,6 +76,24 @@
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
 
+    <!--
+      The content bank and the interface translations, bundled into the app package so
+      AppPackageContentStore / AppPackageTranslationCatalogLoader (Services/) can read them with
+      FileSystem.OpenAppPackageFileAsync — there is no HTTP server behind a BlazorWebView to fetch
+      them from the way Citiz.Web does. Same source files Citiz.Web serves under /content and
+      /i18n (see Citiz.Web.csproj's DefineCitizContentStaticWebAssets target and
+      wwwroot/i18n/*.json), same relative-path scheme, just bundled at build time instead of
+      fetched at run time.
+    -->
+    <PropertyGroup>
+        <CitizRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)\..\..\'))</CitizRepositoryRoot>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <MauiAsset Include="$(CitizRepositoryRoot)content\**\*.json" Exclude="$(CitizRepositoryRoot)content\schemas\**" LogicalName="content/%(RecursiveDir)%(Filename)%(Extension)" />
+        <MauiAsset Include="$(CitizRepositoryRoot)src\Citiz.Web\wwwroot\i18n\*.json" LogicalName="i18n/%(Filename)%(Extension)" />
+    </ItemGroup>
+
     <ItemGroup>
         <!-- VersionOverride, not a central PackageVersion: $(MauiVersion) is set by the MAUI
              workload/SDK itself, not something this repo's Directory.Packages.props should pin. -->
@@ -86,6 +104,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Citiz.SharedUI\Citiz.SharedUI.csproj" />
+        <ProjectReference Include="..\Citiz.Content\Citiz.Content.csproj" />
+        <ProjectReference Include="..\Citiz.Localization\Citiz.Localization.csproj" />
     </ItemGroup>
 
 </Project>

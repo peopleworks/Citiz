@@ -36,8 +36,8 @@ public sealed class LocalizationService
     {
         ArgumentNullException.ThrowIfNull(profile);
 
-        _fallback = await LoadCachedAsync(SupportedLanguages.Fallback, cancellationToken).ConfigureAwait(false);
-        await SetProfileAsync(profile, cancellationToken).ConfigureAwait(false);
+        _fallback = await LoadCachedAsync(SupportedLanguages.Fallback, cancellationToken);
+        await SetProfileAsync(profile, cancellationToken);
         IsInitialized = true;
     }
 
@@ -48,7 +48,7 @@ public sealed class LocalizationService
 
         var interfaceCulture = SupportedLanguages.IsSupported(profile.InterfaceCulture) ? profile.InterfaceCulture : SupportedLanguages.Fallback;
         Profile = profile with { InterfaceCulture = interfaceCulture };
-        _current = await LoadCachedAsync(interfaceCulture, cancellationToken).ConfigureAwait(false);
+        _current = await LoadCachedAsync(interfaceCulture, cancellationToken);
         Changed?.Invoke();
     }
 

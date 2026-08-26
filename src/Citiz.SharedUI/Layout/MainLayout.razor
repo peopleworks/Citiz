@@ -129,10 +129,22 @@
 
   private (int Mastered, int Total)? passport;
 
-  protected override async Task OnInitializedAsync()
+  protected override void OnInitialized()
   {
     L.Changed += StateHasChanged;
     Learner.Changed += StateHasChanged;
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (!firstRender)
+    {
+      return;
+    }
+
+    // JS interop needs the WebView's bridge, which a MAUI BlazorWebView only attaches after the
+    // first render commits (unlike WASM, where it's available immediately) — so this runs here
+    // instead of OnInitializedAsync, which is correct for every host.
     await Learner.InitializeAsync();
 
     try
@@ -144,6 +156,8 @@
     {
       passport = null;
     }
+
+    StateHasChanged();
   }
 
   public void Dispose()
