@@ -100,6 +100,16 @@
         <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" VersionOverride="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+        <!-- CommunityToolkit.Maui.Storage's IFileSaver backs IFileExporter (Services/MauiFileExporter.cs)
+             — pinned in Directory.Packages.props like any other package, since it isn't MAUI-SDK-provided. -->
+        <PackageReference Include="CommunityToolkit.Maui" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+        <!-- Microsoft.Windows.Storage.Pickers (Windows App SDK 1.8+) backs Platforms/Windows/
+             WindowsFileExporter.cs — only a transitive dependency otherwise, and its assemblies
+             aren't flowed to the build output without a direct reference. -->
+        <PackageReference Include="Microsoft.WindowsAppSDK" />
     </ItemGroup>
 
     <ItemGroup>

@@ -4,6 +4,10 @@ using Citiz.Discovery;
 using Citiz.Hybrid.Services;
 using Citiz.Localization;
 using Citiz.SharedUI.Services;
+using CommunityToolkit.Maui;
+#if !WINDOWS
+using CommunityToolkit.Maui.Storage;
+#endif
 using Microsoft.Extensions.Logging;
 
 namespace Citiz.Hybrid;
@@ -15,6 +19,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -31,7 +36,16 @@ public static class MauiProgram
 		// platform's native WebView and needs device testing.
 		builder.Services.AddScoped<BrowserStorage>();
 		builder.Services.AddScoped<ISpeechService, WebSpeechService>();
-		builder.Services.AddScoped<IFileExporter, BrowserFileExporter>();
+
+		// CommunityToolkit.Maui.Storage's own Windows FileSaver throws a COMException there (it
+		// initializes its picker with the unreliable Process.MainWindowHandle) — confirmed live, see
+		// Platforms/Windows/WindowsFileExporter.cs for the real fix and why it isn't used everywhere.
+#if WINDOWS
+		builder.Services.AddScoped<IFileExporter, Citiz.Hybrid.Platforms.Windows.WindowsFileExporter>();
+#else
+		builder.Services.AddSingleton(FileSaver.Default);
+		builder.Services.AddScoped<IFileExporter, MauiFileExporter>();
+#endif
 		builder.Services.AddScoped<IContentStore, AppPackageContentStore>();
 		builder.Services.AddScoped<ContentRepository>();
 		builder.Services.AddScoped<ITranslationCatalogLoader, AppPackageTranslationCatalogLoader>();

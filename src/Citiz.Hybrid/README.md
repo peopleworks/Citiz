@@ -28,12 +28,23 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
    event, so `StateHasChanged()` fired off the render dispatcher's thread and threw silently in
    `BlazorWebView`'s real multi-threaded dispatcher (invisible in WASM, which is single-threaded) —
    fixed by dropping `.ConfigureAwait(false)` from that call path.
-5. ⏳ **Still open:**
+5. ✅ **`IFileExporter` (Settings → "Download my progress") has a native implementation.**
+   `Services/MauiFileExporter.cs` wraps `CommunityToolkit.Maui.Storage`'s `IFileSaver`, registered for
+   Android/iOS/MacCatalyst. Windows is a deliberate exception: `Platforms/Windows/WindowsFileExporter.cs`
+   calls the Windows App SDK 1.8+ pickers (`Microsoft.Windows.Storage.Pickers`) directly, because
+   CommunityToolkit.Maui.Storage 13.0.0's own Windows `FileSaver` throws a `COMException` in this
+   unpackaged app every time (confirmed live) — its classic WinRT `Windows.Storage.Pickers` picker
+   needs package identity that an unpackaged (`WindowsPackageType=None`) app doesn't have, no matter
+   how correctly its owner window is initialized. A later CommunityToolkit.Maui release (14.2.2+)
+   fixes this the same way internally, but requires a newer `Microsoft.Maui.Controls` than this repo's
+   MAUI workload currently provides (`$(MauiVersion)` = 10.0.20; that release needs ≥ 10.0.30) — worth
+   revisiting once the workload updates, to drop the Windows-specific file. Verified end-to-end on
+   Windows: the native "Save As" dialog opens with the right filename/type/location, and the picked
+   file is written with the exact content passed in.
+6. ⏳ **Still open:**
    - `ISpeechService`: the current `WebSpeechService` (Web Speech API via JS interop) is registered
      as-is and may simply work inside a `BlazorWebView` — untested on a real device. If it doesn't,
      write a `NativeSpeechService` using platform text-to-speech.
-   - `IFileExporter`: `BrowserFileExporter`'s `<a download>` trick doesn't exist natively; needs a
-     `CommunityToolkit.Maui.Storage`-based implementation for "Download my progress" in Settings.
    - Not yet built for a real device or emulator — only smoke-tested that it compiles and boots on
      Windows desktop (see below). No app icon/splash beyond the template defaults, no store
      provisioning, no CI job.
