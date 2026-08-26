@@ -25,8 +25,4 @@ public sealed class BrowserStorage(IJSRuntime js)
 
     /// <summary>Announces a message to assistive technology through the page's live region.</summary>
     public ValueTask AnnounceAsync(string text) => js.InvokeVoidAsync("citiz.announce", text);
-
-    /// <summary>Offers a text file for download, e.g. the learner's exported progress.</summary>
-    public ValueTask DownloadAsync(string fileName, string text, string mediaType = "application/json") =>
-        js.InvokeVoidAsync("citiz.download", fileName, text, mediaType);
 }

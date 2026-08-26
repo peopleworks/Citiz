@@ -18,7 +18,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<BrowserStorage>();
-builder.Services.AddScoped<SpeechService>();
+builder.Services.AddScoped<ISpeechService, WebSpeechService>();
+builder.Services.AddScoped<IFileExporter, BrowserFileExporter>();
 builder.Services.AddScoped<IContentStore, HttpContentStore>();
 builder.Services.AddScoped<ContentRepository>();
 builder.Services.AddScoped<ITranslationCatalogLoader, HttpTranslationCatalogLoader>();

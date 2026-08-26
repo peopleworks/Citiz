@@ -3,7 +3,7 @@
 @inherits LocalizedComponentBase
 @inject ContentRepository Content
 @inject DiscoveryEngine Discovery
-@inject SpeechService Speech
+@inject ISpeechService Speech
 
 <PageTitle>@(topic?.Title ?? L.T("discover.title")) — @L.T("app.name")</PageTitle>
 

@@ -7,7 +7,7 @@ namespace Citiz.SharedUI.Services;
 /// some offer network voices, so <see cref="IsLocalVoiceAsync"/> lets the interface disclose which
 /// one it is using, as Docs/Privacy/LOCAL_VS_CLOUD.md requires.
 /// </summary>
-public sealed class SpeechService(IJSRuntime js)
+public sealed class WebSpeechService(IJSRuntime js) : ISpeechService
 {
     /// <summary>Whether the browser can speak at all.</summary>
     public ValueTask<bool> IsAvailableAsync() => js.InvokeAsync<bool>("citiz.speech.available");

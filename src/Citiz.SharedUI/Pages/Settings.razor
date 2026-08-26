@@ -3,6 +3,7 @@
 @inject LearnerState Learner
 @inject ContentRepository Content
 @inject BrowserStorage Browser
+@inject IFileExporter Exporter
 
 <PageTitle>@L.T("settings.title") — @L.T("app.name")</PageTitle>
 
@@ -166,7 +167,7 @@
     message = L.T("settings.saved");
   }
 
-  private Task ExportAsync() => Browser.DownloadAsync("citiz-progress.json", Learner.Export()).AsTask();
+  private Task ExportAsync() => Exporter.ExportAsync("citiz-progress.json", Learner.Export()).AsTask();
 
   private async Task DeleteAsync()
   {
