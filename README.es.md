@@ -1,6 +1,19 @@
-# Citiz
+<p align="center">
+  <img src="Docs/banner.svg" alt="Citiz — Prepárate · Comunícate · Descubre · Participa" width="100%">
+</p>
 
-> Prepárate · Comunícate · Descubre · Participa
+<div align="center">
+
+[![Demo en vivo](https://img.shields.io/badge/demo-en%20vivo-brightgreen?logo=googlechrome&logoColor=white)](https://peopleworks.github.io/Citiz/)
+[![CI](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/ci.yml?branch=main&label=CI&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/ci.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/codeql.yml?branch=main&label=CodeQL&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/codeql.yml)
+[![Licencia: MIT](https://img.shields.io/badge/código-MIT-blue)](LICENSE)
+[![Contenido: CC BY 4.0](https://img.shields.io/badge/contenido-CC%20BY%204.0-blue)](content/README.md#licensing)
+[![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![Blazor WebAssembly](https://img.shields.io/badge/Blazor-WASM-512BD4?logo=blazor&logoColor=white)](https://learn.microsoft.com/aspnet/core/blazor/)
+[![GitHub stars](https://img.shields.io/github/stars/peopleworks/Citiz?style=social)](https://github.com/peopleworks/Citiz/stargazers)
+
+</div>
 
 *English version → [README.md](README.md)*
 
@@ -18,6 +31,20 @@ y todo ocurre en tu navegador.
 
 Citiz es una **herramienta educativa independiente**. No está afiliada a USCIS ni a ninguna agencia
 gubernamental, no ofrece asesoría legal y no puede garantizar el resultado de una entrevista o solicitud.
+
+<table>
+<tr>
+<td width="68%" valign="top">
+<img src="Docs/screenshots/home-desktop.png" alt="El panel de Citiz: navegación lateral, la cápsula de descubrimiento del día, progreso real de preparación y la actividad semanal">
+</td>
+<td width="32%" valign="top">
+<img src="Docs/screenshots/home-mobile.png" alt="El mismo panel en el celular, con una barra de navegación inferior en vez de un sidebar">
+</td>
+</tr>
+</table>
+
+<sub>La misma experiencia, adaptada a cada pantalla: sidebar en escritorio, barra inferior en
+móvil — sin construir una app aparte para cada uno.</sub>
 
 ---
 
@@ -39,6 +66,13 @@ las fuentes oficiales; un Dockerfile; despliegue a GitHub Pages.
 **Todavía no construido** (diseñado, en la [hoja de ruta](ROADMAP.md)): reconocimiento de voz y
 simulación de entrevista, explicaciones con IA, las apps híbridas .NET MAUI, funciones comunitarias, el
 resto de los juegos.
+
+<p align="center">
+  <img src="Docs/screenshots/practice-desktop.png" alt="Una pregunta de opción múltiple contestada correctamente, con la respuesta aceptada resaltada y una insignia 'Sin verificar aún' junto a la pregunta">
+</p>
+
+<sub>Cada pregunta muestra su estado de revisión al lado — <code>Sin verificar aún</code> hasta que
+un responsable la coteja con el documento oficial de USCIS. Citiz nunca esconde qué tan seguro está.</sub>
 
 ## ¿Qué examen me toca?
 
@@ -118,6 +152,21 @@ El código es [MIT](LICENSE). El contenido editorial escrito para Citiz es CC BY
 es obra del Gobierno de Estados Unidos y está en el dominio público; toda otra fuente conserva su propia
 licencia, registrada en cada entrada.
 
-Citiz está construido con .NET 10 y Blazor WebAssembly por **Pedro Hernández (PeopleWorks)**, Microsoft
-MVP para .NET, junto con la comunidad: *por y para la comunidad*. Existe porque prepararse para la
-ciudadanía no debería depender de poder pagar, de hablar ya inglés ni de entregarle tus datos a nadie.
+Citiz está construido con .NET 10 y Blazor WebAssembly por **Pedro Hernández (PeopleWorks)**, junto
+con la comunidad: *por y para la comunidad*. Existe porque prepararse para la ciudadanía no debería
+depender de poder pagar, de hablar ya inglés ni de entregarle tus datos a nadie.
+
+---
+
+<div align="center">
+
+**Pedro Hernández** — PeopleWorks
+
+[![Microsoft MVP](https://img.shields.io/badge/Microsoft-MVP%20for%20.NET-5E5E5E?logo=microsoft&logoColor=white)](https://mvp.microsoft.com/en-US/mvp/profile/24060a02-dbc6-44ec-bca5-c213ff9835c5)
+[![GitHub](https://img.shields.io/badge/GitHub-peopleworks-181717?logo=github&logoColor=white)](https://github.com/peopleworks)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Pedro%20Hern%C3%A1ndez-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pedrohernandez2020/)
+[![Email](https://img.shields.io/badge/Email-peopleworks%40gmail.com-D14836?logo=gmail&logoColor=white)](mailto:peopleworks@gmail.com)
+
+<sub>También construido por Pedro: <a href="https://github.com/peopleworks/SignsofAI">Signs of AI Writing</a>, un kit gratuito para la integridad académica y de escritura.</sub>
+
+</div>

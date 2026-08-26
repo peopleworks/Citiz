@@ -1,0 +1,43 @@
+<svg width="1200" height="320" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="citizBannerTitle">
+  <title id="citizBannerTitle">Citiz — Prepare · Communicate · Discover · Participate</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="60%" stop-color="#3b3f9a"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <polygon id="star" points="0,-10 2.9,-3.1 9.5,-3.1 3.8,1.2 5.9,7.9 0,3.8 -5.9,7.9 -3.8,1.2 -9.5,-3.1 -2.9,-3.1"/>
+  </defs>
+
+  <rect width="1200" height="320" fill="url(#bg)"/>
+  <circle cx="960" cy="90" r="260" fill="url(#glow)"/>
+
+  <!-- scattered stars, kept clear of the wordmark -->
+  <g fill="#ffffff">
+    <use href="#star" transform="translate(760,54) scale(1.1)" opacity=".22"/>
+    <use href="#star" transform="translate(840,150) scale(.8)" opacity=".16"/>
+    <use href="#star" transform="translate(915,70) scale(.6)" opacity=".18"/>
+    <use href="#star" transform="translate(990,190) scale(1.3)" opacity=".14"/>
+    <use href="#star" transform="translate(1060,100) scale(.7)" opacity=".2"/>
+    <use href="#star" transform="translate(1120,220) scale(.9)" opacity=".16"/>
+    <use href="#star" transform="translate(1030,260) scale(.55)" opacity=".18"/>
+    <use href="#star" transform="translate(700,240) scale(.6)" opacity=".12"/>
+    <use href="#star" transform="translate(1140,60) scale(.5)" opacity=".15"/>
+    <use href="#star" transform="translate(870,270) scale(.5)" opacity=".14"/>
+  </g>
+
+  <!-- crest, scaled up from the app's own brand mark (32x32 viewBox) -->
+  <g transform="translate(74,64) scale(6)" color="#ffffff">
+    <path d="M16 2 4 7v9c0 7.2 5.1 13 12 14 6.9-1 12-6.8 12-14V7L16 2z" fill="currentColor" opacity=".22"/>
+    <path d="M16 6.2 8 9.5v6.3c0 4.7 3.3 8.7 8 9.8 4.7-1.1 8-5.1 8-9.8V9.5l-8-3.3z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="m16 11 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="currentColor"/>
+  </g>
+
+  <text x="322" y="172" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="84" font-weight="800" letter-spacing="-2" fill="#ffffff">Citiz</text>
+  <text x="326" y="216" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="2.5" fill="#fde68a">PREPARE · COMMUNICATE · DISCOVER · PARTICIPATE</text>
+  <text x="326" y="252" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#e3e9f8" opacity=".85">Free · Open source · Runs entirely in your browser</text>
+</svg>
