@@ -1,0 +1,63 @@
+# Build, test and validate on every push and pull request.
+#
+# Every check here is a command a contributor can run locally (see CONTRIBUTING.md), so a red build
+# is never a surprise. The content and translation steps are the ones that matter most to people
+# who never touch C#: a mistyped answer id or a lost {0} placeholder fails here by name.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build, test, validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Citiz.slnx
+
+      - name: Format check
+        run: dotnet format Citiz.slnx --verify-no-changes --no-restore
+
+      - name: Build
+        run: dotnet build Citiz.slnx -c Release --no-restore --nologo
+
+      - name: Test
+        run: dotnet test Citiz.slnx -c Release --no-build --nologo --logger "trx;LogFileName=results.trx" --results-directory TestResults
+
+      - name: Validate content
+        run: dotnet run --project src/Citiz.Cli -c Release --no-build -- content validate
+
+      - name: Validate language packs
+        run: dotnet run --project src/Citiz.Cli -c Release --no-build -- localization validate
+
+      - name: Content review report
+        run: dotnet run --project src/Citiz.Cli -c Release --no-build -- content report
+
+      - name: Publish web client (smoke test)
+        run: dotnet publish src/Citiz.Web -c Release --no-build -o publish
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults

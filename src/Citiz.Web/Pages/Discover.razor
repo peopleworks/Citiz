@@ -1,0 +1,193 @@
+@page "/discover"
+@page "/discover/{TopicId}"
+@inherits LocalizedComponentBase
+@inject ContentRepository Content
+@inject DiscoveryEngine Discovery
+@inject SpeechService Speech
+
+<PageTitle>@(topic?.Title ?? L.T("discover.title")) — @L.T("app.name")</PageTitle>
+
+@if (error is not null)
+{
+  <p class="notice bad" role="alert">@error</p>
+}
+else if (topics is null)
+{
+  <Loading />
+}
+else if (TopicId is not null)
+{
+  @if (topic is null)
+  {
+    <PageHeader Title="@L.T("discover.notFound")" />
+    <a class="button" href="discover">@L.T("common.back")</a>
+  }
+  else
+  {
+    <PageHeader Title="@topic.Title" Eyebrow="@L.T($"discover.category.{topic.Category}")">
+      <p class="muted small">@L.T($"discover.difficulty.{topic.Difficulty}") · @L.T("common.minutes", topic.EstimatedMinutes) <ReviewBadge Status="topic.ReviewStatus" /></p>
+    </PageHeader>
+
+    <div class="card">
+      <div class="segmented" role="group">
+        <button type="button" aria-pressed="@(simple ? "true" : "false")" @onclick="() => simple = true">@L.T("discover.simpleEnglish")</button>
+        <button type="button" aria-pressed="@(simple ? "false" : "true")" @onclick="() => simple = false">@L.T("discover.fullText")</button>
+      </div>
+      <p lang="en" style="font-size: 1.1rem; margin-block-start: 1rem">@(simple ? topic.SimpleEnglish : topic.Summary)</p>
+      <button type="button" class="button ghost small" @onclick="() => Speech.SpeakAsync(simple ? topic.SimpleEnglish : topic.Summary)">@L.T("common.listen")</button>
+      <p class="muted small" style="margin-block-start: 1rem">@L.T("discover.editorialNote")</p>
+      <SourceLine Sources="topic.Sources" />
+    </div>
+
+    <div class="grid two" style="margin-block-start: 1rem">
+      <article class="card">
+        <h2>@L.T("discover.vocabulary")</h2>
+        <div class="chips" lang="en">
+          @foreach (var word in topic.Vocabulary) { <button type="button" @onclick="() => Speech.SpeakAsync(word)">@word</button> }
+        </div>
+        @if (topic.RelatedPlaces.Count > 0)
+        {
+          <h3 style="margin-block-start: 1rem">@L.T("discover.places")</h3>
+          <div class="chips">@foreach (var place in topic.RelatedPlaces) { <span>@place</span> }</div>
+        }
+      </article>
+
+      <article class="card">
+        <h2>@L.T("discover.relatedQuestions")</h2>
+        @if (relatedQuestions.Count == 0)
+        {
+          <p class="muted">—</p>
+        }
+        <ul class="question-list">
+          @foreach (var (question, answers, dynamic) in relatedQuestions)
+          {
+            <li>
+              <details>
+                <summary><span class="num">@question.VersionId · #@question.Number</span> <span lang="en">@question.Prompt</span></summary>
+                <div><AnswerList Question="question" Answers="answers" Dynamic="dynamic" /></div>
+              </details>
+            </li>
+          }
+        </ul>
+      </article>
+    </div>
+
+    @if (related.Count > 0)
+    {
+      <h2 style="margin-block-start: 1.5rem">@L.T("discover.relatedTopics")</h2>
+      <div class="grid three">
+        @foreach (var other in related) { @TopicCard(other) }
+      </div>
+    }
+
+    <p style="margin-block-start: 1.5rem"><a class="button" href="discover">@L.T("common.back")</a></p>
+  }
+}
+else
+{
+  <PageHeader Title="@L.T("discover.title")" Lead="@L.T("discover.subtitle")" />
+
+  @if (today is not null)
+  {
+    <a class="card topic-card" href="discover/@today.Id" style="border-inline-start: 5px solid var(--accent)">
+      <span class="topic-category">@L.T("discover.today") · @L.T($"discover.category.{today.Category}")</span>
+      <h3>@today.Title</h3>
+      <p lang="en">@today.SimpleEnglish</p>
+      <span class="muted small">@L.T("common.minutes", today.EstimatedMinutes) · @L.T($"discover.difficulty.{today.Difficulty}")</span>
+    </a>
+  }
+
+  <div class="chips" style="margin-block: 1.25rem" role="group" aria-label="@L.T("discover.category")">
+    <button type="button" aria-pressed="@(categoryFilter is null ? "true" : "false")" @onclick="() => categoryFilter = null">@L.T("common.all")</button>
+    @foreach (var cat in Categories)
+    {
+      <button type="button" aria-pressed="@(categoryFilter == cat ? "true" : "false")" @onclick="() => categoryFilter = cat">@L.T($"discover.category.{cat}")</button>
+    }
+  </div>
+
+  @if (Visible.Count == 0)
+  {
+    <p class="notice">@L.T("discover.empty")</p>
+  }
+  <div class="grid three">
+    @foreach (var item in Visible) { @TopicCard(item) }
+  </div>
+  <p class="muted small" style="margin-block-start: 1.5rem">@L.T("discover.editorialNote")</p>
+}
+
+@code {
+  [Parameter] public string? TopicId { get; set; }
+
+  private static readonly string[] Categories = ["history", "geography", "people", "institutions", "culture", "innovation", "nature"];
+
+  private IReadOnlyList<DiscoveryTopic>? topics;
+  private DiscoveryTopic? today;
+  private DiscoveryTopic? topic;
+  private IReadOnlyList<DiscoveryTopic> related = [];
+  private List<(CivicsQuestion Question, IReadOnlyList<string> Answers, DynamicAnswer? Dynamic)> relatedQuestions = [];
+  private string? categoryFilter;
+  private bool simple = true;
+  private string? error;
+
+  private List<DiscoveryTopic> Visible => (topics ?? []).Where(t => categoryFilter is null || t.Category == categoryFilter).ToList();
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      topics = await Content.GetDiscoveryTopicsAsync();
+      today = Discovery.SelectDaily(topics, DateOnly.FromDateTime(DateTime.Now));
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    topic = null;
+    related = [];
+    relatedQuestions = [];
+    if (topics is null || TopicId is null) { return; }
+
+    topic = topics.FirstOrDefault(t => string.Equals(t.Id, TopicId, StringComparison.OrdinalIgnoreCase));
+    if (topic is null) { return; }
+
+    related = Discovery.Related(topic, topics);
+
+    try
+    {
+      var dynamicAnswers = await Content.GetDynamicAnswersAsync();
+      var banks = new Dictionary<string, QuestionBank>(StringComparer.Ordinal);
+      foreach (var id in topic.RelatedQuestionIds)
+      {
+        var versionId = id.Split('-')[0];
+        if (!banks.TryGetValue(versionId, out var bank))
+        {
+          bank = await Content.GetQuestionBankAsync(versionId);
+          banks[versionId] = bank;
+        }
+
+        if (bank.Find(id) is { } question)
+        {
+          relatedQuestions.Add((question, question.ResolveAnswers(dynamicAnswers), question.DynamicAnswerKey is { } key && dynamicAnswers.TryGetValue(key, out var d) ? d : null));
+        }
+      }
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  private RenderFragment TopicCard(DiscoveryTopic item) => __builder =>
+  {
+    <a class="card topic-card" href="discover/@item.Id">
+      <span class="topic-category">@L.T($"discover.category.{item.Category}")</span>
+      <h3>@item.Title</h3>
+      <p class="small" lang="en">@item.SimpleEnglish</p>
+      <span class="muted small">@L.T("common.minutes", item.EstimatedMinutes) · @L.T($"discover.difficulty.{item.Difficulty}") <ReviewBadge Status="item.ReviewStatus" /></span>
+    </a>
+  };
+}

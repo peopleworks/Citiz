@@ -1,0 +1,108 @@
+{
+  "$schema": "../schemas/vocabulary.schema.json",
+  "kind": "writing",
+  "reviewStatus": "needs-review",
+  "sources": [
+    {
+      "authority": "USCIS",
+      "title": "Writing Vocabulary for the Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/writing_vocab.pdf",
+      "verifiedOn": null,
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+    }
+  ],
+  "groups": [
+    {
+      "category": "People",
+      "words": ["Adams", "Lincoln", "Washington"]
+    },
+    {
+      "category": "Civics",
+      "words": [
+        "American Indians",
+        "capital",
+        "citizens",
+        "Civil War",
+        "Congress",
+        "Father of Our Country",
+        "flag",
+        "free",
+        "freedom of speech",
+        "President",
+        "right",
+        "Senators",
+        "state/states",
+        "White House"
+      ]
+    },
+    {
+      "category": "Places",
+      "words": [
+        "Alaska",
+        "California",
+        "Canada",
+        "Delaware",
+        "Mexico",
+        "New York City",
+        "United States",
+        "Washington",
+        "Washington, D.C."
+      ]
+    },
+    {
+      "category": "Months",
+      "words": ["February", "May", "June", "July", "September", "October", "November"]
+    },
+    {
+      "category": "Holidays",
+      "words": [
+        "Presidents' Day",
+        "Memorial Day",
+        "Flag Day",
+        "Independence Day",
+        "Labor Day",
+        "Columbus Day",
+        "Thanksgiving"
+      ]
+    },
+    {
+      "category": "Verbs",
+      "words": [
+        "can",
+        "come",
+        "elect",
+        "have/has",
+        "is/was/be",
+        "lives/lived",
+        "meets",
+        "pay",
+        "vote",
+        "want"
+      ]
+    },
+    {
+      "category": "Other (Function)",
+      "words": ["and", "during", "for", "here", "in", "of", "on", "the", "to", "we"]
+    },
+    {
+      "category": "Other (Content)",
+      "words": [
+        "blue",
+        "dollar bill",
+        "fifty/50",
+        "first",
+        "largest",
+        "most",
+        "north",
+        "one",
+        "one hundred/100",
+        "people",
+        "red",
+        "second",
+        "south",
+        "taxes",
+        "white"
+      ]
+    }
+  ]
+}

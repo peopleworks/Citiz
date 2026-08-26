@@ -1,0 +1,269 @@
+{
+  "$schema": "../schemas/discovery-topics.schema.json",
+  "topics": [
+    {
+      "id": "the-constitution",
+      "category": "institutions",
+      "title": "The Constitution",
+      "summary": "The U.S. Constitution was written in 1787 at the Constitutional Convention in Philadelphia and signed on September 17 of that year. It opens with the words \"We the People\" and sets up the federal government in three branches. It is the supreme law of the land, and it has been changed 27 times through amendments.",
+      "simpleEnglish": "The Constitution is the most important law in the United States. It was written in 1787 in Philadelphia. It starts with the words \"We the People.\" It creates the government. It has 27 amendments, which are changes.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["constitution", "law", "government", "amendment", "supreme"],
+      "relatedQuestionIds": ["2008-001", "2008-066", "2025-002", "2025-082"],
+      "relatedPlaces": ["Philadelphia", "Pennsylvania", "Washington, D.C."],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Archives",
+          "title": "The Constitution of the United States",
+          "url": "https://www.archives.gov/founding-docs/constitution",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "the-declaration-of-independence",
+      "category": "history",
+      "title": "The Declaration of Independence",
+      "summary": "The Continental Congress adopted the Declaration of Independence on July 4, 1776. Thomas Jefferson wrote most of the text. The document announced that the thirteen American colonies were free from Great Britain and stated that all people have rights to \"Life, Liberty and the pursuit of Happiness.\"",
+      "simpleEnglish": "The Declaration of Independence was adopted on July 4, 1776. Thomas Jefferson wrote it. It said the colonies were free from Britain. It says people have the right to life, liberty, and the pursuit of happiness.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["declaration", "independence", "colony", "liberty", "adopt"],
+      "relatedQuestionIds": ["2008-008", "2008-062", "2008-063", "2025-008", "2025-009", "2025-011", "2025-078", "2025-079"],
+      "relatedPlaces": ["Philadelphia", "Pennsylvania"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Archives",
+          "title": "Declaration of Independence",
+          "url": "https://www.archives.gov/founding-docs/declaration",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "the-bill-of-rights",
+      "category": "institutions",
+      "title": "The Bill of Rights",
+      "summary": "The Bill of Rights is the name for the first ten amendments to the Constitution. They were ratified on December 15, 1791. The First Amendment protects freedom of religion, speech, the press, assembly, and the right to petition the government. The other amendments protect rights such as trial by jury.",
+      "simpleEnglish": "The Bill of Rights is the first ten amendments to the Constitution. It became law in 1791. The First Amendment protects freedom of speech and freedom of religion. The Bill of Rights protects the rights of people in the United States.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["rights", "amendment", "freedom", "speech", "religion", "press"],
+      "relatedQuestionIds": ["2008-005", "2008-006", "2025-006", "2025-065"],
+      "relatedPlaces": ["Washington, D.C."],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Archives",
+          "title": "The Bill of Rights",
+          "url": "https://www.archives.gov/founding-docs/bill-of-rights",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "three-branches-of-government",
+      "category": "institutions",
+      "title": "The Three Branches of Government",
+      "summary": "The Constitution divides the federal government into three branches. The legislative branch, Congress, writes the laws and has two parts: the Senate and the House of Representatives. The executive branch, led by the President, carries out the laws. The judicial branch, the Supreme Court and other federal courts, interprets the laws. Each branch can check the others so that no branch becomes too powerful.",
+      "simpleEnglish": "The government has three parts, called branches. Congress makes the laws. The President carries out the laws. The courts explain the laws. This system is called checks and balances. It stops one branch from having too much power.",
+      "estimatedMinutes": 4,
+      "difficulty": "intermediate",
+      "vocabulary": ["branch", "legislative", "executive", "judicial", "Congress", "court"],
+      "relatedQuestionIds": ["2008-013", "2008-014", "2025-015", "2025-016"],
+      "relatedPlaces": ["Washington, D.C."],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "USA.gov",
+          "title": "Branches of the U.S. government",
+          "url": "https://www.usa.gov/branches-of-government",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "the-mississippi-river",
+      "category": "geography",
+      "title": "The Mississippi River",
+      "summary": "The Mississippi River begins at Lake Itasca in Minnesota and flows about 2,350 miles south to the Gulf of Mexico in Louisiana. Along the way it flows through or borders ten states. Together with the Missouri River it is one of the two longest rivers in the United States, and it has long been a route for boats, farm goods, and trade.",
+      "simpleEnglish": "The Mississippi River is one of the two longest rivers in the United States. It starts in Minnesota. It ends in Louisiana at the Gulf of Mexico. It touches ten states. Boats carry goods on the river.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["river", "border", "transportation", "gulf", "flow"],
+      "relatedQuestionIds": ["2008-088"],
+      "relatedPlaces": ["Minnesota", "Wisconsin", "Iowa", "Illinois", "Missouri", "Kentucky", "Tennessee", "Arkansas", "Mississippi", "Louisiana"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Park Service",
+          "title": "Mississippi National River and Recreation Area",
+          "url": "https://www.nps.gov/miss/index.htm",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "the-grand-canyon",
+      "category": "geography",
+      "title": "The Grand Canyon",
+      "summary": "The Grand Canyon is in northern Arizona, a state on the border with Mexico. The Colorado River carved it over millions of years. The canyon is 277 river miles long, up to 18 miles wide, and about a mile deep. Grand Canyon National Park was established in 1919, and the rock layers at the bottom are among the oldest exposed rocks on Earth.",
+      "simpleEnglish": "The Grand Canyon is in Arizona. The Colorado River made it over millions of years. It is very long, very wide, and about one mile deep. It became a national park in 1919. The rocks at the bottom are very old.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["canyon", "river", "national park", "deep", "rock"],
+      "relatedQuestionIds": ["2008-093"],
+      "relatedPlaces": ["Arizona", "Colorado River"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Park Service",
+          "title": "Grand Canyon National Park",
+          "url": "https://www.nps.gov/grca/index.htm",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "the-statue-of-liberty",
+      "category": "culture",
+      "title": "The Statue of Liberty",
+      "summary": "The Statue of Liberty stands on Liberty Island in New York Harbor. It was a gift from the people of France and was dedicated on October 28, 1886. The sculptor Frédéric Auguste Bartholdi designed the copper statue, which holds a torch and a tablet. For millions of immigrants arriving by ship at nearby Ellis Island, it was the first sight of the United States.",
+      "simpleEnglish": "The Statue of Liberty is in New York Harbor, on Liberty Island. France gave it to the United States in 1886. The statue holds a torch. Many immigrants saw the statue when they arrived by ship.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["statue", "liberty", "harbor", "island", "torch", "immigrant"],
+      "relatedQuestionIds": ["2008-095", "2025-120"],
+      "relatedPlaces": ["New York", "Liberty Island", "New York Harbor", "Ellis Island"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Park Service",
+          "title": "Statue of Liberty National Monument",
+          "url": "https://www.nps.gov/stli/index.htm",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "washington-dc",
+      "category": "geography",
+      "title": "Washington, D.C.",
+      "summary": "Washington, D.C. is the capital of the United States. It is not part of any state; D.C. stands for District of Columbia, and the city is named after George Washington. Congress chose the site in 1790 and the government moved there in 1800. The White House, the U.S. Capitol, and the Supreme Court are all in the city, along with the memorials of the National Mall.",
+      "simpleEnglish": "Washington, D.C. is the capital of the United States. It is not in any state. It is named for George Washington. The President lives in the White House there. Congress meets in the Capitol building there.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["capital", "district", "Capitol", "White House", "memorial"],
+      "relatedQuestionIds": ["2008-094", "2025-119"],
+      "relatedPlaces": ["Washington, D.C.", "Maryland", "Virginia"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Park Service",
+          "title": "National Mall and Memorial Parks",
+          "url": "https://www.nps.gov/nama/index.htm",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "katherine-johnson",
+      "category": "people",
+      "title": "Katherine Johnson",
+      "summary": "Katherine Johnson (1918–2020) was a mathematician at NASA's Langley Research Center in Hampton, Virginia. She calculated flight paths for the first American in space in 1961 and for John Glenn's orbit of Earth in 1962, when Glenn asked that she check the computer's numbers by hand. Her work also supported the Apollo 11 mission to the Moon. In 2015 she received the Presidential Medal of Freedom.",
+      "simpleEnglish": "Katherine Johnson was a mathematician. She worked for NASA in Virginia. She did the math for the first American space flights. She helped the Apollo 11 mission go to the Moon. In 2015 the President gave her a medal.",
+      "estimatedMinutes": 3,
+      "difficulty": "intermediate",
+      "vocabulary": ["mathematician", "calculate", "orbit", "space", "medal"],
+      "relatedQuestionIds": ["2025-118"],
+      "relatedPlaces": ["Hampton", "Virginia", "West Virginia"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "NASA",
+          "title": "Katherine Johnson Biography",
+          "url": "https://www.nasa.gov/centers-and-facilities/langley/katherine-johnson-biography/",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "apollo-11",
+      "category": "innovation",
+      "title": "Apollo 11 and the Moon Landing",
+      "summary": "Apollo 11 launched from Kennedy Space Center in Florida on July 16, 1969. On July 20, Neil Armstrong and Buzz Aldrin landed on the Moon while Michael Collins orbited above them. Armstrong became the first person to walk on the Moon. The crew returned to Earth on July 24, 1969. USCIS lists landing on the Moon as an example of an American innovation.",
+      "simpleEnglish": "In July 1969, three astronauts flew to the Moon on Apollo 11. Neil Armstrong and Buzz Aldrin walked on the Moon. Michael Collins stayed in the spacecraft. They came back to Earth safely. It was the first time people walked on the Moon.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["astronaut", "launch", "moon", "spacecraft", "innovation"],
+      "relatedQuestionIds": ["2025-118"],
+      "relatedPlaces": ["Florida", "Houston", "Texas"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "NASA",
+          "title": "Apollo 11",
+          "url": "https://www.nasa.gov/mission/apollo-11/",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "juneteenth",
+      "category": "culture",
+      "title": "Juneteenth",
+      "summary": "On June 19, 1865, Union soldiers led by General Gordon Granger arrived in Galveston, Texas, and announced that all enslaved people in Texas were free. This came more than two years after the Emancipation Proclamation of January 1, 1863. The day became known as Juneteenth. Texas made it a state holiday in 1980, and on June 17, 2021, it became a federal holiday called Juneteenth National Independence Day.",
+      "simpleEnglish": "Juneteenth is June 19. On that day in 1865, soldiers came to Galveston, Texas. They said that enslaved people in Texas were free. Today Juneteenth is a national holiday. It celebrates freedom.",
+      "estimatedMinutes": 3,
+      "difficulty": "intermediate",
+      "vocabulary": ["holiday", "freedom", "enslaved", "announce", "celebrate"],
+      "relatedQuestionIds": ["2008-076", "2008-100", "2025-095", "2025-096", "2025-126"],
+      "relatedPlaces": ["Galveston", "Texas"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Archives",
+          "title": "Juneteenth",
+          "url": "https://www.archives.gov/news/topics/juneteenth",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    },
+    {
+      "id": "yellowstone-national-park",
+      "category": "nature",
+      "title": "Yellowstone National Park",
+      "summary": "Yellowstone became the first national park in the world when Congress established it on March 1, 1872. Most of the park is in Wyoming, and it reaches into Montana and Idaho, two states that border Canada. It has more than 10,000 hot springs, mud pots, and geysers, including Old Faithful, and it is home to bison, elk, grizzly bears, and wolves.",
+      "simpleEnglish": "Yellowstone was the first national park. It opened in 1872. It is mostly in Wyoming. It has hot springs and geysers. Old Faithful is a famous geyser. Bison and bears live in the park.",
+      "estimatedMinutes": 3,
+      "difficulty": "beginner",
+      "vocabulary": ["national park", "geyser", "hot spring", "wildlife", "bison"],
+      "relatedQuestionIds": ["2008-092"],
+      "relatedPlaces": ["Wyoming", "Montana", "Idaho"],
+      "reviewStatus": "draft",
+      "sources": [
+        {
+          "authority": "National Park Service",
+          "title": "Yellowstone National Park",
+          "url": "https://www.nps.gov/yell/index.htm",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work)"
+        }
+      ]
+    }
+  ]
+}

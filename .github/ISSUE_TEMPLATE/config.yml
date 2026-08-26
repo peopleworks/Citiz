@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Official USCIS study materials
+    url: https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test
+    about: The authoritative source for the questions and answers. Citiz transcribes them; USCIS publishes them.
+  - name: Security vulnerability
+    url: https://github.com/peopleworks/Citiz/security/advisories/new
+    about: Report privately, not as a public issue. See SECURITY.md.
+  - name: How content is reviewed
+    url: https://github.com/peopleworks/Citiz/blob/main/content/README.md
+    about: The three rules, the review states and the file formats — worth a read before a content change.

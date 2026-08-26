@@ -1,0 +1,75 @@
+{
+  "$schema": "../schemas/exam-versions.schema.json",
+  "versions": [
+    {
+      "id": "2008",
+      "displayName": "2008 Civics Test",
+      "filingFrom": null,
+      "filingTo": "2025-10-19",
+      "bankSize": 100,
+      "standard": {
+        "questionsAsked": 10,
+        "passingAnswers": 6,
+        "failingAnswers": 5
+      },
+      "seniorConsideration": {
+        "questionsAsked": 10,
+        "passingAnswers": 6,
+        "failingAnswers": 5
+      },
+      "seniorQuestionNumbers": [6, 11, 13, 17, 20, 27, 28, 44, 45, 49, 54, 56, 70, 75, 78, 85, 94, 95, 97, 99],
+      "reviewStatus": "needs-review",
+      "sources": [
+        {
+          "authority": "USCIS",
+          "title": "The Naturalization Interview and Test",
+          "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "100 Civics Questions and Answers with MP3 Audio (English version)",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test/100-civics-questions-and-answers-with-mp3-audio-english-version",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        }
+      ]
+    },
+    {
+      "id": "2025",
+      "displayName": "2025 Civics Test",
+      "filingFrom": "2025-10-20",
+      "filingTo": null,
+      "bankSize": 128,
+      "standard": {
+        "questionsAsked": 20,
+        "passingAnswers": 12,
+        "failingAnswers": 9
+      },
+      "seniorConsideration": {
+        "questionsAsked": 10,
+        "passingAnswers": 6,
+        "failingAnswers": 5
+      },
+      "seniorQuestionNumbers": [],
+      "reviewStatus": "needs-review",
+      "sources": [
+        {
+          "authority": "USCIS",
+          "title": "2025 Civics Test",
+          "url": "https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "The Naturalization Interview and Test",
+          "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test",
+          "verifiedOn": null,
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# Build output
+**/bin/
+**/obj/
+artifacts/
+publish/
+TestResults/
+*.binlog
+
+# IDEs
+.vs/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.user
+*.suo
+*.swp
+
+# Local secrets and databases; Citiz needs neither, but nothing here must ever be committed
+.env
+*.db
+*.db-shm
+*.db-wal
+appsettings.*.local.json
+
+# OS
+.DS_Store
+Thumbs.db

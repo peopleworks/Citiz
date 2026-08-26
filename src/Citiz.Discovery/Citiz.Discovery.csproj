@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz discovery engine: the daily "Today in the United States" capsule and the connections between capsules, vocabulary and exam questions.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+  </ItemGroup>
+
+</Project>

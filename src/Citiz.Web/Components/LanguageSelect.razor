@@ -1,0 +1,22 @@
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject BrowserStorage Browser
+
+<label class="language-select">
+  <span class="sr-only">@L.T("language.interface")</span>
+  <select value="@L.Profile.InterfaceCulture" @onchange="ChangeAsync" aria-label="@L.T("language.interface")">
+    @foreach (var language in SupportedLanguages.All)
+    {
+      <option value="@language.Code" lang="@language.Code">@language.NativeName</option>
+    }
+  </select>
+</label>
+
+@code {
+  private async Task ChangeAsync(ChangeEventArgs e)
+  {
+    var code = e.Value?.ToString() ?? SupportedLanguages.Fallback;
+    await Learner.SetLanguageProfileAsync(L.Profile with { InterfaceCulture = code, HelpCulture = code });
+    await Browser.AnnounceAsync(L.T("language.changed", L.Language.NativeName));
+  }
+}

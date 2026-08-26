@@ -1,0 +1,1569 @@
+{
+  "$schema": "../../schemas/questions.schema.json",
+  "versionId": "2025",
+  "reviewStatus": "needs-review",
+  "sources": [
+    {
+      "authority": "USCIS",
+      "title": "128 Civics Questions and Answers (2025 version)",
+      "url": "https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test",
+      "verifiedOn": null,
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+    }
+  ],
+  "questions": [
+    {
+      "id": "2025-001",
+      "number": 1,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What is the form of government of the United States?",
+      "acceptedAnswers": [
+        "Republic",
+        "Constitution-based federal republic",
+        "Representative democracy"
+      ]
+    },
+    {
+      "id": "2025-002",
+      "number": 2,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What is the supreme law of the land?",
+      "acceptedAnswers": [
+        "(U.S.) Constitution"
+      ]
+    },
+    {
+      "id": "2025-003",
+      "number": 3,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "Name one thing the U.S. Constitution does.",
+      "acceptedAnswers": [
+        "Forms the government",
+        "Defines powers of government",
+        "Defines the parts of the government",
+        "Protects the rights of the people"
+      ]
+    },
+    {
+      "id": "2025-004",
+      "number": 4,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "The U.S. Constitution starts with the words \"We the People.\" What does \"We the People\" mean?",
+      "acceptedAnswers": [
+        "Self-government",
+        "Popular sovereignty",
+        "Consent of the governed",
+        "People should govern themselves",
+        "(Example of) social contract"
+      ]
+    },
+    {
+      "id": "2025-005",
+      "number": 5,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "How are changes made to the U.S. Constitution?",
+      "acceptedAnswers": [
+        "Amendments",
+        "The amendment process"
+      ]
+    },
+    {
+      "id": "2025-006",
+      "number": 6,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What does the Bill of Rights protect?",
+      "acceptedAnswers": [
+        "(The basic) rights of Americans",
+        "(The basic) rights of people living in the United States"
+      ]
+    },
+    {
+      "id": "2025-007",
+      "number": 7,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "How many amendments does the U.S. Constitution have?",
+      "acceptedAnswers": [
+        "Twenty-seven (27)"
+      ]
+    },
+    {
+      "id": "2025-008",
+      "number": 8,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "Why is the Declaration of Independence important?",
+      "acceptedAnswers": [
+        "It says America is free from British control.",
+        "It says all people are created equal.",
+        "It identifies inherent rights.",
+        "It identifies individual freedoms."
+      ]
+    },
+    {
+      "id": "2025-009",
+      "number": 9,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What founding document said the American colonies were free from Britain?",
+      "acceptedAnswers": [
+        "Declaration of Independence"
+      ]
+    },
+    {
+      "id": "2025-010",
+      "number": 10,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "Name two important ideas from the Declaration of Independence and the U.S. Constitution.",
+      "acceptedAnswers": [
+        "Equality",
+        "Liberty",
+        "Social contract",
+        "Natural rights",
+        "Limited government",
+        "Self-government"
+      ]
+    },
+    {
+      "id": "2025-011",
+      "number": 11,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "The words \"Life, Liberty, and the pursuit of Happiness\" are in what founding document?",
+      "acceptedAnswers": [
+        "Declaration of Independence"
+      ]
+    },
+    {
+      "id": "2025-012",
+      "number": 12,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What is the economic system of the United States?",
+      "acceptedAnswers": [
+        "Capitalism",
+        "Free market economy"
+      ]
+    },
+    {
+      "id": "2025-013",
+      "number": 13,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "What is the rule of law?",
+      "acceptedAnswers": [
+        "Everyone must follow the law.",
+        "Leaders must obey the law.",
+        "Government must follow the law.",
+        "No one is above the law."
+      ]
+    },
+    {
+      "id": "2025-014",
+      "number": 14,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "Many documents influenced the U.S. Constitution. Name one.",
+      "acceptedAnswers": [
+        "Declaration of Independence",
+        "Articles of Confederation",
+        "Federalist Papers",
+        "Anti-Federalist Papers",
+        "Virginia Declaration of Rights",
+        "Fundamental Orders of Connecticut",
+        "Mayflower Compact",
+        "Iroquois Great Law of Peace"
+      ]
+    },
+    {
+      "id": "2025-015",
+      "number": 15,
+      "category": "American Government",
+      "subcategory": "Principles of American Government",
+      "prompt": "There are three branches of government. Why?",
+      "acceptedAnswers": [
+        "So one part does not become too powerful",
+        "Checks and balances",
+        "Separation of powers"
+      ]
+    },
+    {
+      "id": "2025-016",
+      "number": 16,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name the three branches of government.",
+      "acceptedAnswers": [
+        "Legislative, executive, and judicial",
+        "Congress, president, and the courts"
+      ]
+    },
+    {
+      "id": "2025-017",
+      "number": 17,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "The President of the United States is in charge of which branch of government?",
+      "acceptedAnswers": [
+        "Executive branch"
+      ]
+    },
+    {
+      "id": "2025-018",
+      "number": 18,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What part of the federal government writes laws?",
+      "acceptedAnswers": [
+        "(U.S.) Congress",
+        "(U.S. or national) legislature",
+        "Legislative branch"
+      ]
+    },
+    {
+      "id": "2025-019",
+      "number": 19,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What are the two parts of the U.S. Congress?",
+      "acceptedAnswers": [
+        "Senate and House (of Representatives)"
+      ]
+    },
+    {
+      "id": "2025-020",
+      "number": 20,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name one power of the U.S. Congress.",
+      "acceptedAnswers": [
+        "Writes laws",
+        "Declares war",
+        "Makes the federal budget"
+      ]
+    },
+    {
+      "id": "2025-021",
+      "number": 21,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How many U.S. senators are there?",
+      "acceptedAnswers": [
+        "One hundred (100)"
+      ]
+    },
+    {
+      "id": "2025-022",
+      "number": 22,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How long is a term for a U.S. senator?",
+      "acceptedAnswers": [
+        "Six (6) years"
+      ]
+    },
+    {
+      "id": "2025-023",
+      "number": 23,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who is one of your state's U.S. senators now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "state-senator",
+      "note": "Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. senators.]"
+    },
+    {
+      "id": "2025-024",
+      "number": 24,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How many voting members are in the House of Representatives?",
+      "acceptedAnswers": [
+        "Four hundred thirty-five (435)"
+      ]
+    },
+    {
+      "id": "2025-025",
+      "number": 25,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How long is a term for a member of the House of Representatives?",
+      "acceptedAnswers": [
+        "Two (2) years"
+      ]
+    },
+    {
+      "id": "2025-026",
+      "number": 26,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Why do U.S. representatives serve shorter terms than U.S. senators?",
+      "acceptedAnswers": [
+        "To more closely follow public opinion"
+      ]
+    },
+    {
+      "id": "2025-027",
+      "number": 27,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How many senators does each state have?",
+      "acceptedAnswers": [
+        "Two (2)"
+      ]
+    },
+    {
+      "id": "2025-028",
+      "number": 28,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Why does each state have two senators?",
+      "acceptedAnswers": [
+        "Equal representation (for small states)",
+        "The Great Compromise (Connecticut Compromise)"
+      ]
+    },
+    {
+      "id": "2025-029",
+      "number": 29,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name your U.S. representative.",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "state-representative",
+      "note": "Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]"
+    },
+    {
+      "id": "2025-030",
+      "number": 30,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the name of the Speaker of the House of Representatives now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "speaker-of-the-house",
+      "note": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives."
+    },
+    {
+      "id": "2025-031",
+      "number": 31,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who does a U.S. senator represent?",
+      "acceptedAnswers": [
+        "Citizens of their state"
+      ]
+    },
+    {
+      "id": "2025-032",
+      "number": 32,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who elects U.S. senators?",
+      "acceptedAnswers": [
+        "Citizens from their state"
+      ]
+    },
+    {
+      "id": "2025-033",
+      "number": 33,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who does a member of the House of Representatives represent?",
+      "acceptedAnswers": [
+        "Citizens in their (congressional) district",
+        "Citizens in their district"
+      ]
+    },
+    {
+      "id": "2025-034",
+      "number": 34,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who elects members of the House of Representatives?",
+      "acceptedAnswers": [
+        "Citizens from their (congressional) district"
+      ]
+    },
+    {
+      "id": "2025-035",
+      "number": 35,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Some states have more representatives than other states. Why?",
+      "acceptedAnswers": [
+        "(Because of) the state's population",
+        "(Because) they have more people",
+        "(Because) some states have more people"
+      ]
+    },
+    {
+      "id": "2025-036",
+      "number": 36,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "The President of the United States is elected for how many years?",
+      "acceptedAnswers": [
+        "Four (4) years"
+      ]
+    },
+    {
+      "id": "2025-037",
+      "number": 37,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "The President of the United States can serve only two terms. Why?",
+      "acceptedAnswers": [
+        "(Because of) the 22nd Amendment",
+        "To keep the president from becoming too powerful"
+      ]
+    },
+    {
+      "id": "2025-038",
+      "number": 38,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the name of the President of the United States now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "president",
+      "note": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States."
+    },
+    {
+      "id": "2025-039",
+      "number": 39,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the name of the Vice President of the United States now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "vice-president",
+      "note": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States."
+    },
+    {
+      "id": "2025-040",
+      "number": 40,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "If the president can no longer serve, who becomes president?",
+      "acceptedAnswers": [
+        "The Vice President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-041",
+      "number": 41,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name one power of the president.",
+      "acceptedAnswers": [
+        "Signs bills into law",
+        "Vetoes bills",
+        "Enforces laws",
+        "Commander in Chief (of the military)",
+        "Chief diplomat"
+      ]
+    },
+    {
+      "id": "2025-042",
+      "number": 42,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who is Commander in Chief of the U.S. military?",
+      "acceptedAnswers": [
+        "The President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-043",
+      "number": 43,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who signs bills to become laws?",
+      "acceptedAnswers": [
+        "The President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-044",
+      "number": 44,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who vetoes bills?",
+      "acceptedAnswers": [
+        "The President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-045",
+      "number": 45,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who appoints federal judges?",
+      "acceptedAnswers": [
+        "The President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-046",
+      "number": 46,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "The executive branch has many parts. Name one.",
+      "acceptedAnswers": [
+        "President (of the United States)",
+        "Cabinet",
+        "Federal departments and agencies"
+      ]
+    },
+    {
+      "id": "2025-047",
+      "number": 47,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What does the President's Cabinet do?",
+      "acceptedAnswers": [
+        "Advises the President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-048",
+      "number": 48,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What are two Cabinet-level positions?",
+      "acceptedAnswers": [
+        "Attorney General",
+        "Secretary of Agriculture",
+        "Secretary of Commerce",
+        "Secretary of Defense",
+        "Secretary of Education",
+        "Secretary of Energy",
+        "Secretary of Health and Human Services",
+        "Secretary of Homeland Security",
+        "Secretary of Housing and Urban Development",
+        "Secretary of the Interior",
+        "Secretary of Labor",
+        "Secretary of State",
+        "Secretary of Transportation",
+        "Secretary of the Treasury",
+        "Secretary of Veterans Affairs",
+        "Vice President (of the United States)"
+      ]
+    },
+    {
+      "id": "2025-049",
+      "number": 49,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Why is the Electoral College important?",
+      "acceptedAnswers": [
+        "It decides who is elected president.",
+        "It provides a compromise between the popular election of the president and congressional selection."
+      ]
+    },
+    {
+      "id": "2025-050",
+      "number": 50,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is one part of the judicial branch?",
+      "acceptedAnswers": [
+        "Supreme Court",
+        "Federal Courts"
+      ]
+    },
+    {
+      "id": "2025-051",
+      "number": 51,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What does the judicial branch do?",
+      "acceptedAnswers": [
+        "Reviews laws",
+        "Explains laws",
+        "Resolves disputes (disagreements) about the law",
+        "Decides if a law goes against the (U.S.) Constitution"
+      ]
+    },
+    {
+      "id": "2025-052",
+      "number": 52,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the highest court in the United States?",
+      "acceptedAnswers": [
+        "Supreme Court"
+      ]
+    },
+    {
+      "id": "2025-053",
+      "number": 53,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How many seats are on the Supreme Court?",
+      "acceptedAnswers": [
+        "Nine (9)"
+      ]
+    },
+    {
+      "id": "2025-054",
+      "number": 54,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How many Supreme Court justices are usually needed to decide a case?",
+      "acceptedAnswers": [
+        "Five (5)"
+      ]
+    },
+    {
+      "id": "2025-055",
+      "number": 55,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "How long do Supreme Court justices serve?",
+      "acceptedAnswers": [
+        "(For) life",
+        "Lifetime appointment",
+        "(Until) retirement"
+      ]
+    },
+    {
+      "id": "2025-056",
+      "number": 56,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Supreme Court justices serve for life. Why?",
+      "acceptedAnswers": [
+        "To be independent (of politics)",
+        "To limit outside (political) influence"
+      ]
+    },
+    {
+      "id": "2025-057",
+      "number": 57,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who is the Chief Justice of the United States now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "chief-justice",
+      "note": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States."
+    },
+    {
+      "id": "2025-058",
+      "number": 58,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name one power that is only for the federal government.",
+      "acceptedAnswers": [
+        "Print paper money",
+        "Mint coins",
+        "Declare war",
+        "Create an army",
+        "Make treaties",
+        "Set foreign policy"
+      ]
+    },
+    {
+      "id": "2025-059",
+      "number": 59,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Name one power that is only for the states.",
+      "acceptedAnswers": [
+        "Provide schooling and education",
+        "Provide protection (police)",
+        "Provide safety (fire departments)",
+        "Give a driver's license",
+        "Approve zoning and land use"
+      ]
+    },
+    {
+      "id": "2025-060",
+      "number": 60,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the purpose of the 10th Amendment?",
+      "acceptedAnswers": [
+        "(It states that the) powers not given to the federal government belong to the states or the people."
+      ]
+    },
+    {
+      "id": "2025-061",
+      "number": 61,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "Who is the governor of your state now?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "state-governor",
+      "note": "Answers will vary. [District of Columbia residents should answer that D.C. does not have a governor.]"
+    },
+    {
+      "id": "2025-062",
+      "number": 62,
+      "category": "American Government",
+      "subcategory": "System of Government",
+      "prompt": "What is the capital of your state?",
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "state-capital",
+      "note": "Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]"
+    },
+    {
+      "id": "2025-063",
+      "number": 63,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "There are four amendments to the U.S. Constitution about who can vote. Describe one of them.",
+      "acceptedAnswers": [
+        "Citizens eighteen (18) and older (can vote).",
+        "You don't have to pay (a poll tax) to vote.",
+        "Any citizen can vote. (Women and men can vote.)",
+        "A male citizen of any race (can vote)."
+      ]
+    },
+    {
+      "id": "2025-064",
+      "number": 64,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "Who can vote in federal elections, run for federal office, and serve on a jury in the United States?",
+      "acceptedAnswers": [
+        "Citizens",
+        "Citizens of the United States",
+        "U.S. citizens"
+      ]
+    },
+    {
+      "id": "2025-065",
+      "number": 65,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "What are three rights of everyone living in the United States?",
+      "acceptedAnswers": [
+        "Freedom of expression",
+        "Freedom of speech",
+        "Freedom of assembly",
+        "Freedom to petition the government",
+        "Freedom of religion",
+        "The right to bear arms"
+      ]
+    },
+    {
+      "id": "2025-066",
+      "number": 66,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "What do we show loyalty to when we say the Pledge of Allegiance?",
+      "acceptedAnswers": [
+        "The United States",
+        "The flag"
+      ]
+    },
+    {
+      "id": "2025-067",
+      "number": 67,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "Name two promises that new citizens make in the Oath of Allegiance.",
+      "acceptedAnswers": [
+        "Give up loyalty to other countries",
+        "Defend the (U.S.) Constitution",
+        "Obey the laws of the United States",
+        "Serve in the military (if needed)",
+        "Serve (help, do important work for) the nation (if needed)",
+        "Be loyal to the United States"
+      ]
+    },
+    {
+      "id": "2025-068",
+      "number": 68,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "How can people become United States citizens?",
+      "acceptedAnswers": [
+        "Naturalize",
+        "Derive citizenship",
+        "Be born in the United States"
+      ]
+    },
+    {
+      "id": "2025-069",
+      "number": 69,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "What are two examples of civic participation in the United States?",
+      "acceptedAnswers": [
+        "Vote",
+        "Run for office",
+        "Join a political party",
+        "Help with a campaign",
+        "Join a civic group",
+        "Join a community group",
+        "Give an elected official your opinion (on an issue)",
+        "Contact elected officials",
+        "Support or oppose an issue or policy",
+        "Write to a newspaper"
+      ]
+    },
+    {
+      "id": "2025-070",
+      "number": 70,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "What is one way Americans can serve their country?",
+      "acceptedAnswers": [
+        "Vote",
+        "Pay taxes",
+        "Obey the law",
+        "Serve in the military",
+        "Run for office",
+        "Work for local, state, or federal government"
+      ]
+    },
+    {
+      "id": "2025-071",
+      "number": 71,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "Why is it important to pay federal taxes?",
+      "acceptedAnswers": [
+        "Required by law",
+        "All people pay to fund the federal government",
+        "Required by the (U.S.) Constitution (16th Amendment)",
+        "Civic duty"
+      ]
+    },
+    {
+      "id": "2025-072",
+      "number": 72,
+      "category": "American Government",
+      "subcategory": "Rights and Responsibilities",
+      "prompt": "It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why.",
+      "acceptedAnswers": [
+        "Required by law",
+        "Civic duty",
+        "Makes the draft fair, if needed"
+      ]
+    },
+    {
+      "id": "2025-073",
+      "number": 73,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "The colonists came to America for many reasons. Name one.",
+      "acceptedAnswers": [
+        "Freedom",
+        "Political liberty",
+        "Religious freedom",
+        "Economic opportunity",
+        "Escape persecution"
+      ]
+    },
+    {
+      "id": "2025-074",
+      "number": 74,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Who lived in America before the Europeans arrived?",
+      "acceptedAnswers": [
+        "American Indians",
+        "Native Americans"
+      ]
+    },
+    {
+      "id": "2025-075",
+      "number": 75,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "What group of people was taken and sold as slaves?",
+      "acceptedAnswers": [
+        "Africans",
+        "People from Africa"
+      ]
+    },
+    {
+      "id": "2025-076",
+      "number": 76,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "What war did the Americans fight to win independence from Britain?",
+      "acceptedAnswers": [
+        "American Revolution",
+        "The (American) Revolutionary War",
+        "War for (American) Independence"
+      ]
+    },
+    {
+      "id": "2025-077",
+      "number": 77,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Name one reason why the Americans declared independence from Britain.",
+      "acceptedAnswers": [
+        "High taxes",
+        "Taxation without representation",
+        "British soldiers stayed in Americans' houses (boarding, quartering)",
+        "They did not have self-government",
+        "Boston Massacre",
+        "Boston Tea Party (Tea Act)",
+        "Stamp Act",
+        "Sugar Act",
+        "Townshend Acts",
+        "Intolerable (Coercive) Acts"
+      ]
+    },
+    {
+      "id": "2025-078",
+      "number": 78,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Who wrote the Declaration of Independence?",
+      "acceptedAnswers": [
+        "(Thomas) Jefferson"
+      ]
+    },
+    {
+      "id": "2025-079",
+      "number": 79,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "When was the Declaration of Independence adopted?",
+      "acceptedAnswers": [
+        "July 4, 1776"
+      ]
+    },
+    {
+      "id": "2025-080",
+      "number": 80,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "The American Revolution had many important events. Name one.",
+      "acceptedAnswers": [
+        "(Battle of) Bunker Hill",
+        "Declaration of Independence",
+        "Washington Crossing the Delaware (Battle of Trenton)",
+        "(Battle of) Saratoga",
+        "Valley Forge (Encampment)",
+        "(Battle of) Yorktown (British surrender at Yorktown)"
+      ]
+    },
+    {
+      "id": "2025-081",
+      "number": 81,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "There were 13 original states. Name five.",
+      "acceptedAnswers": [
+        "New Hampshire",
+        "Massachusetts",
+        "Rhode Island",
+        "Connecticut",
+        "New York",
+        "New Jersey",
+        "Pennsylvania",
+        "Delaware",
+        "Maryland",
+        "Virginia",
+        "North Carolina",
+        "South Carolina",
+        "Georgia"
+      ]
+    },
+    {
+      "id": "2025-082",
+      "number": 82,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "What founding document was written in 1787?",
+      "acceptedAnswers": [
+        "(U.S.) Constitution"
+      ]
+    },
+    {
+      "id": "2025-083",
+      "number": 83,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",
+      "acceptedAnswers": [
+        "(James) Madison",
+        "(Alexander) Hamilton",
+        "(John) Jay",
+        "Publius"
+      ]
+    },
+    {
+      "id": "2025-084",
+      "number": 84,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Why were the Federalist Papers important?",
+      "acceptedAnswers": [
+        "They helped people understand the (U.S.) Constitution.",
+        "They supported passing the (U.S.) Constitution."
+      ]
+    },
+    {
+      "id": "2025-085",
+      "number": 85,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Benjamin Franklin is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "Founded the first free public libraries",
+        "First Postmaster General of the United States",
+        "Helped write the Declaration of Independence",
+        "Inventor",
+        "U.S. diplomat"
+      ]
+    },
+    {
+      "id": "2025-086",
+      "number": 86,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "George Washington is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "\"Father of Our Country\"",
+        "First president of the United States",
+        "General of the Continental Army",
+        "President of the Constitutional Convention"
+      ]
+    },
+    {
+      "id": "2025-087",
+      "number": 87,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Thomas Jefferson is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "Writer of the Declaration of Independence",
+        "Third president of the United States",
+        "Doubled the size of the United States (Louisiana Purchase)",
+        "First Secretary of State",
+        "Founded the University of Virginia",
+        "Writer of the Virginia Statute on Religious Freedom"
+      ]
+    },
+    {
+      "id": "2025-088",
+      "number": 88,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "James Madison is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "\"Father of the Constitution\"",
+        "Fourth president of the United States",
+        "President during the War of 1812",
+        "One of the writers of the Federalist Papers"
+      ]
+    },
+    {
+      "id": "2025-089",
+      "number": 89,
+      "category": "American History",
+      "subcategory": "Colonial Period and Independence",
+      "prompt": "Alexander Hamilton is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "First Secretary of the Treasury",
+        "One of the writers of the Federalist Papers",
+        "Helped establish the First Bank of the United States",
+        "Aide to General George Washington",
+        "Member of the Continental Congress"
+      ]
+    },
+    {
+      "id": "2025-090",
+      "number": 90,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "What territory did the United States buy from France in 1803?",
+      "acceptedAnswers": [
+        "Louisiana Territory",
+        "Louisiana"
+      ]
+    },
+    {
+      "id": "2025-091",
+      "number": 91,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "Name one war fought by the United States in the 1800s.",
+      "acceptedAnswers": [
+        "War of 1812",
+        "Mexican-American War",
+        "Civil War",
+        "Spanish-American War"
+      ]
+    },
+    {
+      "id": "2025-092",
+      "number": 92,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "Name the U.S. war between the North and the South.",
+      "acceptedAnswers": [
+        "The Civil War"
+      ]
+    },
+    {
+      "id": "2025-093",
+      "number": 93,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "The Civil War had many important events. Name one.",
+      "acceptedAnswers": [
+        "(Battle of) Fort Sumter",
+        "Emancipation Proclamation",
+        "(Battle of) Vicksburg",
+        "(Battle of) Gettysburg",
+        "Sherman's March",
+        "(Surrender at) Appomattox",
+        "(Battle of) Antietam/Sharpsburg",
+        "Lincoln assassinated"
+      ]
+    },
+    {
+      "id": "2025-094",
+      "number": 94,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "Abraham Lincoln is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "Freed the slaves (Emancipation Proclamation)",
+        "Saved (or preserved) the Union",
+        "Led the United States during the Civil War",
+        "16th president of the United States",
+        "Delivered the Gettysburg Address"
+      ]
+    },
+    {
+      "id": "2025-095",
+      "number": 95,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "What did the Emancipation Proclamation do?",
+      "acceptedAnswers": [
+        "Freed the slaves",
+        "Freed slaves in the Confederacy",
+        "Freed slaves in the Confederate states",
+        "Freed slaves in most Southern states"
+      ]
+    },
+    {
+      "id": "2025-096",
+      "number": 96,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "What U.S. war ended slavery?",
+      "acceptedAnswers": [
+        "The Civil War"
+      ]
+    },
+    {
+      "id": "2025-097",
+      "number": 97,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "What amendment gives citizenship to all persons born in the United States?",
+      "acceptedAnswers": [
+        "14th Amendment"
+      ]
+    },
+    {
+      "id": "2025-098",
+      "number": 98,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "When did all men get the right to vote?",
+      "acceptedAnswers": [
+        "After the Civil War",
+        "During Reconstruction",
+        "(With the) 15th Amendment",
+        "1870"
+      ]
+    },
+    {
+      "id": "2025-099",
+      "number": 99,
+      "category": "American History",
+      "subcategory": "1800s",
+      "prompt": "Name one leader of the women's rights movement in the 1800s.",
+      "acceptedAnswers": [
+        "Susan B. Anthony",
+        "Elizabeth Cady Stanton",
+        "Sojourner Truth",
+        "Harriet Tubman",
+        "Lucretia Mott",
+        "Lucy Stone"
+      ]
+    },
+    {
+      "id": "2025-100",
+      "number": 100,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one war fought by the United States in the 1900s.",
+      "acceptedAnswers": [
+        "World War I",
+        "World War II",
+        "Korean War",
+        "Vietnam War",
+        "(Persian) Gulf War"
+      ]
+    },
+    {
+      "id": "2025-101",
+      "number": 101,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Why did the United States enter World War I?",
+      "acceptedAnswers": [
+        "Because Germany attacked U.S. (civilian) ships",
+        "To support the Allied Powers (England, France, Italy, and Russia)",
+        "To oppose the Central Powers (Germany, Austria-Hungary, the Ottoman Empire, and Bulgaria)"
+      ]
+    },
+    {
+      "id": "2025-102",
+      "number": 102,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "When did all women get the right to vote?",
+      "acceptedAnswers": [
+        "1920",
+        "After World War I",
+        "(With the) 19th Amendment"
+      ]
+    },
+    {
+      "id": "2025-103",
+      "number": 103,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "What was the Great Depression?",
+      "acceptedAnswers": [
+        "Longest economic recession in modern history"
+      ]
+    },
+    {
+      "id": "2025-104",
+      "number": 104,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "When did the Great Depression start?",
+      "acceptedAnswers": [
+        "The Great Crash (1929)",
+        "Stock market crash of 1929"
+      ]
+    },
+    {
+      "id": "2025-105",
+      "number": 105,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Who was president during the Great Depression and World War II?",
+      "acceptedAnswers": [
+        "(Franklin) Roosevelt"
+      ]
+    },
+    {
+      "id": "2025-106",
+      "number": 106,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Why did the United States enter World War II?",
+      "acceptedAnswers": [
+        "(Bombing of) Pearl Harbor",
+        "Japanese attacked Pearl Harbor",
+        "To support the Allied Powers (England, France, and Russia)",
+        "To oppose the Axis Powers (Germany, Italy, and Japan)"
+      ]
+    },
+    {
+      "id": "2025-107",
+      "number": 107,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Dwight Eisenhower is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "General during World War II",
+        "President at the end of (during) the Korean War",
+        "34th president of the United States",
+        "Signed the Federal-Aid Highway Act of 1956 (Created the Interstate System)"
+      ]
+    },
+    {
+      "id": "2025-108",
+      "number": 108,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Who was the United States' main rival during the Cold War?",
+      "acceptedAnswers": [
+        "Soviet Union",
+        "USSR",
+        "Russia"
+      ]
+    },
+    {
+      "id": "2025-109",
+      "number": 109,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "During the Cold War, what was one main concern of the United States?",
+      "acceptedAnswers": [
+        "Communism",
+        "Nuclear war"
+      ]
+    },
+    {
+      "id": "2025-110",
+      "number": 110,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Why did the United States enter the Korean War?",
+      "acceptedAnswers": [
+        "To stop the spread of communism"
+      ]
+    },
+    {
+      "id": "2025-111",
+      "number": 111,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Why did the United States enter the Vietnam War?",
+      "acceptedAnswers": [
+        "To stop the spread of communism"
+      ]
+    },
+    {
+      "id": "2025-112",
+      "number": 112,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "What did the civil rights movement do?",
+      "acceptedAnswers": [
+        "Fought to end racial discrimination"
+      ]
+    },
+    {
+      "id": "2025-113",
+      "number": 113,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Martin Luther King, Jr. is famous for many things. Name one.",
+      "acceptedAnswers": [
+        "Fought for civil rights",
+        "Worked for equality for all Americans",
+        "Worked to ensure that people would \"not be judged by the color of their skin, but by the content of their character\""
+      ]
+    },
+    {
+      "id": "2025-114",
+      "number": 114,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Why did the United States enter the Persian Gulf War?",
+      "acceptedAnswers": [
+        "To force the Iraqi military from Kuwait"
+      ]
+    },
+    {
+      "id": "2025-115",
+      "number": 115,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "What major event happened on September 11, 2001 in the United States?",
+      "acceptedAnswers": [
+        "Terrorists attacked the United States",
+        "Terrorists took over two planes and crashed them into the World Trade Center in New York City",
+        "Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia",
+        "Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field near Shanksville, Pennsylvania"
+      ]
+    },
+    {
+      "id": "2025-116",
+      "number": 116,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one U.S. military conflict after the September 11, 2001 attacks.",
+      "acceptedAnswers": [
+        "(Global) War on Terror",
+        "War in Afghanistan",
+        "War in Iraq"
+      ]
+    },
+    {
+      "id": "2025-117",
+      "number": 117,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one American Indian tribe in the United States.",
+      "acceptedAnswers": [
+        "Apache",
+        "Blackfeet",
+        "Cayuga",
+        "Cherokee",
+        "Cheyenne",
+        "Chippewa",
+        "Choctaw",
+        "Creek",
+        "Crow",
+        "Hopi",
+        "Huron",
+        "Inupiat",
+        "Lakota",
+        "Mohawk",
+        "Mohegan",
+        "Navajo",
+        "Oneida",
+        "Onondaga",
+        "Pueblo",
+        "Seminole",
+        "Seneca",
+        "Shawnee",
+        "Sioux",
+        "Teton",
+        "Tuscarora"
+      ]
+    },
+    {
+      "id": "2025-118",
+      "number": 118,
+      "category": "American History",
+      "subcategory": "Recent American History and Other Important Historical Information",
+      "prompt": "Name one example of an American innovation.",
+      "acceptedAnswers": [
+        "Light bulb",
+        "Automobile (cars, combustible engine)",
+        "Skyscrapers",
+        "Airplane",
+        "Assembly line",
+        "Landing on the moon",
+        "Integrated circuit (IC)"
+      ]
+    },
+    {
+      "id": "2025-119",
+      "number": 119,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "What is the capital of the United States?",
+      "acceptedAnswers": [
+        "Washington, D.C."
+      ]
+    },
+    {
+      "id": "2025-120",
+      "number": 120,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "Where is the Statue of Liberty?",
+      "acceptedAnswers": [
+        "New York (Harbor)",
+        "Liberty Island"
+      ],
+      "note": "[Also acceptable are New Jersey, near New York City, and on the Hudson (River).]"
+    },
+    {
+      "id": "2025-121",
+      "number": 121,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "Why does the flag have 13 stripes?",
+      "acceptedAnswers": [
+        "(Because there were) 13 original colonies",
+        "(Because the stripes) represent the original colonies"
+      ]
+    },
+    {
+      "id": "2025-122",
+      "number": 122,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "Why does the flag have 50 stars?",
+      "acceptedAnswers": [
+        "(Because there is) one star for each state",
+        "(Because) each star represents a state",
+        "(Because there are) 50 states"
+      ]
+    },
+    {
+      "id": "2025-123",
+      "number": 123,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "What is the name of the national anthem?",
+      "acceptedAnswers": [
+        "The Star-Spangled Banner"
+      ]
+    },
+    {
+      "id": "2025-124",
+      "number": 124,
+      "category": "Symbols and Holidays",
+      "subcategory": "Symbols",
+      "prompt": "The Nation's first motto was \"E Pluribus Unum.\" What does that mean?",
+      "acceptedAnswers": [
+        "Out of many, one",
+        "We all become one"
+      ]
+    },
+    {
+      "id": "2025-125",
+      "number": 125,
+      "category": "Symbols and Holidays",
+      "subcategory": "Holidays",
+      "prompt": "What is Independence Day?",
+      "acceptedAnswers": [
+        "A holiday to celebrate U.S. independence (from Britain)",
+        "The country's birthday"
+      ]
+    },
+    {
+      "id": "2025-126",
+      "number": 126,
+      "category": "Symbols and Holidays",
+      "subcategory": "Holidays",
+      "prompt": "Name three national U.S. holidays.",
+      "acceptedAnswers": [
+        "New Year's Day",
+        "Martin Luther King, Jr. Day",
+        "Presidents Day (Washington's Birthday)",
+        "Memorial Day",
+        "Juneteenth",
+        "Independence Day",
+        "Labor Day",
+        "Columbus Day",
+        "Veterans Day",
+        "Thanksgiving Day",
+        "Christmas Day"
+      ]
+    },
+    {
+      "id": "2025-127",
+      "number": 127,
+      "category": "Symbols and Holidays",
+      "subcategory": "Holidays",
+      "prompt": "What is Memorial Day?",
+      "acceptedAnswers": [
+        "A holiday to honor soldiers who died in military service"
+      ]
+    },
+    {
+      "id": "2025-128",
+      "number": 128,
+      "category": "Symbols and Holidays",
+      "subcategory": "Holidays",
+      "prompt": "What is Veterans Day?",
+      "acceptedAnswers": [
+        "A holiday to honor people in the (U.S.) military",
+        "A holiday to honor people who have served (in the U.S. military)"
+      ]
+    }
+  ]
+}

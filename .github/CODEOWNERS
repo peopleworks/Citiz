@@ -1,0 +1,16 @@
+# Review routing. Official content and its rules need a content maintainer's eyes on every change;
+# everything else goes to the technical maintainers. See GOVERNANCE.md for the roles.
+
+*                       @peopleworks
+
+# Official facts: question banks, exam rules, dynamic answers, vocabulary lists
+/content/exams/         @peopleworks
+/content/english/       @peopleworks
+
+# Editorial content and its policy
+/content/discovery/     @peopleworks
+/Docs/Editorial/        @peopleworks
+
+# Language packs: a fluent reviewer per language is the goal; until then, the maintainers
+/src/Citiz.Web/wwwroot/i18n/   @peopleworks
+/Docs/Localization/     @peopleworks

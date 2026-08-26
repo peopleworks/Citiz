@@ -1,0 +1,6 @@
+@inherits LocalizedComponentBase
+
+<div class="loading" role="status">
+  <span class="spinner" aria-hidden="true"></span>
+  <span>@(L.IsInitialized ? L.T("common.loading") : "Loading…")</span>
+</div>

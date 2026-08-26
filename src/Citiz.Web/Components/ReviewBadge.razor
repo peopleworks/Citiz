@@ -1,0 +1,16 @@
+@inherits LocalizedComponentBase
+
+@* Every fact on screen says how far it has been verified. Approved content is quiet; anything else is labelled. *@
+<span class="badge review-@Status.ToKebabCase()" title="@L.T($"review.{Key}.title")">@L.T($"review.{Key}")</span>
+
+@code {
+  [Parameter, EditorRequired] public ReviewStatus Status { get; set; }
+
+  private string Key => Status switch
+  {
+    ReviewStatus.Approved => "approved",
+    ReviewStatus.NeedsReview => "needsReview",
+    ReviewStatus.Outdated => "outdated",
+    _ => "draft",
+  };
+}

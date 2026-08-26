@@ -1,0 +1,72 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject LocalizationService L
+@inject LearnerState Learner
+
+<a class="skip-link" href="#main">@L.T("nav.skip")</a>
+
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="" aria-label="@L.T("app.name")">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M16 2 4 7v9c0 7.2 5.1 13 12 14 6.9-1 12-6.8 12-14V7L16 2z" fill="currentColor" opacity=".18" />
+        <path d="M16 6.2 8 9.5v6.3c0 4.7 3.3 8.7 8 9.8 4.7-1.1 8-5.1 8-9.8V9.5l-8-3.3z" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="m16 11 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="currentColor" />
+      </svg>
+      <span class="brand-name">@L.T("app.name")</span>
+      <span class="brand-tagline">@L.T("app.tagline")</span>
+    </a>
+
+    <nav class="primary-nav" aria-label="@L.T("nav.label")">
+      <NavLink href="" Match="NavLinkMatch.All">@L.T("nav.home")</NavLink>
+      <NavLink href="prepare">@L.T("nav.prepare")</NavLink>
+      <NavLink href="communicate">@L.T("nav.communicate")</NavLink>
+      <NavLink href="discover">@L.T("nav.discover")</NavLink>
+      <NavLink href="games">@L.T("nav.games")</NavLink>
+    </nav>
+
+    <div class="topbar-tools">
+      <LanguageSelect />
+      <NavLink class="icon-link" href="settings" title="@L.T("nav.settings")" aria-label="@L.T("nav.settings")">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M19.4 13a7.7 7.7 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3.2H9l-.4 2.7a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L4.6 11a7.7 7.7 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1l.4 2.7h6l.4-2.7a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5L19.4 13zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" /></svg>
+      </NavLink>
+    </div>
+  </header>
+
+  <main id="main" class="content" tabindex="-1">
+    @if (Learner.IsInitialized)
+    {
+      @Body
+    }
+    else
+    {
+      <Loading />
+    }
+  </main>
+
+  <footer class="footer">
+    <span class="privacy-pill" title="@L.T("privacy.localTitle")">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V6z" /></svg>
+      @L.T("privacy.local")
+    </span>
+    <span>@L.T("footer.notice")</span>
+    <a href="about">@L.T("nav.about")</a>
+  </footer>
+</div>
+
+<div id="citiz-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+@code {
+  protected override async Task OnInitializedAsync()
+  {
+    L.Changed += StateHasChanged;
+    Learner.Changed += StateHasChanged;
+    await Learner.InitializeAsync();
+  }
+
+  public void Dispose()
+  {
+    L.Changed -= StateHasChanged;
+    Learner.Changed -= StateHasChanged;
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "../schemas/vocabulary.schema.json",
+  "kind": "reading",
+  "reviewStatus": "needs-review",
+  "sources": [
+    {
+      "authority": "USCIS",
+      "title": "Reading Vocabulary for the Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/reading_vocab.pdf",
+      "verifiedOn": null,
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+    }
+  ],
+  "groups": [
+    {
+      "category": "People",
+      "words": ["Abraham Lincoln", "George Washington"]
+    },
+    {
+      "category": "Civics",
+      "words": [
+        "American flag",
+        "Bill of Rights",
+        "capital",
+        "citizen",
+        "city",
+        "Congress",
+        "country",
+        "Father of Our Country",
+        "government",
+        "President",
+        "right",
+        "Senators",
+        "state/states",
+        "White House"
+      ]
+    },
+    {
+      "category": "Places",
+      "words": ["America", "United States", "U.S."]
+    },
+    {
+      "category": "Holidays",
+      "words": [
+        "Presidents' Day",
+        "Memorial Day",
+        "Flag Day",
+        "Independence Day",
+        "Labor Day",
+        "Columbus Day",
+        "Thanksgiving"
+      ]
+    },
+    {
+      "category": "Question Words",
+      "words": ["How", "What", "When", "Where", "Who", "Why"]
+    },
+    {
+      "category": "Verbs",
+      "words": [
+        "can",
+        "come",
+        "do/does",
+        "elects",
+        "have/has",
+        "is/are/was/be",
+        "lives/lived",
+        "meet",
+        "name",
+        "pay",
+        "vote",
+        "want"
+      ]
+    },
+    {
+      "category": "Other (Function)",
+      "words": ["a", "for", "here", "in", "of", "on", "the", "to", "we"]
+    },
+    {
+      "category": "Other (Content)",
+      "words": [
+        "colors",
+        "dollar bill",
+        "first",
+        "largest",
+        "many",
+        "most",
+        "north",
+        "one",
+        "people",
+        "second",
+        "south"
+      ]
+    }
+  ]
+}

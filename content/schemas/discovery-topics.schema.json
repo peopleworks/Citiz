@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/discovery-topics.schema.json",
+  "title": "Citiz discovery topics",
+  "type": "object",
+  "required": ["topics"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "title", "summary", "simpleEnglish", "estimatedMinutes", "difficulty", "vocabulary", "relatedQuestionIds", "relatedPlaces", "reviewStatus", "sources"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "category": { "type": "string", "enum": ["history", "geography", "people", "institutions", "culture", "innovation", "nature"] },
+          "title": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1, "description": "Plain English, facts only, two or three sentences." },
+          "simpleEnglish": { "type": "string", "minLength": 1, "description": "The same idea in shorter sentences for beginners." },
+          "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+          "vocabulary": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "relatedQuestionIds": { "type": "array", "items": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{3}$" }, "description": "Must exist in a question bank." },
+          "relatedPlaces": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" },
+          "sources": { "$ref": "common.schema.json#/$defs/sources" }
+        }
+      }
+    }
+  }
+}

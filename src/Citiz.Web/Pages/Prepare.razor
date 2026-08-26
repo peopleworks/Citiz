@@ -1,0 +1,417 @@
+@page "/prepare"
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject StudyService Study
+@inject ContentRepository Content
+@inject DiscoveryEngine Discovery
+@inject ICitizAiService Ai
+@inject BrowserStorage Browser
+
+<PageTitle>@L.T("prepare.title") — @L.T("app.name")</PageTitle>
+
+<PageHeader Title="@L.T("prepare.title")" Lead="@L.T("prepare.subtitle")" />
+
+@if (error is not null)
+{
+  <p class="notice bad" role="alert">@error</p>
+}
+else if (context is null)
+{
+  <Loading />
+}
+else
+{
+  <div class="card">
+    <div class="row between">
+      <div>
+        <b>@context.Version.DisplayName</b>
+        <span class="muted small"> · @L.T("exam.bankStatus"):</span> <ReviewBadge Status="context.Bank.ReviewStatus" />
+        <p class="muted small" style="margin: .25rem 0 0">@L.T("exam.rules", Rules.QuestionsAsked, Rules.PassingAnswers, Rules.FailingAnswers)</p>
+      </div>
+      <a class="button small ghost" href="settings">@L.T("home.versionChange")</a>
+    </div>
+    @if (Learner.Exam.SeniorConsideration && !context.Version.HasSeniorDesignation)
+    {
+      <p class="notice warn" style="margin-block-start: .75rem">@L.T("exam.seniorUnavailable", context.Version.DisplayName)</p>
+    }
+    <SourceLine Sources="context.Bank.Sources" />
+  </div>
+
+  <div class="segmented" role="group" aria-label="@L.T("prepare.title")" style="margin-block: 1.25rem">
+    @foreach (var (key, label) in Modes)
+    {
+      <button type="button" aria-pressed="@(mode == key ? "true" : "false")" @onclick="() => SwitchMode(key)">@L.T(label)</button>
+    }
+  </div>
+
+  @switch (mode)
+  {
+    case Mode.Flashcards:
+      <p class="muted small">@L.T("prepare.dueFirst")</p>
+      @if (current is null)
+      {
+        <p class="notice">@L.T("prepare.empty")</p>
+      }
+      else
+      {
+        <QuestionCard Question="current">
+          @if (revealed)
+          {
+            <AnswerList Question="current" Answers="context.AnswersFor(current)" Dynamic="context.DynamicFor(current)" />
+            <div class="row" style="margin-block-start: 1rem">
+              <button type="button" class="button primary" @onclick="() => AnswerFlashcardAsync(true)">@L.T("prepare.knewIt")</button>
+              <button type="button" class="button" @onclick="() => AnswerFlashcardAsync(false)">@L.T("prepare.notYet")</button>
+            </div>
+          }
+          else
+          {
+            <div class="row" style="margin-block-start: 1rem">
+              <button type="button" class="button primary" @onclick="() => revealed = true">@L.T("common.reveal")</button>
+            </div>
+          }
+        </QuestionCard>
+      }
+      break;
+
+    case Mode.Choice:
+      @if (choice is null)
+      {
+        <p class="notice">@L.T("games.notEnough")</p>
+      }
+      else
+      {
+        <QuestionCard Question="choice.Question">
+          <div style="margin-block-start: .75rem">
+            @foreach (var (option, index) in choice.Options.Select((o, i) => (o, i)))
+            {
+              <button type="button" class="option @OptionClass(index)" disabled="@(chosen is not null)" @onclick="() => ChooseAsync(index)" lang="en">
+                <span class="key" aria-hidden="true">@((char)('A' + index))</span>
+                <span>@option</span>
+              </button>
+            }
+          </div>
+          @if (chosen is not null)
+          {
+            <p class="feedback @(choice.IsCorrect(chosen.Value) ? "ok" : "bad")" role="status">@L.T(choice.IsCorrect(chosen.Value) ? "feedback.exact" : "feedback.none")</p>
+            <AnswerList Question="choice.Question" Answers="context.AnswersFor(choice.Question)" Dynamic="context.DynamicFor(choice.Question)" />
+            <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="NextChoice">@L.T("common.next")</button></div>
+          }
+        </QuestionCard>
+      }
+      break;
+
+    case Mode.Typed:
+      @if (current is null)
+      {
+        <p class="notice">@L.T("prepare.empty")</p>
+      }
+      else
+      {
+        <QuestionCard Question="current">
+          @RenderTypedAnswer(current, NextTypedAsync)
+        </QuestionCard>
+      }
+      break;
+
+    case Mode.Simulation:
+      @if (session is null)
+      {
+        <div class="card">
+          <p>@L.T("prepare.simulationIntro")</p>
+          <p class="muted small">@L.T("exam.rules", Rules.QuestionsAsked, Rules.PassingAnswers, Rules.FailingAnswers)</p>
+          <button type="button" class="button primary" @onclick="StartSimulation">@L.T("prepare.simulationStart")</button>
+        </div>
+      }
+      else if (session.IsComplete)
+      {
+        <div class="card">
+          <p class="notice @(session.Outcome == ExamOutcome.Passed ? "ok" : "bad")" role="status">
+            @(session.Outcome == ExamOutcome.Passed ? L.T("prepare.simulationPassed", session.Correct) : L.T("prepare.simulationFailed", session.Incorrect))
+          </p>
+          <p class="muted small">@L.T("prepare.simulationDisclaimer")</p>
+          <h2>@L.T("prepare.simulationReview")</h2>
+          <ul class="question-list">
+            @foreach (var record in session.History)
+            {
+              <li>
+                <details>
+                  <summary><span class="num">#@record.Question.Number</span> <span>@record.Question.Prompt</span> <span class="badge @(record.Correct ? "review-approved" : "review-outdated")">@L.T(record.Correct ? "prepare.simulationCorrect" : "prepare.simulationIncorrect")</span></summary>
+                  <div>
+                    @if (!string.IsNullOrWhiteSpace(record.Response)) { <p class="muted">@L.T("prepare.typedLabel"): @record.Response</p> }
+                    <AnswerList Question="record.Question" Answers="context.AnswersFor(record.Question)" Dynamic="context.DynamicFor(record.Question)" />
+                  </div>
+                </details>
+              </li>
+            }
+          </ul>
+          <button type="button" class="button primary" style="margin-block-start: 1rem" @onclick="StartSimulation">@L.T("common.restart")</button>
+        </div>
+      }
+      else
+      {
+        <div class="scoreboard" style="margin-block-end: .75rem">
+          <span>@L.T("prepare.simulationProgress", session.Position + 1, session.Rules.QuestionsAsked)</span>
+          <span><b>@session.Correct</b> @L.T("prepare.simulationCorrect")</span>
+          <span><b>@session.Incorrect</b> @L.T("prepare.simulationIncorrect")</span>
+        </div>
+        <progress value="@session.Position" max="@session.Rules.QuestionsAsked" aria-hidden="true"></progress>
+        <QuestionCard Question="session.CurrentQuestion!">
+          @RenderTypedAnswer(session.CurrentQuestion!, AdvanceSimulationAsync)
+        </QuestionCard>
+      }
+      break;
+
+    case Mode.Browse:
+      <div class="card">
+        <div class="grid two">
+          <label class="field"><span>@L.T("prepare.browseFilter")</span><input type="text" @bind="filter" @bind:event="oninput" placeholder="@L.T("common.search")" /></label>
+          <label class="field"><span>@L.T("discover.category")</span>
+            <select @bind="category">
+              <option value="">@L.T("common.all")</option>
+              @foreach (var sub in context.Bank.Subcategories) { <option value="@sub">@sub</option> }
+            </select>
+          </label>
+        </div>
+        <p class="muted small">@L.T("prepare.browseCount", Filtered.Count)</p>
+        @if (Filtered.Count == 0)
+        {
+          <p class="notice">@L.T("prepare.noQuestions")</p>
+        }
+        <ul class="question-list">
+          @foreach (var question in Filtered)
+          {
+            <li>
+              <details>
+                <summary><span class="num">#@question.Number</span> <span lang="en">@question.Prompt</span></summary>
+                <div>
+                  <p class="muted small">@question.Category · @question.Subcategory <ReviewBadge Status="question.ReviewStatus" /></p>
+                  <AnswerList Question="question" Answers="context.AnswersFor(question)" Dynamic="context.DynamicFor(question)" />
+                  @{ var related = Discovery.ForQuestion(question.Id, topics); }
+                  @if (related.Count > 0)
+                  {
+                    <p class="small" style="margin-block-start: .75rem">@L.T("prepare.relatedCapsules"): @foreach (var topic in related) { <a href="discover/@topic.Id" style="margin-inline-end: .5rem">@topic.Title</a> }</p>
+                  }
+                </div>
+              </details>
+            </li>
+          }
+        </ul>
+      </div>
+      break;
+  }
+}
+
+@code {
+  private enum Mode { Flashcards, Choice, Typed, Simulation, Browse }
+
+  private static readonly (Mode Key, string Label)[] Modes =
+  [
+    (Mode.Flashcards, "prepare.mode.flashcards"),
+    (Mode.Choice, "prepare.mode.choice"),
+    (Mode.Typed, "prepare.mode.typed"),
+    (Mode.Simulation, "prepare.mode.simulation"),
+    (Mode.Browse, "prepare.mode.browse"),
+  ];
+
+  private StudyContext? context;
+  private IReadOnlyList<DiscoveryTopic> topics = [];
+  private string? error;
+  private Mode mode = Mode.Flashcards;
+
+  // Flashcards and typed practice share a queue: due items first, then unseen, then the rest.
+  private Queue<CivicsQuestion> queue = new();
+  private CivicsQuestion? current;
+  private bool revealed;
+
+  // Multiple choice.
+  private MultipleChoiceItem? choice;
+  private int? chosen;
+
+  // Typed answer (also used inside the simulation).
+  private string typed = string.Empty;
+  private AnswerEvaluation? evaluation;
+  private bool? selfAssessed;
+
+  // Simulation.
+  private ExamSession? session;
+
+  // Browse.
+  private string filter = string.Empty;
+  private string category = string.Empty;
+
+  private ExamAdministrationRules Rules => UseSenior ? context!.Version.SeniorConsideration : context!.Version.Standard;
+  private bool UseSenior => Learner.Exam.SeniorConsideration && context!.Version.HasSeniorDesignation;
+  private IReadOnlyList<CivicsQuestion> Pool => UseSenior ? context!.Bank.SeniorQuestions(context.Version) : context!.Bank.Questions;
+
+  private List<CivicsQuestion> Filtered => context is null ? [] : context.Bank.Questions
+    .Where(q => string.IsNullOrEmpty(category) || q.Subcategory == category)
+    .Where(q => string.IsNullOrWhiteSpace(filter) || q.Prompt.Contains(filter, StringComparison.OrdinalIgnoreCase) || q.AcceptedAnswers.Any(a => a.Contains(filter, StringComparison.OrdinalIgnoreCase)))
+    .ToList();
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      context = await Study.GetContextAsync();
+      topics = await Content.GetDiscoveryTopicsAsync();
+      BuildQueue();
+      NextFlashcard();
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  private void SwitchMode(Mode next)
+  {
+    mode = next;
+    ResetTyped();
+    switch (next)
+    {
+      case Mode.Flashcards:
+      case Mode.Typed:
+        if (current is null) { BuildQueue(); NextFlashcard(); }
+        break;
+      case Mode.Choice:
+        if (choice is null) { NextChoice(); }
+        break;
+    }
+  }
+
+  private void BuildQueue()
+  {
+    var now = DateTimeOffset.UtcNow;
+    var ordered = Pool
+      .Select(q => (Question: q, Progress: Learner.Progress.Get(q.Id)))
+      .OrderBy(x => x.Progress is null ? 1 : x.Progress.IsDue(now) ? 0 : 2)
+      .ThenBy(x => x.Progress?.NextReviewAt ?? DateTimeOffset.MaxValue)
+      .ThenBy(_ => Random.Shared.Next())
+      .Select(x => x.Question);
+    queue = new Queue<CivicsQuestion>(ordered);
+  }
+
+  private void NextFlashcard()
+  {
+    revealed = false;
+    ResetTyped();
+    if (queue.Count == 0) { BuildQueue(); }
+    current = queue.Count == 0 ? null : queue.Dequeue();
+  }
+
+  private async Task AnswerFlashcardAsync(bool knewIt)
+  {
+    await Learner.RecordAsync(current!.Id, knewIt);
+    NextFlashcard();
+  }
+
+  private void NextChoice()
+  {
+    chosen = null;
+    choice = null;
+    foreach (var question in Pool.OrderBy(_ => Random.Shared.Next()))
+    {
+      choice = MultipleChoiceBuilder.Build(question, context!.Bank, context.DynamicAnswers, Random.Shared);
+      if (choice is not null) { break; }
+    }
+  }
+
+  private async Task ChooseAsync(int index)
+  {
+    chosen = index;
+    await Learner.RecordAsync(choice!.Question.Id, choice.IsCorrect(index));
+    await Browser.AnnounceAsync(L.T(choice.IsCorrect(index) ? "feedback.exact" : "feedback.none"));
+  }
+
+  private string OptionClass(int index) =>
+    chosen is null ? string.Empty : choice!.IsCorrect(index) ? "correct" : index == chosen ? "wrong" : string.Empty;
+
+  private Task NextTypedAsync()
+  {
+    NextFlashcard();
+    return Task.CompletedTask;
+  }
+
+  private void ResetTyped()
+  {
+    typed = string.Empty;
+    evaluation = null;
+    selfAssessed = null;
+  }
+
+  private async Task CheckTypedAsync(CivicsQuestion question, bool inSimulation)
+  {
+    var answers = context!.AnswersFor(question);
+    evaluation = await Ai.EvaluateAnswerAsync(new AnswerEvaluationRequest(question.Id, question.Prompt, answers, typed, L.Profile.HelpCulture));
+    if (!inSimulation)
+    {
+      await Learner.RecordAsync(question.Id, evaluation.Accepted);
+    }
+    await Browser.AnnounceAsync(L.T(evaluation.FeedbackKey));
+  }
+
+  private async Task SelfAssessAsync(CivicsQuestion question, bool correct, bool inSimulation)
+  {
+    selfAssessed = correct;
+    if (!inSimulation)
+    {
+      await Learner.RecordAsync(question.Id, correct);
+    }
+  }
+
+  private void StartSimulation()
+  {
+    ResetTyped();
+    session = ExamSession.Start(context!.Version, context.Bank, UseSenior, Random.Shared);
+  }
+
+  private async Task AdvanceSimulationAsync()
+  {
+    var question = session!.CurrentQuestion!;
+    var correct = evaluation?.Accepted ?? selfAssessed ?? false;
+    session.Record(correct, typed);
+    await Learner.RecordAsync(question.Id, correct);
+    ResetTyped();
+  }
+
+  private RenderFragment RenderTypedAnswer(CivicsQuestion question, Func<Task> next) => __builder =>
+  {
+    var answers = context!.AnswersFor(question);
+    var inSimulation = mode == Mode.Simulation;
+    var answered = evaluation is not null || selfAssessed is not null;
+
+    if (answers.Count == 0 && !answered)
+    {
+      <div class="answer-list">
+        <p class="answer-label">@L.T("prepare.selfAssess")</p>
+        <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" />
+        <div class="row">
+          <button type="button" class="button primary" @onclick="() => SelfAssessAsync(question, true, inSimulation)">@L.T("common.yes")</button>
+          <button type="button" class="button" @onclick="() => SelfAssessAsync(question, false, inSimulation)">@L.T("common.no")</button>
+        </div>
+      </div>
+    }
+    else if (!answered)
+    {
+      <label class="field" style="margin-block-start: .75rem">
+        <span>@L.T("prepare.typedLabel")</span>
+        <input type="text" class="text-input" @bind="typed" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(typed)) { await CheckTypedAsync(question, inSimulation); } })" autocomplete="off" lang="en" />
+        <span class="hint">@L.T("prepare.typedHint")</span>
+      </label>
+      <button type="button" class="button primary" disabled="@string.IsNullOrWhiteSpace(typed)" @onclick="() => CheckTypedAsync(question, inSimulation)">@L.T("common.check")</button>
+    }
+    else
+    {
+      if (evaluation is not null)
+      {
+        <p class="feedback @(evaluation.Accepted ? "ok" : evaluation.MatchKind == AnswerMatchKind.Close ? "close" : "bad")" role="status">
+          @L.T(evaluation.FeedbackKey)
+          @if (evaluation.MatchedAnswer is not null) { <br /><span class="small">@L.T("feedback.matched", evaluation.MatchedAnswer)</span> }
+        </p>
+        <p class="muted small">@L.T("feedback.provider", evaluation.Provider)</p>
+      }
+      <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" />
+      <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="next">@L.T("common.next")</button></div>
+    }
+  };
+}

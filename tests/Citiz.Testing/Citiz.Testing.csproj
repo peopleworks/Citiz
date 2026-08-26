@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+    <Description>Helpers shared by the test projects: locating the repository, in-memory content stores.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Citiz.Content\Citiz.Content.csproj" />
+  </ItemGroup>
+
+</Project>

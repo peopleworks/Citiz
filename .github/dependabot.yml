@@ -1,0 +1,21 @@
+# Keep NuGet packages (Directory.Packages.props) and GitHub Actions current.
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      dotnet:
+        patterns: ["Microsoft.*", "System.*"]
+      tests:
+        patterns: ["xunit*", "coverlet*", "Microsoft.NET.Test.Sdk"]
+    labels: [dependencies]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [dependencies]

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/dynamic-answers.schema.json",
+  "title": "Citiz dynamic answers",
+  "type": "object",
+  "required": ["answers"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "office", "scope", "holder", "acceptedAnswers", "since", "verifiedOn", "lookupHint", "reviewStatus", "sources"],
+        "additionalProperties": false,
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "office": { "type": "string", "minLength": 1 },
+          "scope": { "type": "string", "enum": ["federal", "state", "district"] },
+          "holder": { "type": ["string", "null"], "description": "Current officeholder for federal scope; null when the answer varies by learner." },
+          "acceptedAnswers": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "since": { "$ref": "common.schema.json#/$defs/nullableDate" },
+          "verifiedOn": { "$ref": "common.schema.json#/$defs/nullableDate" },
+          "lookupHint": { "type": ["string", "null"], "description": "Where the learner finds their own answer, for state and district scope." },
+          "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" },
+          "sources": { "$ref": "common.schema.json#/$defs/sources" }
+        }
+      }
+    }
+  }
+}

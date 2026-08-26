@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/exam-versions.schema.json",
+  "title": "Citiz civics-test versions",
+  "type": "object",
+  "required": ["versions"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "displayName", "filingFrom", "filingTo", "bankSize", "standard", "seniorConsideration", "seniorQuestionNumbers", "reviewStatus", "sources"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9]{4}$", "description": "Stable identifier; the year USCIS names the version by." },
+          "displayName": { "type": "string", "minLength": 1 },
+          "filingFrom": { "$ref": "common.schema.json#/$defs/nullableDate", "description": "First N-400 filing date covered, inclusive; null for no lower bound." },
+          "filingTo": { "$ref": "common.schema.json#/$defs/nullableDate", "description": "Last N-400 filing date covered, inclusive; null while current." },
+          "bankSize": { "type": "integer", "minimum": 1 },
+          "standard": { "$ref": "#/$defs/rules" },
+          "seniorConsideration": { "$ref": "#/$defs/rules", "description": "Rules for the 65/20 special consideration." },
+          "seniorQuestionNumbers": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 },
+            "uniqueItems": true,
+            "description": "Official numbers USCIS marks with an asterisk for 65/20 applicants. Empty until copied from the official document."
+          },
+          "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" },
+          "sources": { "$ref": "common.schema.json#/$defs/sources" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rules": {
+      "type": "object",
+      "required": ["questionsAsked", "passingAnswers", "failingAnswers"],
+      "additionalProperties": false,
+      "properties": {
+        "questionsAsked": { "type": "integer", "minimum": 1 },
+        "passingAnswers": { "type": "integer", "minimum": 1 },
+        "failingAnswers": { "type": "integer", "minimum": 1 }
+      },
+      "description": "passingAnswers + failingAnswers must equal questionsAsked + 1."
+    }
+  }
+}

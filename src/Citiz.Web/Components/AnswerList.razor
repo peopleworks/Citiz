@@ -1,0 +1,48 @@
+@inherits LocalizedComponentBase
+
+@* The official answers for a question, with the dynamic-answer disclosure when the answer depends
+   on an officeholder or the learner's state. Never invents an answer: an unresolved dynamic question
+   says so and points to the official lookup. *@
+<div class="answer-list">
+  @if (Answers.Count > 0)
+  {
+    <p class="answer-label">@L.T("prepare.acceptedAnswers")</p>
+    <ul>
+      @foreach (var answer in Answers)
+      {
+        <li>@answer</li>
+      }
+    </ul>
+  }
+  else if (Dynamic is not null)
+  {
+    <p class="answer-label">@L.T("prepare.answerVaries")</p>
+    @if (Dynamic.LookupHint is not null)
+    {
+      <p>@Dynamic.LookupHint</p>
+    }
+  }
+  else
+  {
+    <p class="answer-label">@L.T("prepare.answerUnavailable")</p>
+  }
+
+  @if (Dynamic is not null && Dynamic.IsResolved)
+  {
+    <p class="muted small">
+      @L.T("prepare.dynamicNotice", Dynamic.Office)
+      <ReviewBadge Status="Dynamic.ReviewStatus" />
+    </p>
+  }
+
+  @if (!string.IsNullOrEmpty(Question.Note))
+  {
+    <p class="muted small">@Question.Note</p>
+  }
+</div>
+
+@code {
+  [Parameter, EditorRequired] public CivicsQuestion Question { get; set; } = default!;
+  [Parameter, EditorRequired] public IReadOnlyList<string> Answers { get; set; } = [];
+  [Parameter] public DynamicAnswer? Dynamic { get; set; }
+}

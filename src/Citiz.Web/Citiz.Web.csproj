@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <Description>Citiz web client: a standalone Blazor WebAssembly PWA. Everything a learner does runs in the browser; the only network traffic is downloading the app and its content.</Description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <IsPackable>false</IsPackable>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+    <ProjectReference Include="..\Citiz.Content\Citiz.Content.csproj" />
+    <ProjectReference Include="..\Citiz.Learning\Citiz.Learning.csproj" />
+    <ProjectReference Include="..\Citiz.Discovery\Citiz.Discovery.csproj" />
+    <ProjectReference Include="..\Citiz.Games\Citiz.Games.csproj" />
+    <ProjectReference Include="..\Citiz.Localization\Citiz.Localization.csproj" />
+    <ProjectReference Include="..\Citiz.AI\Citiz.AI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <!--
+    The content repository (content/ at the repository root) is served under /content, straight from
+    the folder a contributor edits, so the browser loads the very JSON that was reviewed. It is defined
+    with the same task the SDK uses for wwwroot, with the repository root as the content root and
+    "content/**" as the relative path — exactly how wwwroot/css/app.css becomes /css/app.css. It is
+    not linked into wwwroot: a linked file keeps wwwroot as its content root, and the development
+    server then resolves it to a path that does not exist and serves an empty body. Only the listed
+    files are served, never the rest of the repository. Schemas are documentation and stay out of the
+    download.
+  -->
+  <PropertyGroup>
+    <CitizRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)\..\..\'))</CitizRepositoryRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CitizContent Include="$(CitizRepositoryRoot)content\**\*.json" Exclude="$(CitizRepositoryRoot)content\schemas\**">
+      <RelativePath>content/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </CitizContent>
+  </ItemGroup>
+
+  <Target Name="DefineCitizContentStaticWebAssets" AfterTargets="ResolveProjectStaticWebAssets" Condition="'$(NoBuild)' != 'true'">
+    <DefineStaticWebAssets
+      CandidateAssets="@(CitizContent)"
+      FingerprintCandidates="false"
+      RelativePathPattern="content/**"
+      SourceType="Discovered"
+      SourceId="$(PackageId)"
+      ContentRoot="$(CitizRepositoryRoot)"
+      BasePath="$(StaticWebAssetBasePath)"
+      AssetMergeSource="$(StaticWebAssetMergeTarget)">
+      <Output TaskParameter="Assets" ItemName="StaticWebAsset" />
+      <Output TaskParameter="Assets" ItemName="_CitizContentStaticWebAsset" />
+    </DefineStaticWebAssets>
+
+    <DefineStaticWebAssetEndpoints
+      CandidateAssets="@(_CitizContentStaticWebAsset)"
+      ContentTypeMappings="@(StaticWebAssetContentTypeMapping)">
+      <Output TaskParameter="Endpoints" ItemName="StaticWebAssetEndpoint" />
+    </DefineStaticWebAssetEndpoints>
+  </Target>
+
+</Project>

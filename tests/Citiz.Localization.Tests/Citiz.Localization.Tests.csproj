@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Citiz.Localization\Citiz.Localization.csproj" />
+    <ProjectReference Include="..\Citiz.Testing\Citiz.Testing.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+@inherits LocalizedComponentBase
+
+@if (Sources.Count > 0)
+{
+  <p class="source-line">
+    <span>@L.T("common.source")&nbsp;</span>
+    @foreach (var (source, index) in Sources.Select((s, i) => (s, i)))
+    {
+      if (index > 0)
+      {
+        <span aria-hidden="true"> · </span>
+      }
+      <a href="@source.Url" target="_blank" rel="noopener noreferrer">@source.Authority: @source.Title</a>
+      @if (source.VerifiedOn is { } verified)
+      {
+        <span class="muted"> (@L.T("common.verifiedOn", verified.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)))</span>
+      }
+      else
+      {
+        <span class="muted"> (@L.T("common.notVerified"))</span>
+      }
+    }
+  </p>
+}
+
+@code {
+  [Parameter, EditorRequired] public IReadOnlyList<SourceReference> Sources { get; set; } = [];
+}

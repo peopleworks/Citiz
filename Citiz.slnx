@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Citiz.Core/Citiz.Core.csproj" />
+    <Project Path="src/Citiz.Content/Citiz.Content.csproj" />
+    <Project Path="src/Citiz.Learning/Citiz.Learning.csproj" />
+    <Project Path="src/Citiz.Discovery/Citiz.Discovery.csproj" />
+    <Project Path="src/Citiz.Games/Citiz.Games.csproj" />
+    <Project Path="src/Citiz.Localization/Citiz.Localization.csproj" />
+    <Project Path="src/Citiz.AI/Citiz.AI.csproj" />
+    <Project Path="src/Citiz.Web/Citiz.Web.csproj" />
+    <Project Path="src/Citiz.Api/Citiz.Api.csproj" />
+    <Project Path="src/Citiz.Cli/Citiz.Cli.csproj" />
+    <Project Path="src/Citiz.ContentWorker/Citiz.ContentWorker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Citiz.Testing/Citiz.Testing.csproj" />
+    <Project Path="tests/Citiz.Core.Tests/Citiz.Core.Tests.csproj" />
+    <Project Path="tests/Citiz.Content.Tests/Citiz.Content.Tests.csproj" />
+    <Project Path="tests/Citiz.Learning.Tests/Citiz.Learning.Tests.csproj" />
+    <Project Path="tests/Citiz.Games.Tests/Citiz.Games.Tests.csproj" />
+    <Project Path="tests/Citiz.Localization.Tests/Citiz.Localization.Tests.csproj" />
+  </Folder>
+</Solution>

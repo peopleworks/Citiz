@@ -1,0 +1,17 @@
+@inject LocalizationService L
+
+<Router AppAssembly="typeof(App).Assembly">
+  <Found Context="routeData">
+    <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+    <FocusOnNavigate RouteData="routeData" Selector="h1" />
+  </Found>
+  <NotFound>
+    <LayoutView Layout="typeof(MainLayout)">
+      <section class="page">
+        <h1>@L.T("notFound.title")</h1>
+        <p>@L.T("notFound.body")</p>
+        <a class="button primary" href="">@L.T("notFound.home")</a>
+      </section>
+    </LayoutView>
+  </NotFound>
+</Router>

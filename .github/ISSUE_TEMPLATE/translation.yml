@@ -1,0 +1,36 @@
+name: Translation
+description: Offer to review or add an interface language, or report a translation that reads wrong.
+labels: ["localization"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The interface is translated by whoever speaks the language. Every pack except English is
+        labelled with its review state until a fluent speaker has reviewed it. See Docs/Localization/README.md.
+
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: "Vietnamese (vi)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What you would like to do
+      options:
+        - Review an existing pack and mark it reviewed
+        - Add a new language
+        - Report a string that reads wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: For a wrong string, give the key (from en.json) or the exact text, and what it should say.
+    validations:
+      required: false

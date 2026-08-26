@@ -1,0 +1,109 @@
+{
+  "$schema": "../schemas/sources.schema.json",
+  "sources": [
+    {
+      "id": "uscis-2025-civics-test",
+      "authority": "USCIS",
+      "title": "2025 Civics Test",
+      "url": "https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test",
+      "format": "html",
+      "checkEvery": "P7D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/2025/questions.json", "exams/versions.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "uscis-2008-civics-test",
+      "authority": "USCIS",
+      "title": "100 Civics Questions and Answers with MP3 Audio (English version)",
+      "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test/100-civics-questions-and-answers-with-mp3-audio-english-version",
+      "format": "html",
+      "checkEvery": "P7D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/2008/questions.json", "exams/versions.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "uscis-test-updates",
+      "authority": "USCIS",
+      "title": "Check for Test Updates",
+      "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+      "format": "html",
+      "checkEvery": "P1D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/dynamic-answers.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "uscis-interview-and-test",
+      "authority": "USCIS",
+      "title": "The Naturalization Interview and Test",
+      "url": "https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test",
+      "format": "html",
+      "checkEvery": "P7D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/versions.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "uscis-reading-vocabulary",
+      "authority": "USCIS",
+      "title": "Reading Vocabulary for the Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/reading_vocab.pdf",
+      "format": "pdf",
+      "checkEvery": "P7D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["english/reading-vocabulary.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "uscis-writing-vocabulary",
+      "authority": "USCIS",
+      "title": "Writing Vocabulary for the Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/writing_vocab.pdf",
+      "format": "pdf",
+      "checkEvery": "P7D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["english/writing-vocabulary.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "whitehouse-administration",
+      "authority": "The White House",
+      "title": "The Administration",
+      "url": "https://www.whitehouse.gov/administration/",
+      "format": "html",
+      "checkEvery": "P1D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/dynamic-answers.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    },
+    {
+      "id": "supreme-court-biographies",
+      "authority": "Supreme Court of the United States",
+      "title": "Current Members",
+      "url": "https://www.supremecourt.gov/about/biographies.aspx",
+      "format": "html",
+      "checkEvery": "P1D",
+      "monitor": true,
+      "requiresHumanReview": true,
+      "feeds": ["exams/dynamic-answers.json"],
+      "lastHash": null,
+      "lastCheckedOn": null
+    }
+  ]
+}

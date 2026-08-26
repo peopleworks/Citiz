@@ -1,0 +1,139 @@
+@page "/communicate"
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject ContentRepository Content
+@inject SpeechService Speech
+@inject BrowserStorage Browser
+
+<PageTitle>@L.T("communicate.title") — @L.T("app.name")</PageTitle>
+
+<PageHeader Title="@L.T("communicate.title")" Lead="@L.T("communicate.subtitle")" />
+
+@if (error is not null)
+{
+  <p class="notice bad" role="alert">@error</p>
+}
+else if (reading is null || writing is null)
+{
+  <Loading />
+}
+else
+{
+  @if (!speechAvailable)
+  {
+    <p class="notice warn">@L.T("communicate.speechUnavailable")</p>
+  }
+  else
+  {
+    <p class="muted small">@L.T(speechLocal ? "communicate.speechLocal" : "communicate.speechRemote")</p>
+  }
+
+  <div class="card">
+    <h2>@L.T("communicate.dictation") <ReviewBadge Status="writing.ReviewStatus" /></h2>
+    <p class="muted">@L.T("communicate.dictationIntro")</p>
+    @if (!speechAvailable)
+    {
+      <p class="muted small">@L.T("communicate.speechUnavailable")</p>
+    }
+    else
+    {
+      <div class="row">
+        <button type="button" class="button primary" @onclick="PlayDictationAsync">@L.T("communicate.dictationPlay")</button>
+      </div>
+      <label class="field" style="margin-block-start: .75rem">
+        <span>@L.T("communicate.dictationLabel")</span>
+        <input type="text" class="text-input" @bind="dictated" @bind:event="oninput" @onkeydown="@(async e => { if (e.Key == "Enter") { await CheckDictationAsync(); } })" disabled="@(dictationResult is not null)" autocomplete="off" autocapitalize="off" lang="en" />
+      </label>
+      @if (dictationResult is null)
+      {
+        <button type="button" class="button" disabled="@string.IsNullOrWhiteSpace(dictated)" @onclick="CheckDictationAsync">@L.T("common.check")</button>
+      }
+      else
+      {
+        <p class="feedback @(dictationResult.Value ? "ok" : "bad")" role="status">@L.T(dictationResult.Value ? "communicate.dictationCorrect" : "communicate.dictationWrong", dictationWord)</p>
+        <button type="button" class="button primary" @onclick="NextDictationAsync">@L.T("common.next")</button>
+      }
+    }
+  </div>
+
+  <div class="grid two" style="margin-block-start: 1rem">
+    @foreach (var (list, titleKey) in new[] { (reading, "communicate.reading"), (writing, "communicate.writing") })
+    {
+      <article class="card">
+        <h2>@L.T(titleKey) <ReviewBadge Status="list.ReviewStatus" /></h2>
+        <p class="muted small">@L.T("communicate.listenAll")</p>
+        @foreach (var group in list.Groups)
+        {
+          <h3>@group.Category</h3>
+          <div class="word-grid" lang="en">
+            @foreach (var word in group.Words)
+            {
+              <button type="button" class="@(Learner.Progress.Get(WordId(list.Kind, word))?.IsMastered == true ? "done" : "")" @onclick="() => SpeakAsync(word)" disabled="@(!speechAvailable)">@word</button>
+            }
+          </div>
+        }
+        <SourceLine Sources="list.Sources" />
+      </article>
+    }
+  </div>
+}
+
+@code {
+  private VocabularyList? reading;
+  private VocabularyList? writing;
+  private string? error;
+  private bool speechAvailable;
+  private bool speechLocal;
+
+  private string dictationWord = string.Empty;
+  private string dictated = string.Empty;
+  private bool? dictationResult;
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      reading = await Content.GetVocabularyAsync(VocabularyKind.Reading);
+      writing = await Content.GetVocabularyAsync(VocabularyKind.Writing);
+      speechAvailable = await Speech.IsAvailableAsync();
+      speechLocal = speechAvailable && await Speech.IsLocalVoiceAsync("en-US");
+      PickDictationWord();
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  private static string WordId(VocabularyKind kind, string word) => $"vocab:{kind.ToString().ToLowerInvariant()}:{word.ToLowerInvariant()}";
+
+  private Task SpeakAsync(string text) => Speech.SpeakAsync(text).AsTask();
+
+  private void PickDictationWord()
+  {
+    var words = writing!.AllWords.ToList();
+    // Words not yet mastered first, so the exercise spends its time where it helps.
+    var pending = words.Where(w => Learner.Progress.Get(WordId(VocabularyKind.Writing, w))?.IsMastered != true).ToList();
+    var pool = pending.Count > 0 ? pending : words;
+    dictationWord = pool[Random.Shared.Next(pool.Count)];
+    dictated = string.Empty;
+    dictationResult = null;
+  }
+
+  private Task PlayDictationAsync() => SpeakAsync(dictationWord);
+
+  private async Task CheckDictationAsync()
+  {
+    if (string.IsNullOrWhiteSpace(dictated) || dictationResult is not null) { return; }
+    var correct = AnswerMatcher.Normalize(dictated) == AnswerMatcher.Normalize(dictationWord);
+    dictationResult = correct;
+    await Learner.RecordAsync(WordId(VocabularyKind.Writing, dictationWord), correct);
+    await Browser.AnnounceAsync(L.T(correct ? "communicate.dictationCorrect" : "communicate.dictationWrong", dictationWord));
+  }
+
+  private async Task NextDictationAsync()
+  {
+    PickDictationWord();
+    await PlayDictationAsync();
+  }
+}

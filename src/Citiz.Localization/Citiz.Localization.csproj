@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz localization: the three-language profile (interface, study, help), the supported-language list, translation catalogs and their validator. No I/O; hosts supply a catalog loader.</Description>
+  </PropertyGroup>
+
+</Project>

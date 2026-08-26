@@ -1,0 +1,59 @@
+# Publish the web client to GitHub Pages on every push to main.
+# One-time setup: repository Settings → Pages → Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Publish
+        run: dotnet publish src/Citiz.Web -c Release -o publish
+
+      # Project sites live at /<repo>/, so rewrite the base href from "/" to "/<repo>/" in both the
+      # page and the offline service worker.
+      - name: Rewrite base path
+        run: |
+          sed -i 's|<base href="/" />|<base href="/${{ github.event.repository.name }}/" />|g' publish/wwwroot/index.html
+          sed -i 's|const base = "/";|const base = "/${{ github.event.repository.name }}/";|g' publish/wwwroot/service-worker.js
+
+      # Deep links (e.g. /prepare) would 404 on Pages without a fallback; serve index.html as 404.
+      - name: SPA fallback
+        run: |
+          cp publish/wwwroot/index.html publish/wwwroot/404.html
+          touch publish/wwwroot/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: publish/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

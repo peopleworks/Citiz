@@ -1,0 +1,110 @@
+@page "/"
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject StudyService Study
+@inject ContentRepository Content
+@inject DiscoveryEngine Discovery
+
+<PageTitle>@L.T("app.name") — @L.T("app.tagline")</PageTitle>
+
+<section class="hero">
+  <span class="eyebrow">@L.T("home.eyebrow")</span>
+  <h1>@L.T("home.title")</h1>
+  <p>@L.T("home.subtitle")</p>
+  <div class="row">
+    <a class="button primary" href="prepare">@L.T("home.cta")</a>
+    <a class="button ghost" href="settings">@L.T("home.ctaSecondary")</a>
+  </div>
+</section>
+
+<section class="grid four" style="margin-block-start: 1.25rem" aria-label="@L.T("app.tagline")">
+  <a class="pillar" href="prepare"><div class="card"><div class="pillar-icon" aria-hidden="true">🎯</div><h3>@L.T("nav.prepare")</h3><p class="muted small">@L.T("home.pillars.prepare")</p></div></a>
+  <a class="pillar" href="communicate"><div class="card"><div class="pillar-icon" aria-hidden="true">💬</div><h3>@L.T("nav.communicate")</h3><p class="muted small">@L.T("home.pillars.communicate")</p></div></a>
+  <a class="pillar" href="discover"><div class="card"><div class="pillar-icon" aria-hidden="true">🧭</div><h3>@L.T("nav.discover")</h3><p class="muted small">@L.T("home.pillars.discover")</p></div></a>
+  <a class="pillar" href="about"><div class="card"><div class="pillar-icon" aria-hidden="true">🤝</div><h3>@L.T("nav.about")</h3><p class="muted small">@L.T("home.pillars.participate")</p></div></a>
+</section>
+
+@if (error is not null)
+{
+  <p class="notice bad" role="alert" style="margin-block-start: 1.25rem">@error</p>
+}
+
+<section class="grid two" style="margin-block-start: 1.25rem">
+  <article class="card">
+    <span class="eyebrow">@L.T("home.today")</span>
+    @if (today is null)
+    {
+      <p class="muted">@L.T("discover.empty")</p>
+    }
+    else
+    {
+      <h2>@today.Title</h2>
+      <p class="muted small">@L.T($"discover.category.{today.Category}") · @L.T("common.minutes", today.EstimatedMinutes) <ReviewBadge Status="today.ReviewStatus" /></p>
+      <p>@today.SimpleEnglish</p>
+      <div class="chips">@foreach (var word in today.Vocabulary) { <span lang="en">@word</span> }</div>
+      <p style="margin-block-start: 1rem"><a class="button" href="discover/@today.Id">@L.T("home.todayOpen")</a></p>
+    }
+  </article>
+
+  <div class="stack">
+    <article class="card">
+      <h2>@L.T("home.progress")</h2>
+      @if (Learner.Progress.SeenCount == 0)
+      {
+        <p class="muted">@L.T("home.progressEmpty")</p>
+      }
+      else
+      {
+        <div class="grid three">
+          <div class="stat"><b>@Learner.Progress.SeenCount</b><span>@L.T("home.progressSeen")</span></div>
+          <div class="stat"><b>@Learner.Progress.MasteredCount</b><span>@L.T("home.progressMastered")</span></div>
+          <div class="stat"><b>@Learner.Progress.Due(DateTimeOffset.UtcNow).Count</b><span>@L.T("home.progressDue")</span></div>
+        </div>
+      }
+    </article>
+
+    <article class="card">
+      @if (context is null)
+      {
+        <Loading />
+      }
+      else if (Learner.Exam.FilingDate is null && Learner.Exam.VersionId is null)
+      {
+        <p>@L.T("home.versionUnset")</p>
+        <a class="button primary" href="settings">@L.T("exam.resolve")</a>
+      }
+      else
+      {
+        <p>@L.T("home.version", context.Version.DisplayName) <ReviewBadge Status="context.Bank.ReviewStatus" /></p>
+        <p class="muted small">@L.T("exam.rules", context.Version.Standard.QuestionsAsked, context.Version.Standard.PassingAnswers, context.Version.Standard.FailingAnswers)</p>
+        <a class="button small" href="settings">@L.T("home.versionChange")</a>
+      }
+    </article>
+  </div>
+</section>
+
+@code {
+  private StudyContext? context;
+  private DiscoveryTopic? today;
+  private string? error;
+
+  protected override async Task OnInitializedAsync()
+  {
+    Learner.Changed += StateHasChanged;
+    try
+    {
+      context = await Study.GetContextAsync();
+      today = Discovery.SelectDaily(await Content.GetDiscoveryTopicsAsync(), DateOnly.FromDateTime(DateTime.Now));
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  public override void Dispose()
+  {
+    Learner.Changed -= StateHasChanged;
+    base.Dispose();
+  }
+}

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz learning engine: per-item progress, mastery and spaced review. Storage-agnostic; hosts persist the snapshot.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+  </ItemGroup>
+
+</Project>

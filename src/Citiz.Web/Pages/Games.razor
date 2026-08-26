@@ -1,0 +1,142 @@
+@page "/games"
+@page "/games/{GameId}"
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject StudyService Study
+@inject BrowserStorage Browser
+
+<PageTitle>@L.T("games.title") — @L.T("app.name")</PageTitle>
+
+@if (GameId is null)
+{
+  <PageHeader Title="@L.T("games.title")" Lead="@L.T("games.subtitle")" />
+  <div class="grid three">
+    @foreach (var game in GameCatalog.All)
+    {
+      <article class="card game-card">
+        <span class="topic-category">@L.T($"nav.{game.Pillar}") · @L.T("common.minutes", game.Minutes)</span>
+        <h3>@L.T(game.TitleKey)</h3>
+        <p class="muted small">@L.T(game.DescriptionKey)</p>
+        @if (game.Status == GameStatus.Playable)
+        {
+          <a class="button primary" href="games/@game.Id">@L.T("games.play")</a>
+        }
+        else
+        {
+          <span class="badge review-draft" title="@L.T("games.inDesignHint")">@L.T("games.inDesign")</span>
+        }
+      </article>
+    }
+  </div>
+  <p class="muted small" style="margin-block-start: 1.25rem">@L.T("games.inDesignHint")</p>
+}
+else if (GameCatalog.Find(GameId) is not { Status: GameStatus.Playable } game)
+{
+  <PageHeader Title="@L.T("notFound.title")" />
+  <a class="button" href="games">@L.T("common.back")</a>
+}
+else
+{
+  <PageHeader Title="@L.T(game.TitleKey)" Eyebrow="@L.T("games.title")" Lead="@L.T(game.DescriptionKey)" />
+
+  @if (error is not null)
+  {
+    <p class="notice bad" role="alert">@error</p>
+  }
+  else if (challenge is null)
+  {
+    <Loading />
+  }
+  else if (challenge.Items.Count == 0)
+  {
+    <p class="notice warn">@L.T("games.notEnough")</p>
+  }
+  else if (challenge.IsComplete && lastAnswer is null)
+  {
+    <div class="card">
+      <p class="notice ok" role="status">@L.T("games.roundOver", challenge.Score, challenge.Items.Count)</p>
+      <ul class="question-list">
+        @foreach (var answer in challenge.Answers)
+        {
+          <li>
+            <details>
+              <summary><span class="num">#@answer.Item.Question.Number</span> <span lang="en">@answer.Item.Question.Prompt</span> <span class="badge @(answer.Correct ? "review-approved" : "review-outdated")">@L.T(answer.Correct ? "prepare.simulationCorrect" : "prepare.simulationIncorrect")</span></summary>
+              <div><AnswerList Question="answer.Item.Question" Answers="context!.AnswersFor(answer.Item.Question)" Dynamic="context.DynamicFor(answer.Item.Question)" /></div>
+            </details>
+          </li>
+        }
+      </ul>
+      <div class="row" style="margin-block-start: 1rem">
+        <button type="button" class="button primary" @onclick="StartRound">@L.T("games.playAgain")</button>
+        <a class="button" href="games">@L.T("common.back")</a>
+      </div>
+    </div>
+  }
+  else
+  {
+    // While the feedback for an answer is on screen, keep showing the question it belongs to; the
+    // engine has already moved on to the next item.
+    var item = lastAnswer?.Item ?? challenge.Current!;
+    var shown = lastAnswer is null ? challenge.Position + 1 : challenge.Position;
+    <div class="scoreboard" style="margin-block-end: .75rem">
+      <span>@L.T("prepare.simulationProgress", shown, challenge.Items.Count)</span>
+      <span><b>@challenge.Score</b> @L.T("games.score")</span>
+    </div>
+    <progress value="@(shown - 1)" max="@challenge.Items.Count" aria-hidden="true"></progress>
+    <QuestionCard Question="item.Question">
+      <div style="margin-block-start: .75rem">
+        @foreach (var (option, index) in item.Options.Select((o, i) => (o, i)))
+        {
+          <button type="button" class="option @OptionClass(item, index)" disabled="@(lastAnswer is not null)" @onclick="() => AnswerAsync(index)" lang="en">
+            <span class="key" aria-hidden="true">@((char)('A' + index))</span>
+            <span>@option</span>
+          </button>
+        }
+      </div>
+      @if (lastAnswer is not null)
+      {
+        <p class="feedback @(lastAnswer.Correct ? "ok" : "bad")" role="status">@L.T(lastAnswer.Correct ? "feedback.exact" : "feedback.none")</p>
+        <div class="row"><button type="button" class="button primary" @onclick="() => lastAnswer = null">@L.T("common.next")</button></div>
+      }
+    </QuestionCard>
+  }
+}
+
+@code {
+  [Parameter] public string? GameId { get; set; }
+
+  private StudyContext? context;
+  private CivicsChallenge? challenge;
+  private ChallengeAnswer? lastAnswer;
+  private string? error;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    if (GameId is null || context is not null) { return; }
+    try
+    {
+      context = await Study.GetContextAsync();
+      StartRound();
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  private void StartRound()
+  {
+    lastAnswer = null;
+    challenge = CivicsChallenge.Start(context!.Bank, context.DynamicAnswers, Random.Shared);
+  }
+
+  private async Task AnswerAsync(int index)
+  {
+    lastAnswer = challenge!.Answer(index);
+    await Learner.RecordAsync(lastAnswer.Item.Question.Id, lastAnswer.Correct);
+    await Browser.AnnounceAsync(L.T(lastAnswer.Correct ? "feedback.exact" : "feedback.none"));
+  }
+
+  private string OptionClass(MultipleChoiceItem item, int index) =>
+    lastAnswer is null ? string.Empty : item.IsCorrect(index) ? "correct" : index == lastAnswer.ChosenIndex ? "wrong" : string.Empty;
+}

@@ -1,0 +1,65 @@
+name: Bug report
+description: Something is broken — a crash, a feature that does not work, or wrong behaviour.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a wrong or outdated *answer* use the "Content correction" template instead.
+        Please do not include personal immigration information, case numbers, addresses or recordings.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Citiz
+        2. Go to Prepare → Practice test
+        3. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where
+      options:
+        - Web app (browser)
+        - CLI (citiz)
+        - API (Citiz.Api)
+        - Content worker
+        - Library (Citiz.Core / Citiz.Content / …)
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and OS, or .NET SDK version and OS.
+      placeholder: "Edge 141 on Windows 11 / Safari on iOS 18 / .NET 10.0.100 on Ubuntu 24.04"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output
+      description: Browser console for the web app, terminal output for the CLI.
+      render: text
+    validations:
+      required: false

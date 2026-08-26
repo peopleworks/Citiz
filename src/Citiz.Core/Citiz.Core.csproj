@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz domain: versioned civics-test rules, questions with provenance, the deterministic exam session and answer matcher. No I/O, no UI, no AI provider.</Description>
+  </PropertyGroup>
+
+</Project>

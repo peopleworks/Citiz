@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Citiz — prepare, communicate, discover, participate</title>
+  <meta name="description" content="Free, multilingual, privacy-first preparation for the U.S. naturalization test. Runs in your browser; no account, nothing uploaded." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#1e3a8a" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+  <base href="/" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+  <div id="app">
+    <div class="boot">
+      <div class="boot-mark" aria-hidden="true"></div>
+      <p>Loading Citiz…</p>
+      <noscript>Citiz needs JavaScript to run. It runs entirely in your browser.</noscript>
+    </div>
+  </div>
+
+  <div id="blazor-error-ui" role="alert">
+    Something went wrong. Reloading the page usually fixes it; your progress is saved in this browser.
+    <a href="." class="reload">Reload</a>
+    <button type="button" class="dismiss" aria-label="Dismiss">✕</button>
+  </div>
+
+  <script src="js/citiz.js"></script>
+  <script src="_framework/blazor.webassembly.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+
+</html>

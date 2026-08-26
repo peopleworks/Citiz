@@ -1,0 +1,57 @@
+name: Content correction
+description: A question, answer, rule, vocabulary word or capsule is wrong, missing or out of date.
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you — this is the most valuable kind of report Citiz gets. Every fact shown must match its
+        official source, and you are checking that. Point at the source so a maintainer can verify it.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of content
+      options:
+        - Civics question or accepted answer (2008 bank)
+        - Civics question or accepted answer (2025 bank)
+        - Exam version or rules (versions.json)
+        - Current officeholder (dynamic-answers.json)
+        - 65/20 question list
+        - Reading or writing vocabulary
+        - Discovery capsule
+        - Interface translation
+    validations:
+      required: true
+
+  - type: input
+    id: item
+    attributes:
+      label: Which item
+      description: The question id, number, word, capsule id or translation key.
+      placeholder: "2025-031, or 'Who does a U.S. senator represent?'"
+    validations:
+      required: true
+
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What Citiz shows
+    validations:
+      required: true
+
+  - type: textarea
+    id: right
+    attributes:
+      label: What the official source says
+      description: Quote the source verbatim.
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+      placeholder: "https://www.uscis.gov/…"
+    validations:
+      required: true

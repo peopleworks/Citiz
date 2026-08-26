@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/questions.schema.json",
+  "title": "Citiz civics question bank",
+  "type": "object",
+  "required": ["versionId", "reviewStatus", "sources", "questions"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "versionId": { "type": "string", "pattern": "^[0-9]{4}$" },
+    "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus", "description": "Default for every question without its own." },
+    "sources": { "$ref": "common.schema.json#/$defs/sources" },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "number", "category", "subcategory", "prompt", "acceptedAnswers"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{3}$", "description": "<versionId>-<number padded to 3 digits>" },
+          "number": { "type": "integer", "minimum": 1 },
+          "category": { "type": "string", "minLength": 1, "description": "Official top-level section, title case." },
+          "subcategory": { "type": "string", "minLength": 1, "description": "Official subsection, title case." },
+          "prompt": { "type": "string", "minLength": 1, "description": "Official wording, verbatim." },
+          "acceptedAnswers": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "description": "Official accepted answers, verbatim, one per element. Empty only when dynamicAnswerKey is set."
+          },
+          "dynamicAnswerKey": {
+            "type": ["string", "null"],
+            "description": "Key in exams/dynamic-answers.json when the answer depends on a current officeholder or the learner's state."
+          },
+          "note": { "type": ["string", "null"], "description": "Editorial note shown with the answers." },
+          "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" }
+        }
+      }
+    }
+  }
+}

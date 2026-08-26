@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>citiz</AssemblyName>
+    <RootNamespace>Citiz.Cli</RootNamespace>
+    <Description>citiz: validates the content repository and the language packs, resolves the applicable test version, and runs a practice sitting in the terminal.</Description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <IsPackable>false</IsPackable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+    <ProjectReference Include="..\Citiz.Content\Citiz.Content.csproj" />
+    <ProjectReference Include="..\Citiz.Localization\Citiz.Localization.csproj" />
+  </ItemGroup>
+
+</Project>

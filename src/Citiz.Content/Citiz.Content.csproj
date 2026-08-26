@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Loads, maps and validates the Citiz content repository (content/**/*.json) into domain objects, from disk or over HTTP.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+  </ItemGroup>
+
+</Project>

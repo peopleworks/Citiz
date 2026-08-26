@@ -1,0 +1,44 @@
+@page "/about"
+@using System.Reflection
+@inherits LocalizedComponentBase
+
+<PageTitle>@L.T("nav.about") — @L.T("app.name")</PageTitle>
+
+<PageHeader Title="@L.T("about.title")" Lead="@L.T("about.subtitle")" />
+
+<div class="grid two">
+  <article class="card">
+    <h2>@L.T("about.manifesto")</h2>
+    <ul>
+      <li>@L.T("about.m.free")</li>
+      <li>@L.T("about.m.multilingual")</li>
+      <li>@L.T("about.m.everywhere")</li>
+      <li>@L.T("about.m.private")</li>
+      <li>@L.T("about.m.transparent")</li>
+      <li>@L.T("about.m.community")</li>
+    </ul>
+  </article>
+
+  <div class="stack">
+    <article class="card">
+      <h2>@L.T("about.principle")</h2>
+      <p>@L.T("about.principleText")</p>
+    </article>
+    <article class="card">
+      <h2>@L.T("about.openSource")</h2>
+      <p>@L.T("about.openSourceText")</p>
+      <ul>
+        <li><a href="https://github.com/peopleworks/Citiz" target="_blank" rel="noopener noreferrer">@L.T("about.repository")</a></li>
+        <li><a href="https://github.com/peopleworks/Citiz/blob/main/Docs/Design/Citiz-Design-Document-v0.4.es.md" target="_blank" rel="noopener noreferrer">@L.T("about.design")</a></li>
+      </ul>
+      <p class="muted small">@L.T("about.version", Version)</p>
+    </article>
+  </div>
+</div>
+
+<p class="notice" style="margin-block-start: 1.25rem">@L.T("about.independence")</p>
+
+@code {
+  private static string Version =>
+    typeof(App).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "0.0.0";
+}

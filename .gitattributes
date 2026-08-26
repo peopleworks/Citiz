@@ -1,0 +1,15 @@
+# Normalize line endings: LF in the repository, on every platform (.editorconfig says the same).
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF so PowerShell and cmd read them as written.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.zip binary

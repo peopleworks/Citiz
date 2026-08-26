@@ -1,0 +1,180 @@
+@page "/settings"
+@inherits LocalizedComponentBase
+@inject LearnerState Learner
+@inject ContentRepository Content
+@inject BrowserStorage Browser
+
+<PageTitle>@L.T("settings.title") — @L.T("app.name")</PageTitle>
+
+<PageHeader Title="@L.T("settings.title")" Lead="@L.T("settings.subtitle")" />
+
+@if (error is not null)
+{
+  <p class="notice bad" role="alert">@error</p>
+}
+
+<div class="stack">
+  <section class="card" aria-labelledby="languages">
+    <h2 id="languages">@L.T("settings.languages")</h2>
+    <p class="muted small">@L.T("settings.languagesHint")</p>
+    <div class="grid three">
+      <label class="field"><span>@L.T("language.interface")</span>
+        <select value="@L.Profile.InterfaceCulture" @onchange="@(e => ProfileAsync(L.Profile with { InterfaceCulture = e.Value!.ToString()!, HelpCulture = e.Value.ToString()! }))">
+          @foreach (var language in SupportedLanguages.All) { <option value="@language.Code" lang="@language.Code">@language.NativeName</option> }
+        </select>
+        <span class="hint">@L.T($"language.status.{StatusKey(L.Language.Status)}")</span>
+      </label>
+      <label class="field"><span>@L.T("language.study")</span>
+        <select value="@L.Profile.StudyCulture" @onchange="@(e => ProfileAsync(L.Profile with { StudyCulture = e.Value!.ToString()! }))">
+          @foreach (var language in SupportedLanguages.StudyLanguages) { <option value="@language.Code" lang="@language.Code">@language.NativeName</option> }
+        </select>
+      </label>
+      <label class="field"><span>@L.T("language.help")</span>
+        <select value="@L.Profile.HelpCulture" @onchange="@(e => ProfileAsync(L.Profile with { HelpCulture = e.Value!.ToString()! }))">
+          @foreach (var language in SupportedLanguages.All) { <option value="@language.Code" lang="@language.Code">@language.NativeName</option> }
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="exam">
+    <h2 id="exam">@L.T("settings.exam")</h2>
+    <div class="grid two">
+      <label class="field"><span>@L.T("exam.filingDate")</span>
+        <input type="date" value="@filingDate" @onchange="@(e => FilingDateAsync(e.Value?.ToString()))" />
+        <span class="hint">@L.T("exam.filingDateHint")</span>
+      </label>
+      <label class="field"><span>@L.T("exam.version")</span>
+        <select value="@(Learner.Exam.VersionId ?? string.Empty)" @onchange="@(e => VersionAsync(e.Value?.ToString()))">
+          <option value="">@L.T("exam.versionAuto")</option>
+          @foreach (var version in versions) { <option value="@version.Id">@version.DisplayName</option> }
+        </select>
+      </label>
+    </div>
+    @if (resolved is not null)
+    {
+      <p class="notice ok" role="status">@L.T("exam.resolved", resolved.DisplayName)</p>
+    }
+    else if (Learner.Exam.FilingDate is not null && Learner.Exam.VersionId is null)
+    {
+      <p class="notice warn" role="status">@L.T("exam.unresolved")</p>
+    }
+    <label class="check" style="margin-block-start: .75rem">
+      <input type="checkbox" checked="@Learner.Exam.SeniorConsideration" @onchange="@(e => SeniorAsync((bool)e.Value!))" />
+      <span>@L.T("exam.senior")</span>
+    </label>
+  </section>
+
+  <section class="card" aria-labelledby="data">
+    <h2 id="data">@L.T("settings.data")</h2>
+    <p class="muted small">@L.T("settings.dataHint")</p>
+    <div class="row">
+      <button type="button" class="button" @onclick="ExportAsync">@L.T("settings.export")</button>
+      @if (!confirmingDelete)
+      {
+        <button type="button" class="button ghost" @onclick="() => confirmingDelete = true">@L.T("settings.delete")</button>
+      }
+      else
+      {
+        <span>@L.T("settings.deleteConfirm")</span>
+        <button type="button" class="button primary" @onclick="DeleteAsync">@L.T("common.yes")</button>
+        <button type="button" class="button" @onclick="() => confirmingDelete = false">@L.T("common.no")</button>
+      }
+    </div>
+    @if (message is not null)
+    {
+      <p class="notice ok" role="status" style="margin-block-start: .75rem">@message</p>
+    }
+  </section>
+
+  <section class="card" aria-labelledby="privacy">
+    <h2 id="privacy">@L.T("settings.privacy")</h2>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>@L.T("settings.privacy.feature")</th><th>@L.T("settings.privacy.where")</th></tr></thead>
+        <tbody>
+          <tr><td>@L.T("settings.privacy.f.questions")</td><td>@L.T("settings.privacy.local")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.progress")</td><td>@L.T("settings.privacy.local")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.check")</td><td>@L.T("settings.privacy.local")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.translations")</td><td>@L.T("settings.privacy.local")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.speech")</td><td>@L.T("settings.privacy.browserVoice")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.ai")</td><td>@L.T("settings.privacy.notBuilt")</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@code {
+  private IReadOnlyList<ExamVersion> versions = [];
+  private ExamVersion? resolved;
+  private string filingDate = string.Empty;
+  private bool confirmingDelete;
+  private string? message;
+  private string? error;
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      versions = await Content.GetExamVersionsAsync();
+      filingDate = Learner.Exam.FilingDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
+      Resolve();
+    }
+    catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
+    {
+      error = ex.Message;
+    }
+  }
+
+  private static string StatusKey(TranslationReviewStatus status) => status switch
+  {
+    TranslationReviewStatus.Source => "source",
+    TranslationReviewStatus.Reviewed => "reviewed",
+    TranslationReviewStatus.Draft => "draft",
+    _ => "machineDraft",
+  };
+
+  private void Resolve() =>
+    resolved = Learner.Exam.VersionId is null && Learner.Exam.FilingDate is { } date ? ExamPolicy.Resolve(date, versions) : null;
+
+  private async Task ProfileAsync(LanguageProfile profile)
+  {
+    await Learner.SetLanguageProfileAsync(profile);
+    message = L.T("settings.saved");
+  }
+
+  private async Task FilingDateAsync(string? value)
+  {
+    filingDate = value ?? string.Empty;
+    DateOnly? date = DateOnly.TryParseExact(filingDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var parsed) ? parsed : null;
+    await Learner.SetExamAsync(Learner.Exam with { FilingDate = date });
+    Resolve();
+    message = L.T("settings.saved");
+  }
+
+  private async Task VersionAsync(string? value)
+  {
+    await Learner.SetExamAsync(Learner.Exam with { VersionId = string.IsNullOrEmpty(value) ? null : value });
+    Resolve();
+    message = L.T("settings.saved");
+  }
+
+  private async Task SeniorAsync(bool value)
+  {
+    await Learner.SetExamAsync(Learner.Exam with { SeniorConsideration = value });
+    message = L.T("settings.saved");
+  }
+
+  private Task ExportAsync() => Browser.DownloadAsync("citiz-progress.json", Learner.Export()).AsTask();
+
+  private async Task DeleteAsync()
+  {
+    confirmingDelete = false;
+    await Learner.ClearAllAsync();
+    filingDate = string.Empty;
+    resolved = null;
+    message = L.T("settings.deleted");
+    await Browser.AnnounceAsync(message);
+  }
+}

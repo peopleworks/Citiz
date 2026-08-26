@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <Description>Citiz optional server: serves the content repository and the answer evaluator over HTTP for hosts that want a shared instance. Nothing in the web client requires it.</Description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <IsPackable>false</IsPackable>
+    <UserSecretsId>citiz-api</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+    <ProjectReference Include="..\Citiz.Content\Citiz.Content.csproj" />
+    <ProjectReference Include="..\Citiz.Discovery\Citiz.Discovery.csproj" />
+    <ProjectReference Include="..\Citiz.AI\Citiz.AI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+  </ItemGroup>
+
+</Project>

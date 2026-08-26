@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Citiz</title>
+  <rect width="64" height="64" rx="14" fill="#1e3a8a"/>
+  <path d="M32 8 12 16v16c0 13.6 8.7 24.3 20 27 11.3-2.7 20-13.4 20-27V16L32 8z" fill="#ffffff" opacity=".16"/>
+  <path d="M32 14.5 18 20v12c0 9.7 6 17.8 14 20.2 8-2.4 14-10.5 14-20.2V20l-14-5.5z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m32 24 3.2 6.5 7.2 1-5.2 5.1 1.2 7.2-6.4-3.4-6.4 3.4 1.2-7.2-5.2-5.1 7.2-1z" fill="#facc15"/>
+</svg>

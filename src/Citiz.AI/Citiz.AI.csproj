@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz AI contracts and the no-AI fallback. Providers (local or cloud) implement ICitizAiService; the product works fully without one.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+  </ItemGroup>
+
+</Project>

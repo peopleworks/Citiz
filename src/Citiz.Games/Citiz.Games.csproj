@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Citiz Play &amp; Learn: the game catalog, adaptive difficulty and the game sessions. Consumes published content; never holds its own copy of an official answer.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+    <ProjectReference Include="..\Citiz.Learning\Citiz.Learning.csproj" />
+  </ItemGroup>
+
+</Project>

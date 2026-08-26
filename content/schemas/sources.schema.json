@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/sources.schema.json",
+  "title": "Citiz monitored source catalog",
+  "type": "object",
+  "required": ["sources"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "authority", "title", "url", "format", "checkEvery", "monitor", "requiresHumanReview", "feeds", "lastHash", "lastCheckedOn"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "authority": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "format": { "type": "string", "enum": ["html", "pdf", "json", "api"] },
+          "checkEvery": { "type": "string", "pattern": "^P(?:\\d+D|T\\d+H|\\d+W)$", "description": "ISO 8601 duration, e.g. P7D." },
+          "monitor": { "type": "boolean", "description": "Whether the content worker polls this source." },
+          "requiresHumanReview": { "type": "boolean" },
+          "feeds": { "type": "array", "items": { "type": "string" }, "description": "Content files, relative to content/, that depend on this source." },
+          "lastHash": { "type": ["string", "null"], "description": "SHA-256 of the normalized document at the last check." },
+          "lastCheckedOn": { "$ref": "common.schema.json#/$defs/nullableDate" }
+        }
+      }
+    }
+  }
+}

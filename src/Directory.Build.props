@@ -1,0 +1,11 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Every library under src/ documents its public surface. Hosts (Web, Api, Cli, ContentWorker)
+       suppress CS1591 in their own .csproj because nobody references them as a library. -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+</Project>
