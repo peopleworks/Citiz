@@ -57,6 +57,18 @@
       document.documentElement.dir = dir || 'ltr';
     },
 
+    // theme is "light", "dark", or anything else (including absent) to follow the system.
+    // The same attribute is set synchronously by the inline script in index.html on first
+    // paint, before Blazor boots, so there is no flash of the wrong theme; this just keeps it
+    // in sync once the learner changes it in Settings.
+    setTheme(theme) {
+      if (theme === 'light' || theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', theme);
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    },
+
     announce(text) {
       const region = document.getElementById('citiz-live');
       if (!region) return;

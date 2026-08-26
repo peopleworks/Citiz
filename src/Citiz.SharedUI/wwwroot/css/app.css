@@ -38,8 +38,13 @@
   --bottom-nav-height: 64px;
 }
 
+/* Dark tokens apply either when the system prefers dark and Settings > Apariencia hasn't forced
+   light (the default, "Automático"), or when it explicitly forced dark — see BrowserStorage.
+   ApplyThemeAsync / citiz.setTheme, which set data-theme on <html>, and the inline script in
+   index.html that applies a saved choice before first paint so there is no flash of the wrong
+   theme while Blazor boots. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0b1220;
     --surface: #111a2e;
     --surface-2: #17223a;
@@ -59,6 +64,32 @@
     --bad-soft: #3d1414;
     --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px rgb(0 0 0 / .35);
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --surface: #111a2e;
+  --surface-2: #17223a;
+  --text: #e6ebf5;
+  --text-muted: #a3aec4;
+  --border: #2a3650;
+  --brand: #93b4ff;
+  --brand-strong: #b7cbff;
+  --brand-soft: #1b2a4d;
+  --accent: #fbbf24;
+  --accent-soft: #3b2a0f;
+  --ok: #86efac;
+  --ok-soft: #14351f;
+  --warn: #fcd34d;
+  --warn-soft: #3b2f0f;
+  --bad: #fca5a5;
+  --bad-soft: #3d1414;
+  --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px rgb(0 0 0 / .35);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -239,8 +270,10 @@ button, input, select { font: inherit; }
 
 .segmented { display: inline-flex; flex-wrap: wrap; gap: .25rem; padding: .25rem; background: var(--surface-2); border-radius: var(--radius-sm); }
 .segmented button {
+  display: inline-flex; align-items: center; gap: .4rem;
   min-height: 38px; padding: .35rem .85rem; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); font-weight: 700; cursor: pointer;
 }
+.segmented button svg { flex-shrink: 0; }
 .segmented button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 
 /* Forms ------------------------------------------------------------------------------------- */

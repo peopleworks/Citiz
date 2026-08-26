@@ -23,6 +23,9 @@ public sealed class BrowserStorage(IJSRuntime js)
     /// <summary>Sets <c>lang</c> and <c>dir</c> on the document element, so the whole page (not just a div) follows the interface language.</summary>
     public ValueTask SetDocumentLanguageAsync(string lang, string dir) => js.InvokeVoidAsync("citiz.setDocumentLanguage", lang, dir);
 
+    /// <summary>Sets (or, for <c>null</c>, clears) <c>data-theme</c> on the document element to force light/dark, overriding the system preference.</summary>
+    public ValueTask ApplyThemeAsync(string? theme) => js.InvokeVoidAsync("citiz.setTheme", theme);
+
     /// <summary>Announces a message to assistive technology through the page's live region.</summary>
     public ValueTask AnnounceAsync(string text) => js.InvokeVoidAsync("citiz.announce", text);
 }

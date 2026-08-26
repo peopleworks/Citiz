@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+    <script>
+        // Applies a saved light/dark override before the first paint, so a fresh launch never
+        // flashes the wrong theme while Blazor boots. citiz.js (loaded later) exposes the same
+        // logic as citiz.setTheme for when the learner changes it in Settings.
+        (function () {
+            try {
+                var theme = window.localStorage.getItem('citiz.theme');
+                if (theme === 'light' || theme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+            } catch (e) { /* localStorage unavailable — fall back to system */ }
+        })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Citiz</title>

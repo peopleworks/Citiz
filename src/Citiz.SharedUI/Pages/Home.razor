@@ -9,7 +9,7 @@
 <PageTitle>@L.T("app.name") — @L.T("app.tagline")</PageTitle>
 
 <section class="hero">
-  <span class="eyebrow">@L.T("home.eyebrow")</span>
+  <span class="eyebrow">@(string.IsNullOrEmpty(Learner.Name) ? L.T("home.eyebrow") : L.T("home.greeting", Learner.Name))</span>
   <h1>@L.T("home.title")</h1>
   <p>@L.T("home.subtitle")</p>
   <div class="row">
@@ -122,6 +122,13 @@
         <p class="muted small">@L.T("exam.rules", context.Version.Standard.QuestionsAsked, context.Version.Standard.PassingAnswers, context.Version.Standard.FailingAnswers)</p>
         <a class="button small" href="settings">@L.T("home.versionChange")</a>
       }
+      @if (context is not null && InterviewCountdownDays() is { } interviewDays)
+      {
+        <div class="streak-pill" style="margin-block-start: .9rem; padding: .65rem 1rem; border-radius: var(--radius-sm); background: var(--accent-soft)">
+          <span class="stat-icon" aria-hidden="true">@IconCalendar</span>
+          <div style="font-weight: 800; font-size: .9rem">@(interviewDays == 0 ? L.T("home.interview.today") : L.T("home.interview.countdown", interviewDays))</div>
+        </div>
+      }
     </article>
   </div>
 </section>
@@ -170,6 +177,9 @@
 
   private static readonly MarkupString IconCheck = new(
     "<svg viewBox=\"0 0 24 24\" width=\"13\" height=\"13\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"5 12.5 9.5 17 19 7\"/></svg>");
+
+  private static readonly MarkupString IconCalendar = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3.5\" y=\"5\" width=\"17\" height=\"15\" rx=\"1.8\"/><path d=\"M8 3v4M16 3v4M3.5 9.5h17\"/></svg>");
 
   private static readonly (int Offset, string LabelKey)[] WeekDayDefs =
   [
@@ -249,6 +259,17 @@
   }
 
   private Task SpeakTodayAsync() => today is null ? Task.CompletedTask : Speech.SpeakAsync(today.SimpleEnglish).AsTask();
+
+  private int? InterviewCountdownDays()
+  {
+    if (Learner.Exam.InterviewDate is not { } interview)
+    {
+      return null;
+    }
+
+    var days = interview.DayNumber - DateOnly.FromDateTime(DateTime.Now).DayNumber;
+    return days >= 0 ? days : null;
+  }
 
   private string PracticeOptionClass(int index) =>
     practiceChosen is null ? string.Empty : practiceChoice!.IsCorrect(index) ? "correct" : index == practiceChosen ? "wrong" : string.Empty;

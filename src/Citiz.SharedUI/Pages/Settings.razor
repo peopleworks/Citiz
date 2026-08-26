@@ -15,6 +15,15 @@
 }
 
 <div class="stack">
+  <section class="card" aria-labelledby="profile">
+    <h2 id="profile">@L.T("settings.profile")</h2>
+    <p class="muted small">@L.T("settings.profileHint")</p>
+    <label class="field" style="max-width: 24rem; margin-block-start: 1rem"><span>@L.T("profile.name")</span>
+      <input type="text" value="@name" placeholder="@L.T("profile.namePlaceholder")" @onchange="@(e => NameAsync(e.Value?.ToString()))" />
+      <span class="hint">@L.T("profile.nameHint")</span>
+    </label>
+  </section>
+
   <section class="card" aria-labelledby="languages">
     <h2 id="languages">@L.T("settings.languages")</h2>
     <p class="muted small">@L.T("settings.languagesHint")</p>
@@ -64,6 +73,29 @@
       <input type="checkbox" checked="@Learner.Exam.SeniorConsideration" @onchange="@(e => SeniorAsync((bool)e.Value!))" />
       <span>@L.T("exam.senior")</span>
     </label>
+    <label class="field" style="max-width: 20rem; margin-block-start: 1rem"><span>@L.T("exam.interviewDate")</span>
+      <input type="date" value="@interviewDate" @onchange="@(e => InterviewDateAsync(e.Value?.ToString()))" />
+      <span class="hint">@L.T("exam.interviewDateHint")</span>
+    </label>
+  </section>
+
+  <section class="card" aria-labelledby="appearance">
+    <h2 id="appearance">@L.T("settings.appearance")</h2>
+    <p class="muted small">@L.T("settings.appearanceHint")</p>
+    <div class="segmented" role="group" aria-label="@L.T("settings.appearance")" style="margin-block-start: 1rem">
+      <button type="button" aria-pressed="@(Learner.Theme == "light" ? "true" : "false")" @onclick='@(() => ThemeAsync("light"))'>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12h2.5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8" /></svg>
+        @L.T("theme.light")
+      </button>
+      <button type="button" aria-pressed="@(Learner.Theme == "dark" ? "true" : "false")" @onclick='@(() => ThemeAsync("dark"))'>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" /></svg>
+        @L.T("theme.dark")
+      </button>
+      <button type="button" aria-pressed="@(Learner.Theme is null ? "true" : "false")" @onclick='@(() => ThemeAsync(null))'>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12" rx="1.5" /><path d="M8.5 20h7M12 16.5V20" /></svg>
+        @L.T("theme.system")
+      </button>
+    </div>
   </section>
 
   <section class="card" aria-labelledby="data">
@@ -94,6 +126,7 @@
       <table class="table">
         <thead><tr><th>@L.T("settings.privacy.feature")</th><th>@L.T("settings.privacy.where")</th></tr></thead>
         <tbody>
+          <tr><td>@L.T("settings.privacy.f.profile")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.questions")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.progress")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.check")</td><td>@L.T("settings.privacy.local")</td></tr>
@@ -110,6 +143,8 @@
   private IReadOnlyList<ExamVersion> versions = [];
   private ExamVersion? resolved;
   private string filingDate = string.Empty;
+  private string interviewDate = string.Empty;
+  private string name = string.Empty;
   private bool confirmingDelete;
   private string? message;
   private string? error;
@@ -120,6 +155,8 @@
     {
       versions = await Content.GetExamVersionsAsync();
       filingDate = Learner.Exam.FilingDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
+      interviewDate = Learner.Exam.InterviewDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
+      name = Learner.Name ?? string.Empty;
       Resolve();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
@@ -167,6 +204,27 @@
     message = L.T("settings.saved");
   }
 
+  private async Task InterviewDateAsync(string? value)
+  {
+    interviewDate = value ?? string.Empty;
+    DateOnly? date = DateOnly.TryParseExact(interviewDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var parsed) ? parsed : null;
+    await Learner.SetExamAsync(Learner.Exam with { InterviewDate = date });
+    message = L.T("settings.saved");
+  }
+
+  private async Task NameAsync(string? value)
+  {
+    await Learner.SetNameAsync(value);
+    name = Learner.Name ?? string.Empty;
+    message = L.T("settings.saved");
+  }
+
+  private async Task ThemeAsync(string? theme)
+  {
+    await Learner.SetThemeAsync(theme);
+    message = L.T("settings.saved");
+  }
+
   private Task ExportAsync() => Exporter.ExportAsync("citiz-progress.json", Learner.Export()).AsTask();
 
   private async Task DeleteAsync()
@@ -174,6 +232,8 @@
     confirmingDelete = false;
     await Learner.ClearAllAsync();
     filingDate = string.Empty;
+    interviewDate = string.Empty;
+    name = string.Empty;
     resolved = null;
     message = L.T("settings.deleted");
     await Browser.AnnounceAsync(message);
