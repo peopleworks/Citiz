@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>
 /// Text to speech through the browser's Web Speech API. Most browsers synthesize on the device;

@@ -1,7 +1,7 @@
 using System.Net;
 using Citiz.Localization;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>Loads <c>i18n/&lt;code&gt;.json</c> over HTTP; a missing pack is <c>null</c>, not an error, and the service falls back to English.</summary>
 public sealed class HttpTranslationCatalogLoader(HttpClient http) : ITranslationCatalogLoader

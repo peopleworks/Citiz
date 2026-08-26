@@ -2,8 +2,8 @@ using Citiz.AI;
 using Citiz.Content;
 using Citiz.Discovery;
 using Citiz.Localization;
-using Citiz.Web;
-using Citiz.Web.Services;
+using Citiz.SharedUI;
+using Citiz.SharedUI.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

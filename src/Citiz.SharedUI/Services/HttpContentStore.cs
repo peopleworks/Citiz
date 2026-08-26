@@ -1,7 +1,7 @@
 using System.Net;
 using Citiz.Content;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>Reads the content files the build copies under <c>/content</c>. Same JSON as the repository, fetched once and cached by the service worker.</summary>
 public sealed class HttpContentStore(HttpClient http) : IContentStore

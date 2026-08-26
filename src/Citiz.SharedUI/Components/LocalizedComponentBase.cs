@@ -1,7 +1,7 @@
 using Citiz.Localization;
 using Microsoft.AspNetCore.Components;
 
-namespace Citiz.Web.Components;
+namespace Citiz.SharedUI.Components;
 
 /// <summary>
 /// Base for every page and component that renders interface strings. Blazor skips re-rendering a

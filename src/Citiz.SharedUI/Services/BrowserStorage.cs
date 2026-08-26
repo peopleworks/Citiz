@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>
 /// The thin JavaScript bridge: localStorage, the document's language attributes, the live region

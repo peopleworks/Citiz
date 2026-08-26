@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Citiz.Games\Citiz.Games.csproj" />
     <ProjectReference Include="..\Citiz.Localization\Citiz.Localization.csproj" />
     <ProjectReference Include="..\Citiz.AI\Citiz.AI.csproj" />
+    <ProjectReference Include="..\Citiz.SharedUI\Citiz.SharedUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

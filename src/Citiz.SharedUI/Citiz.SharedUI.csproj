@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <Description>Citiz's whole app UI (pages, layout, components) and application services (learner state, study context, speech, storage), shared between the Blazor WebAssembly web client and the future .NET MAUI Blazor Hybrid client. Not meant to be consumed as a standalone package.</Description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Citiz.Core\Citiz.Core.csproj" />
+    <ProjectReference Include="..\Citiz.Content\Citiz.Content.csproj" />
+    <ProjectReference Include="..\Citiz.Learning\Citiz.Learning.csproj" />
+    <ProjectReference Include="..\Citiz.Discovery\Citiz.Discovery.csproj" />
+    <ProjectReference Include="..\Citiz.Games\Citiz.Games.csproj" />
+    <ProjectReference Include="..\Citiz.Localization\Citiz.Localization.csproj" />
+    <ProjectReference Include="..\Citiz.AI\Citiz.AI.csproj" />
+  </ItemGroup>
+
+</Project>

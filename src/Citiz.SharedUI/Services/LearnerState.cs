@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Citiz.Learning;
 using Citiz.Localization;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>What the learner told Citiz about their exam. All optional; nothing here identifies a person.</summary>
 /// <param name="FilingDate">When they filed Form N-400, if they know it.</param>

@@ -1,7 +1,7 @@
 using Citiz.Content;
 using Citiz.Core.Exams;
 
-namespace Citiz.Web.Services;
+namespace Citiz.SharedUI.Services;
 
 /// <summary>The exam the learner is preparing for, fully loaded.</summary>
 /// <param name="Version">The version.</param>
