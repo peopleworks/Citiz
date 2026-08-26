@@ -1,0 +1,18 @@
+<Solution>
+  <!--
+    Deliberately separate from Citiz.slnx: the MAUI workloads are large and platform-specific, and
+    CI (and every contributor who only wants the web app) should be able to build Citiz.slnx with
+    the .NET SDK alone. See src/Citiz.Hybrid/README.md.
+  -->
+  <Folder Name="/src/">
+    <Project Path="src/Citiz.Core/Citiz.Core.csproj" />
+    <Project Path="src/Citiz.Content/Citiz.Content.csproj" />
+    <Project Path="src/Citiz.Learning/Citiz.Learning.csproj" />
+    <Project Path="src/Citiz.Discovery/Citiz.Discovery.csproj" />
+    <Project Path="src/Citiz.Games/Citiz.Games.csproj" />
+    <Project Path="src/Citiz.Localization/Citiz.Localization.csproj" />
+    <Project Path="src/Citiz.AI/Citiz.AI.csproj" />
+    <Project Path="src/Citiz.SharedUI/Citiz.SharedUI.csproj" />
+    <Project Path="src/Citiz.Hybrid/Citiz.Hybrid.csproj" />
+  </Folder>
+</Solution>

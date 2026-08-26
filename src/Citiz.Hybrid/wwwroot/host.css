@@ -1,0 +1,18 @@
+/* Host-specific chrome concerns that do not belong in the shared app.css: the real iOS status bar
+   safe area (not decorative — see the design guidance against ever painting a fake one). */
+
+.status-bar-safe-area {
+  display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .status-bar-safe-area {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: env(safe-area-inset-top);
+    width: 100%;
+    z-index: 100;
+    background: var(--surface, #fff);
+  }
+}

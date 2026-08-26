@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Citiz.Hybrid"
+             xmlns:sharedUi="clr-namespace:Citiz.SharedUI;assembly=Citiz.SharedUI"
+             x:Class="Citiz.Hybrid.MainPage">
+
+    <!-- The whole app — every page, the layout, the router — is Citiz.SharedUI.App, the same
+         component Citiz.Web mounts at "#app". Nothing about the UI is specific to this host. -->
+    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent Selector="#app" ComponentType="{x:Type sharedUi:App}" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
+
+</ContentPage>
