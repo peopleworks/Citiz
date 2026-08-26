@@ -20,7 +20,7 @@ The release where "not yet verified" labels start disappearing.
 - [ ] Record the 2025 65/20 question list and enable the mode
 - [ ] Re-verify dynamic answers (officeholders) and vocabulary lists; record `verifiedOn`
 - [ ] Spanish pack reviewed by a second fluent speaker → `Reviewed`
-- [ ] Enable GitHub Pages and put the live link in the README
+- [x] Enable GitHub Pages and put the live link in the README (https://peopleworks.github.io/Citiz/)
 - [ ] First `good first issue` batch: one capsule per state, capsule review, language review
 
 ## 0.5 — Listen and speak

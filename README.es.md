@@ -4,6 +4,8 @@
 
 *English version → [README.md](README.md)*
 
+**[Pruébalo ahora →](https://peopleworks.github.io/Citiz/)** — funciona en tu navegador, sin cuenta y sin subir nada. Instálalo como app desde el menú del navegador y funciona sin conexión.
+
 **Citiz** es un acompañante gratuito, de código abierto, multilingüe y orientado a la privacidad para
 quienes se preparan para la ciudadanía de Estados Unidos. Practica las preguntas cívicas oficiales tal
 como las hace el oficial, ejercita el vocabulario del examen de inglés y enseña algo del país cada día;

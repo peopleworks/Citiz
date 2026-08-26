@@ -11,6 +11,8 @@
 
 *¿Prefieres leer en español? → [README.es.md](README.es.md)*
 
+**[Try it now →](https://peopleworks.github.io/Citiz/)** — runs in your browser, no account, nothing uploaded. Install it as an app from the browser menu and it works offline.
+
 **Citiz** is a free, open-source, multilingual, privacy-first companion for people preparing for
 United States citizenship. It practices the official civics questions the way an officer asks them,
 drills the English test vocabulary, and teaches something about the country every day — and it does
