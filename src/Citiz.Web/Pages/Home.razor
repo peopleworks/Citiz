@@ -4,6 +4,7 @@
 @inject StudyService Study
 @inject ContentRepository Content
 @inject DiscoveryEngine Discovery
+@inject SpeechService Speech
 
 <PageTitle>@L.T("app.name") — @L.T("app.tagline")</PageTitle>
 
@@ -17,50 +18,92 @@
   </div>
 </section>
 
-<section class="grid four" style="margin-block-start: 1.25rem" aria-label="@L.T("app.tagline")">
-  <a class="pillar" href="prepare"><div class="card"><div class="pillar-icon" aria-hidden="true">🎯</div><h3>@L.T("nav.prepare")</h3><p class="muted small">@L.T("home.pillars.prepare")</p></div></a>
-  <a class="pillar" href="communicate"><div class="card"><div class="pillar-icon" aria-hidden="true">💬</div><h3>@L.T("nav.communicate")</h3><p class="muted small">@L.T("home.pillars.communicate")</p></div></a>
-  <a class="pillar" href="discover"><div class="card"><div class="pillar-icon" aria-hidden="true">🧭</div><h3>@L.T("nav.discover")</h3><p class="muted small">@L.T("home.pillars.discover")</p></div></a>
-  <a class="pillar" href="about"><div class="card"><div class="pillar-icon" aria-hidden="true">🤝</div><h3>@L.T("nav.about")</h3><p class="muted small">@L.T("home.pillars.participate")</p></div></a>
-</section>
-
 @if (error is not null)
 {
   <p class="notice bad" role="alert" style="margin-block-start: 1.25rem">@error</p>
 }
 
-<section class="grid two" style="margin-block-start: 1.25rem">
-  <article class="card">
-    <span class="eyebrow">@L.T("home.today")</span>
+<section class="grid four" style="margin-block-start: 1.25rem" aria-label="@L.T("app.tagline")">
+  <a class="pillar" href="prepare"><div class="card"><span class="pillar-icon prepare" aria-hidden="true">@IconTarget</span><div><h3>@L.T("nav.prepare")</h3><p class="muted small">@L.T("home.pillars.prepare")</p></div></div></a>
+  <a class="pillar" href="communicate"><div class="card"><span class="pillar-icon communicate" aria-hidden="true">@IconChat</span><div><h3>@L.T("nav.communicate")</h3><p class="muted small">@L.T("home.pillars.communicate")</p></div></div></a>
+  <a class="pillar" href="discover"><div class="card"><span class="pillar-icon discover" aria-hidden="true">@IconCompass</span><div><h3>@L.T("nav.discover")</h3><p class="muted small">@L.T("home.pillars.discover")</p></div></div></a>
+  <a class="pillar" href="about"><div class="card"><span class="pillar-icon participate" aria-hidden="true">@IconUsers</span><div><h3>@L.T("nav.about")</h3><p class="muted small">@L.T("home.pillars.participate")</p></div></div></a>
+</section>
+
+<section class="greeting-row" style="margin-block-start: 1.25rem">
+  <h2 style="margin: 0">@L.T("home.today")</h2>
+  <div class="card streak-pill">
+    <span class="stat-icon" aria-hidden="true">@IconStar</span>
+    <div style="font-weight: 800; font-size: .9rem">@(streakDays > 0 ? L.T("home.streak.days", streakDays) : L.T("home.streak.none"))</div>
+  </div>
+</section>
+
+<section class="home-grid" style="margin-block-start: .75rem">
+  <article class="hero" style="min-height: 100%">
     @if (today is null)
     {
-      <p class="muted">@L.T("discover.empty")</p>
+      <p class="muted" style="color: rgb(255 255 255 / .85)">@L.T("discover.empty")</p>
     }
     else
     {
-      <h2>@today.Title</h2>
-      <p class="muted small">@L.T($"discover.category.{today.Category}") · @L.T("common.minutes", today.EstimatedMinutes) <ReviewBadge Status="today.ReviewStatus" /></p>
+      <div class="row">
+        <span class="eyebrow" style="margin: 0">@L.T($"discover.category.{today.Category}") · @L.T("common.minutes", today.EstimatedMinutes)</span>
+        <ReviewBadge Status="today.ReviewStatus" />
+      </div>
+      <h2 style="margin-block-start: .5rem" lang="en">@today.Title</h2>
       <p>@today.SimpleEnglish</p>
-      <div class="chips">@foreach (var word in today.Vocabulary) { <span lang="en">@word</span> }</div>
-      <p style="margin-block-start: 1rem"><a class="button" href="discover/@today.Id">@L.T("home.todayOpen")</a></p>
+      <div class="chips" style="margin-block-start: .75rem">@foreach (var word in today.Vocabulary) { <span lang="en">@word</span> }</div>
+      <div class="row" style="margin-block-start: 1.25rem">
+        <a class="button primary" href="discover/@today.Id">@L.T("home.todayOpen")</a>
+        <button type="button" class="button ghost" @onclick="SpeakTodayAsync">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" /></svg>
+          @L.T("common.listen")
+        </button>
+        <a class="button ghost" href="discover" style="margin-inline-start: auto">@L.T("home.discoverCta")</a>
+      </div>
     }
   </article>
 
   <div class="stack">
     <article class="card">
-      <h2>@L.T("home.progress")</h2>
+      <span class="eyebrow">@L.T("home.progress")</span>
       @if (Learner.Progress.SeenCount == 0)
       {
-        <p class="muted">@L.T("home.progressEmpty")</p>
+        <p class="muted" style="margin-block-start: .5rem">@L.T("home.progressEmpty")</p>
       }
-      else
+      else if (context is not null)
       {
-        <div class="grid three">
-          <div class="stat"><b>@Learner.Progress.SeenCount</b><span>@L.T("home.progressSeen")</span></div>
-          <div class="stat"><b>@Learner.Progress.MasteredCount</b><span>@L.T("home.progressMastered")</span></div>
-          <div class="stat"><b>@Learner.Progress.Due(DateTimeOffset.UtcNow).Count</b><span>@L.T("home.progressDue")</span></div>
+        <div style="margin-block-start: .4rem; font-size: 1.9rem; font-weight: 800; color: var(--brand)">
+          @Learner.Progress.MasteredCount<span class="muted" style="font-size: 1rem; font-weight: 600"> / @context.Bank.Count</span>
         </div>
+        <progress value="@Learner.Progress.MasteredCount" max="@Math.Max(context.Bank.Count, 1)" style="width: 100%; margin-block-start: .8rem"></progress>
+        <p class="muted small" style="margin-block-start: .6rem">@Learner.Progress.SeenCount @L.T("home.progressSeen") · @Learner.Progress.Due(DateTimeOffset.UtcNow).Count @L.T("home.progressDue")</p>
       }
+    </article>
+
+    <article class="card">
+      <div class="row between">
+        <h3 style="margin: 0">@L.T("home.weekly.title")</h3>
+        <span class="small" style="color: var(--brand); font-weight: 800">@L.T("home.weekly.count", weekDays.Count(d => activeDates.Contains(d.Date)))</span>
+      </div>
+      <div class="weekly-grid">
+        @foreach (var day in weekDays)
+        {
+          var isDone = activeDates.Contains(day.Date);
+          var isToday = day.Date == todayDate;
+          var label = L.T(day.LabelKey);
+          <div class="day-cell">
+            <div class="day-mark @(isDone ? "done" : isToday ? "today" : "")" aria-hidden="true">
+              @if (isDone)
+              {
+                @IconCheck
+              }
+            </div>
+            <div class="day-label" aria-hidden="true">@label</div>
+            <span class="sr-only">@L.T(isDone ? "home.weekly.day.active" : "home.weekly.day.inactive", label)</span>
+          </div>
+        }
+      </div>
     </article>
 
     <article class="card">
@@ -83,24 +126,132 @@
   </div>
 </section>
 
+@if (practiceChoice is not null)
+{
+  <section style="margin-block-start: 1.25rem; max-width: 40rem">
+    <span class="pill" style="display: inline-block; margin-block-end: .75rem; padding: .3rem .75rem; border-radius: 999px; background: var(--brand-soft); color: var(--brand-strong); font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase">@L.T("home.practice.title")</span>
+    <QuestionCard Question="practiceChoice.Question">
+      <div style="margin-block-start: .75rem">
+        @foreach (var (option, index) in practiceChoice.Options.Select((o, i) => (o, i)))
+        {
+          <button type="button" class="option @PracticeOptionClass(index)" disabled="@(practiceChosen is not null)" @onclick="() => ChoosePracticeAsync(index)" lang="en">
+            <span class="key" aria-hidden="true">@((char)('A' + index))</span>
+            <span>@option</span>
+          </button>
+        }
+      </div>
+      @if (practiceChosen is not null)
+      {
+        <p class="feedback @(practiceChoice.IsCorrect(practiceChosen.Value) ? "ok" : "bad")" role="status">@L.T(practiceChoice.IsCorrect(practiceChosen.Value) ? "feedback.exact" : "feedback.none")</p>
+        <div class="row" style="margin-block-start: 1rem">
+          <button type="button" class="button primary" @onclick="NextPractice">@L.T("common.next")</button>
+          <a class="button ghost" href="prepare">@L.T("home.practice.cta")</a>
+        </div>
+      }
+    </QuestionCard>
+  </section>
+}
+
 @code {
+  private static readonly MarkupString IconTarget = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"8.5\"/><circle cx=\"12\" cy=\"12\" r=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"1.5\" fill=\"currentColor\" stroke=\"none\"/></svg>");
+
+  private static readonly MarkupString IconChat = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12a8 8 0 1 1 3.8 6.8L4 20l1.3-3.6A7.96 7.96 0 0 1 4 12Z\"/></svg>");
+
+  private static readonly MarkupString IconCompass = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"m15 9-2 5-4.5 2 2-5z\" fill=\"currentColor\" stroke=\"none\"/></svg>");
+
+  private static readonly MarkupString IconUsers = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8.3\" r=\"2.8\"/><path d=\"M3.6 19c0-3 2.4-5 5.4-5s5.4 2 5.4 5\"/><circle cx=\"17.2\" cy=\"9.2\" r=\"2.1\"/><path d=\"M15.2 19c0-2.1 1-3.7 2.6-4.5\"/></svg>");
+
+  private static readonly MarkupString IconStar = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\"><path fill=\"currentColor\" d=\"M12 2.5l2.9 6.2 6.7.6-5.1 4.5 1.5 6.7L12 17l-6 3.5 1.5-6.7-5.1-4.5 6.7-.6z\"/></svg>");
+
+  private static readonly MarkupString IconCheck = new(
+    "<svg viewBox=\"0 0 24 24\" width=\"13\" height=\"13\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"5 12.5 9.5 17 19 7\"/></svg>");
+
+  private static readonly (int Offset, string LabelKey)[] WeekDayDefs =
+  [
+    (0, "common.day.mon"), (1, "common.day.tue"), (2, "common.day.wed"),
+    (3, "common.day.thu"), (4, "common.day.fri"), (5, "common.day.sat"), (6, "common.day.sun"),
+  ];
+
   private StudyContext? context;
   private DiscoveryTopic? today;
   private string? error;
 
+  private DateOnly todayDate;
+  private HashSet<DateOnly> activeDates = [];
+  private List<(DateOnly Date, string LabelKey)> weekDays = [];
+  private int streakDays;
+
+  private MultipleChoiceItem? practiceChoice;
+  private int? practiceChosen;
+
   protected override async Task OnInitializedAsync()
   {
     Learner.Changed += StateHasChanged;
+    ComputeActivity();
     try
     {
       context = await Study.GetContextAsync();
       today = Discovery.SelectDaily(await Content.GetDiscoveryTopicsAsync(), DateOnly.FromDateTime(DateTime.Now));
+      NextPractice();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
     {
       error = ex.Message;
     }
   }
+
+  private void ComputeActivity()
+  {
+    todayDate = DateOnly.FromDateTime(DateTime.Now);
+    activeDates = Learner.Progress.Items.Select(i => DateOnly.FromDateTime(i.LastPracticedAt.LocalDateTime)).ToHashSet();
+
+    var monday = todayDate.AddDays(-(((int)todayDate.DayOfWeek + 6) % 7));
+    weekDays = WeekDayDefs.Select(d => (monday.AddDays(d.Offset), d.LabelKey)).ToList();
+
+    streakDays = 0;
+    var day = todayDate;
+    while (activeDates.Contains(day))
+    {
+      streakDays++;
+      day = day.AddDays(-1);
+    }
+  }
+
+  private void NextPractice()
+  {
+    practiceChosen = null;
+    practiceChoice = null;
+    if (context is null)
+    {
+      return;
+    }
+
+    foreach (var question in context.Bank.Questions.OrderBy(_ => Random.Shared.Next()))
+    {
+      practiceChoice = MultipleChoiceBuilder.Build(question, context.Bank, context.DynamicAnswers, Random.Shared);
+      if (practiceChoice is not null)
+      {
+        break;
+      }
+    }
+  }
+
+  private async Task ChoosePracticeAsync(int index)
+  {
+    practiceChosen = index;
+    await Learner.RecordAsync(practiceChoice!.Question.Id, practiceChoice.IsCorrect(index));
+    ComputeActivity();
+  }
+
+  private Task SpeakTodayAsync() => today is null ? Task.CompletedTask : Speech.SpeakAsync(today.SimpleEnglish).AsTask();
+
+  private string PracticeOptionClass(int index) =>
+    practiceChosen is null ? string.Empty : practiceChoice!.IsCorrect(index) ? "correct" : index == practiceChosen ? "wrong" : string.Empty;
 
   public override void Dispose()
   {
