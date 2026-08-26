@@ -41,13 +41,21 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
    revisiting once the workload updates, to drop the Windows-specific file. Verified end-to-end on
    Windows: the native "Save As" dialog opens with the right filename/type/location, and the picked
    file is written with the exact content passed in.
-6. ⏳ **Still open:**
-   - `ISpeechService`: the current `WebSpeechService` (Web Speech API via JS interop) is registered
-     as-is and may simply work inside a `BlazorWebView` — untested on a real device. If it doesn't,
-     write a `NativeSpeechService` using platform text-to-speech.
-   - Not yet built for a real device or emulator — only smoke-tested that it compiles and boots on
-     Windows desktop (see below). No app icon/splash beyond the template defaults, no store
-     provisioning, no CI job.
+6. ✅ **`ISpeechService` works as-is on Windows.** `WebSpeechService` (Web Speech API via JS interop)
+   needed no changes: `window.speechSynthesis` is present, 5 voices are available immediately (no
+   `onvoiceschanged` delay to work around), `IsAvailableAsync()`/`IsLocalVoiceAsync()` both return
+   `true` (an on-device voice, not a network one — required by `Docs/Privacy/LOCAL_VS_CLOUD.md`), and
+   a real `SpeakAsync()` call set `speechSynthesis.speaking` immediately and kept it `true` while the
+   utterance played. WebView2 is Chromium, so this isn't too surprising — but it was unverified until
+   checked live, the same way as everything else on this list.
+7. ⏳ **Still open:**
+   - Android/iOS/macOS are untested — everything verified above (content/i18n, first-launch, the
+     profile/theme/interview-date Settings, `IFileExporter`, `ISpeechService`) has only been checked on
+     Windows desktop. Mobile WebViews (especially older Android System WebView) have a history of
+     being less consistent than desktop Chromium for things like `speechSynthesis` voice availability,
+     so don't assume the above carries over — verify each on a real device/emulator before relying on it.
+   - No app icon/splash beyond the template defaults, no store provisioning, no CI job for
+     `Citiz.Hybrid.slnx`.
 
 ## Try it
 
