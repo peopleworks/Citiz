@@ -7,6 +7,7 @@
 | [`Localization/`](Localization/) | How to translate the interface and the glossary of terms. |
 | [`Privacy/`](Privacy/) | The local-versus-cloud policy every feature must declare against. |
 | [`Design/`](Design/) | The founding design document (v0.4, Spanish), preserved as the project's vision. |
+| [`BuildHistory.md`](BuildHistory.md) | A running account of how Citiz actually got built — decisions, real bugs, the reasoning behind each one, written close to when it happened. |
 
 The short, current description of the project is the [README](../README.md); the content format is
 [`content/README.md`](../content/README.md); the plan is [`ROADMAP.md`](../ROADMAP.md).

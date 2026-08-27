@@ -46,6 +46,14 @@ The release where "not yet verified" labels start disappearing.
 - [ ] Signed offline content packages with a manifest and a delta sync
 - [ ] NuGet packages for the engines; `citiz` as a global tool
 
+## Tell the story
+
+Citiz is free, useful, and mostly unknown. A content track, alongside the engineering one: articles,
+videos and shorts — not just showing what Citiz does, but teaching how it was built. Raw material
+lives in [`Docs/BuildHistory.md`](Docs/BuildHistory.md), kept as a running log while building rather
+than reconstructed later. Not yet scoped: channels/formats, primary audience, and whether it starts
+English-first or leans into the same multilingual angle Citiz itself has.
+
 ## Later
 
 - More games (lightning map, who am I, order the story, listen and find), "50 states, 50 stories",
