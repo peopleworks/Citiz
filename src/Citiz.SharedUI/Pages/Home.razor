@@ -34,7 +34,7 @@
   <h2 style="margin: 0">@L.T("home.today")</h2>
   <div class="card streak-pill">
     <span class="stat-icon" aria-hidden="true">@IconStar</span>
-    <div style="font-weight: 800; font-size: .9rem">@(streakDays > 0 ? L.T("home.streak.days", streakDays) : L.T("home.streak.none"))</div>
+    <div style="font-weight: 800; font-size: .9rem">@(streakDays switch { 0 => L.T("home.streak.none"), 1 => L.T("home.streak.day"), _ => L.T("home.streak.days", streakDays) })</div>
   </div>
 </section>
 
@@ -126,7 +126,7 @@
       {
         <div class="streak-pill" style="margin-block-start: .9rem; padding: .65rem 1rem; border-radius: var(--radius-sm); background: var(--accent-soft)">
           <span class="stat-icon" aria-hidden="true">@IconCalendar</span>
-          <div style="font-weight: 800; font-size: .9rem">@(interviewDays == 0 ? L.T("home.interview.today") : L.T("home.interview.countdown", interviewDays))</div>
+          <div style="font-weight: 800; font-size: .9rem">@(interviewDays switch { 0 => L.T("home.interview.today"), 1 => L.T("home.interview.tomorrow"), _ => L.T("home.interview.countdown", interviewDays) })</div>
         </div>
       }
     </article>

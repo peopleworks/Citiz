@@ -48,12 +48,17 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
    a real `SpeakAsync()` call set `speechSynthesis.speaking` immediately and kept it `true` while the
    utterance played. WebView2 is Chromium, so this isn't too surprising — but it was unverified until
    checked live, the same way as everything else on this list.
-7. ⏳ **Still open:**
-   - Android/iOS/macOS are untested — everything verified above (content/i18n, first-launch, the
-     profile/theme/interview-date Settings, `IFileExporter`, `ISpeechService`) has only been checked on
-     Windows desktop. Mobile WebViews (especially older Android System WebView) have a history of
-     being less consistent than desktop Chromium for things like `speechSynthesis` voice availability,
-     so don't assume the above carries over — verify each on a real device/emulator before relying on it.
+7. ✅ **iOS: builds and runs on the simulator.** From a Mac with Xcode 26.6 and the `maui` workload,
+   `dotnet build src/Citiz.Hybrid -f net10.0-ios` produced `Citiz.Hybrid.app` (iossimulator-arm64) on
+   the first try; installed and launched on an iPhone 17 simulator (iOS 26.5), the app shows real
+   translated text and content from the app package, the bottom tab bar and the safe-area padding,
+   and the system log has no managed exceptions. Verified 2026-09-01 with `xcrun simctl`.
+8. ⏳ **Still open:**
+   - On iOS, `ISpeechService` (WKWebView's `speechSynthesis` voices) and `IFileExporter` (the native
+     share/save sheet) have not been exercised — both need a tap inside the WebView, which `simctl`
+     cannot script. Android and macOS are untested; older Android System WebViews in particular have a
+     history of inconsistent `speechSynthesis` voice availability, so verify on a device or emulator
+     before relying on it.
    - No app icon/splash beyond the template defaults, no store provisioning, no CI job for
      `Citiz.Hybrid.slnx`.
 
@@ -66,5 +71,21 @@ dotnet run --project src/Citiz.Hybrid -f net10.0-windows10.0.19041.0
 
 Swap the `-f` target for `net10.0-android` / `net10.0-ios` / `net10.0-maccatalyst` once you have the
 matching emulator or device set up (`dotnet workload list` should show the platform installed).
+
+On a Mac (Xcode installed, `dotnet workload install maui` run once):
+
+```bash
+dotnet build src/Citiz.Hybrid -f net10.0-ios                        # -> bin/Debug/net10.0-ios/iossimulator-arm64/Citiz.Hybrid.app
+xcrun simctl list devices available | grep iPhone                    # pick a simulator UDID
+xcrun simctl boot <UDID> && open -a Simulator
+xcrun simctl install booted src/Citiz.Hybrid/bin/Debug/net10.0-ios/iossimulator-arm64/Citiz.Hybrid.app
+xcrun simctl launch booted com.peopleworks.citiz
+xcrun simctl io booted screenshot citiz-ios.png                      # proof for the pull request
+```
+
+`dotnet build -t:Run -f net10.0-ios -p:_DeviceName=:v2:udid=<UDID>` does the install-and-launch in one
+step. The web app can be checked in the same simulator's Safari against `dotnet run --project
+src/Citiz.Web --urls http://localhost:5050` (port 5000 is taken by macOS AirPlay Receiver, which
+answers 403).
 
 Nothing in the engines changes for any of this ([ADR-0001](../../Docs/Architecture/ADR-0001-core-boundaries.md)).

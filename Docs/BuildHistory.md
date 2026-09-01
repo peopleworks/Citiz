@@ -229,6 +229,41 @@ reader; plus the smaller lesson that a source you cite has to be the page that s
 
 ---
 
+## 2026-09-01 — First run on iOS, from a Mac that had never built Citiz
+
+Two ways to test "mobile", and both earned their place. For the web app: the iPhone 17 simulator's
+own Safari (real WebKit, real safe areas, `xcrun simctl openurl` and `simctl io screenshot` for
+proof) plus Playwright's WebKit engine with the iPhone 15 device profile for anything that needs a
+tap — every page, a multiple-choice answer, the Settings flow that resolves the 2025 test and shows
+the 65/20 checkbox enabled now that the list exists. For the native app: `dotnet workload install
+maui` into the user-level SDK, `dotnet build -f net10.0-ios`, `simctl install` + `launch`. It booted
+first time, with content and translations from the app package and no managed exceptions in the
+system log — the seams built on 2026-08-26 for Windows carried over to iOS without a change.
+
+The WebKit screenshot raised a flag that turned out to be half real: the mode tabs on Prepare
+ghosted through the sticky top bar. The bar is surface colour at 92% plus `backdrop-filter:
+blur(10px)`. Measured properly (three variants, pixel-sampled at the device scale factor), the
+Chromium screenshot blurs what is behind the bar as designed, while Playwright's headless WebKit
+reports the blur as applied but does not render it — so the 8% of content that bleeds through
+arrives sharp. Real Safari blurs; but iOS 15–17 (and the WKWebView the Hybrid app runs in there)
+only honour the `-webkit-` prefixed property, which the stylesheet did not declare. Fix: declare
+both forms and make the bar 96% opaque, so it reads cleanly with or without the blur. The lesson
+was as much about the measurement as the bug: the first pixel count sampled the wrong region
+because the screenshot is 3× the CSS pixels, and said "0 differences" for every variant.
+
+Also from reading the Spanish pack as a Spanish speaker rather than validating it as JSON: "Racha
+de 1 días", "Faltan 1 días" — the packs had no singular forms, and neither did English ("1 days").
+Added `home.streak.day` and `home.interview.tomorrow` in all seven languages and a three-way switch
+in Home; changed the weekday letters from Spain's L M X J V S D to Lu Ma Mi Ju Vi Sá Do, which reads
+naturally on both sides of the Atlantic; and fixed the manifesto's "Citiz es libre" (free as in
+freedom) where the English means free of charge.
+
+**Content angle:** "test on the engine your users actually have" — a concrete, visual example of a
+bug that Chromium-only testing cannot find, plus the small localisation lesson that a validator
+proves parity, not grammar.
+
+---
+
 <!--
   Adding an entry: date heading (`## YYYY-MM-DD — short title`), then what shipped, the story, and a
   one-line **Content angle**. Write it close to when it happened, while the reasoning is still fresh

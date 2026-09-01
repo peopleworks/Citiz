@@ -88,6 +88,7 @@
   "home.passport.title": "جواز سفر Citiz الخاص بك",
   "home.passport.summary": "أتقنت {0} من {1} سؤالًا",
   "home.streak.days": "سلسلة {0} أيام",
+  "home.streak.day": "سلسلة يوم واحد",
   "home.streak.none": "ابدأ اليوم",
   "home.weekly.title": "هذا الأسبوع",
   "home.weekly.count": "{0} من 7 أيام فيها تدريب",
@@ -97,6 +98,7 @@
   "home.practice.cta": "المزيد من التدريب",
   "home.discoverCta": "اكتشف المزيد",
   "home.interview.countdown": "يتبقى {0} يومًا على مقابلتك",
+  "home.interview.tomorrow": "مقابلتك غدًا!",
   "home.interview.today": "مقابلتك اليوم!",
 
   "exam.filingDate": "تاريخ تقديمك نموذج N-400",

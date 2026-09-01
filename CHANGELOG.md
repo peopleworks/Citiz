@@ -3,6 +3,27 @@
 All notable changes to Citiz. The format follows [Keep a Changelog](https://keepachangelog.com/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `Citiz.Hybrid` builds and runs on the iOS simulator (iPhone 17, iOS 26.5) from a Mac with the
+  `maui` workload; the README documents the `simctl` steps.
+- Singular strings for a one-day streak and an interview tomorrow, in all seven languages, so Home no
+  longer says "1 days".
+
+### Changed
+
+- Spanish pack: weekday abbreviations readable across Latin America (Lu Ma Mi Ju Vi Sá Do instead of
+  the Spain-style X for Wednesday), and four manifesto lines reworded ("gratuito", not "libre", for
+  free of charge).
+
+### Fixed
+
+- The sticky top bar is nearly opaque (96% instead of 92%) and declares the `-webkit-` prefixed
+  `backdrop-filter` too, so it reads cleanly even where the blur is not rendered (iOS 15–17 only
+  honour the prefixed form; headless WebKit screenshots skip the blur entirely).
+
 ## [0.4.0] — 2026-09-01
 
 Verified content. Every official fact Citiz shows was compared with its official document on

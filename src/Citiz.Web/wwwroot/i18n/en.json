@@ -88,6 +88,7 @@
   "home.passport.title": "Your Citiz passport",
   "home.passport.summary": "{0} of {1} questions mastered",
   "home.streak.days": "{0}-day streak",
+  "home.streak.day": "1-day streak",
   "home.streak.none": "Start today",
   "home.weekly.title": "This week",
   "home.weekly.count": "{0} of 7 days active",
@@ -97,6 +98,7 @@
   "home.practice.cta": "More practice",
   "home.discoverCta": "Discover more",
   "home.interview.countdown": "{0} days until your interview",
+  "home.interview.tomorrow": "Your interview is tomorrow!",
   "home.interview.today": "Your interview is today!",
 
   "exam.filingDate": "Date you filed Form N-400",

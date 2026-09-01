@@ -88,6 +88,7 @@
   "home.passport.title": "Hộ chiếu Citiz của bạn",
   "home.passport.summary": "Đã thuộc {0}/{1} câu hỏi",
   "home.streak.days": "Chuỗi {0} ngày",
+  "home.streak.day": "Chuỗi 1 ngày",
   "home.streak.none": "Bắt đầu hôm nay",
   "home.weekly.title": "Tuần này",
   "home.weekly.count": "{0}/7 ngày có luyện tập",
@@ -97,6 +98,7 @@
   "home.practice.cta": "Luyện tập thêm",
   "home.discoverCta": "Khám phá thêm",
   "home.interview.countdown": "Còn {0} ngày nữa đến buổi phỏng vấn của bạn",
+  "home.interview.tomorrow": "Ngày mai là buổi phỏng vấn của bạn!",
   "home.interview.today": "Hôm nay là buổi phỏng vấn của bạn!",
 
   "exam.filingDate": "Ngày bạn nộp Mẫu đơn N-400",

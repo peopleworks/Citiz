@@ -88,6 +88,7 @@
   "home.passport.title": "Ang iyong Citiz passport",
   "home.passport.summary": "{0} sa {1} tanong natutuhan na",
   "home.streak.days": "{0} araw na sunud-sunod",
+  "home.streak.day": "1 araw na sunud-sunod",
   "home.streak.none": "Magsimula ngayon",
   "home.weekly.title": "Ngayong linggo",
   "home.weekly.count": "{0} sa 7 araw may pagsasanay",
@@ -97,6 +98,7 @@
   "home.practice.cta": "Higit pang pagsasanay",
   "home.discoverCta": "Tumuklas pa",
   "home.interview.countdown": "{0} araw na lang bago ang panayam mo",
+  "home.interview.tomorrow": "Bukas na ang panayam mo!",
   "home.interview.today": "Ngayon na ang panayam mo!",
 
   "exam.filingDate": "Petsa ng pagsusumite mo ng Form N-400",

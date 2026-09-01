@@ -181,7 +181,8 @@ button, input, select { font: inherit; }
   position: sticky; inset-block-start: 0; z-index: 20;
   display: flex; align-items: center; gap: 1rem;
   min-height: 64px; padding: .5rem clamp(.75rem, 3vw, 2rem);
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  background: color-mix(in srgb, var(--surface) 96%, transparent); /* nearly opaque: the blur is a nicety, not what keeps text from showing through */
+  -webkit-backdrop-filter: blur(10px); /* iOS 15–17 Safari and WKWebView only honour the prefixed form */
   backdrop-filter: blur(10px);
   border-block-end: 1px solid var(--border);
 }

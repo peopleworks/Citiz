@@ -88,6 +88,7 @@
   "home.passport.title": "你的 Citiz 护照",
   "home.passport.summary": "已掌握 {0}/{1} 道题",
   "home.streak.days": "连续 {0} 天",
+  "home.streak.day": "连续 1 天",
   "home.streak.none": "今天开始",
   "home.weekly.title": "本周",
   "home.weekly.count": "7 天中有 {0} 天在练习",
@@ -97,6 +98,7 @@
   "home.practice.cta": "更多练习",
   "home.discoverCta": "探索更多",
   "home.interview.countdown": "距离你的面试还有 {0} 天",
+  "home.interview.tomorrow": "你的面试就在明天！",
   "home.interview.today": "你的面试就是今天！",
 
   "exam.filingDate": "你提交 N-400 表格的日期",
