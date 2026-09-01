@@ -3,33 +3,15 @@
 All notable changes to Citiz. The format follows [Keep a Changelog](https://keepachangelog.com/);
 versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-### Added
-
-- `Citiz.Hybrid` builds and runs on the iOS simulator (iPhone 17, iOS 26.5) from a Mac with the
-  `maui` workload; the README documents the `simctl` steps.
-- Singular strings for a one-day streak and an interview tomorrow, in all seven languages, so Home no
-  longer says "1 days".
-
-### Changed
-
-- Spanish pack: weekday abbreviations readable across Latin America (Lu Ma Mi Ju Vi Sá Do instead of
-  the Spain-style X for Wednesday), and four manifesto lines reworded ("gratuito", not "libre", for
-  free of charge).
-
-### Fixed
-
-- The sticky top bar is nearly opaque (96% instead of 92%) and declares the `-webkit-` prefixed
-  `backdrop-filter` too, so it reads cleanly even where the blur is not rendered (iOS 15–17 only
-  honour the prefixed form; headless WebKit screenshots skip the blur entirely).
-
 ## [0.4.0] — 2026-09-01
 
 Verified content. Every official fact Citiz shows was compared with its official document on
 2026-09-01; `citiz content report` answers "Every entry is approved" and the "Not yet verified" labels
 are gone from the interface because the content earned it. The log of what was compared, what was
 wrong and the decisions taken is `content/exams/VERIFICATION.md`.
+
+Also in this release: the Spanish interface pack, read end to end by a second fluent speaker, is
+now `Reviewed`; `Citiz.Hybrid` runs on the iOS simulator for the first time.
 
 ### Fixed
 
@@ -48,6 +30,9 @@ wrong and the decisions taken is `content/exams/VERIFICATION.md`.
 - **Discovery capsules**: the Grand Canyon capsule claimed the canyon's rocks are among the oldest
   exposed on Earth; the National Park Service says otherwise (about two billion years, against four
   billion for the oldest known). Reworded, and every capsule's facts now cite the page that states them.
+- The sticky top bar is nearly opaque (96% instead of 92%) and declares the `-webkit-` prefixed
+  `backdrop-filter` too, so it reads cleanly even where the blur is not rendered (iOS 15–17 only
+  honour the prefixed form; headless WebKit screenshots skip the blur entirely).
 
 ### Added
 
@@ -57,12 +42,21 @@ wrong and the decisions taken is `content/exams/VERIFICATION.md`.
   heading, asterisk and vocabulary word with `content/`; exit code 1 on any difference.
 - `verifiedOn` dates on every source; the official PDFs and speaker.gov added to the monitored
   sources catalog.
+- `Citiz.Hybrid` builds and runs on the iOS simulator (iPhone 17, iOS 26.5) from a Mac with the
+  `maui` workload; the README documents the `simctl` steps.
+- Singular strings for a one-day streak and an interview tomorrow, in all seven languages, so Home no
+  longer says "1 days".
 
 ### Changed
 
 - `content/exams/VERIFICATION.md` is now a dated verification log with the transcription decisions,
   instead of a to-do list.
 - READMEs, CONTRIBUTING and the roadmap describe the verified state.
+- Spanish pack: weekday abbreviations readable across Latin America (Lu Ma Mi Ju Vi Sá Do instead of
+  the Spain-style X for Wednesday), and four manifesto lines reworded ("gratuito", not "libre", for
+  free of charge).
+- The Spanish interface pack is `Reviewed` (a second fluent speaker read all 254 strings); five
+  packs remain machine drafts.
 
 ## [0.3.0] — 2026-08-25
 

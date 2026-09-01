@@ -256,7 +256,8 @@ de 1 días", "Faltan 1 días" — the packs had no singular forms, and neither d
 Added `home.streak.day` and `home.interview.tomorrow` in all seven languages and a three-way switch
 in Home; changed the weekday letters from Spain's L M X J V S D to Lu Ma Mi Ju Vi Sá Do, which reads
 naturally on both sides of the Atlantic; and fixed the manifesto's "Citiz es libre" (free as in
-freedom) where the English means free of charge.
+freedom) where the English means free of charge. Pedro counted that reading as the second review
+the localisation guide asks for, so the pack is now `Reviewed` in Settings.
 
 **Content angle:** "test on the engine your users actually have" — a concrete, visual example of a
 bug that Chromium-only testing cannot find, plus the small localisation lesson that a validator

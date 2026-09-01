@@ -22,7 +22,7 @@ The release where the "not yet verified" labels disappeared — by verification,
 - [x] Fact-check the twelve discovery capsules against their sources; mark approved
 - [x] A reproducible comparison tool (`tools/content-verify/`) and a dated verification log
 - [x] Enable GitHub Pages and put the live link in the README (https://peopleworks.github.io/Citiz/)
-- [ ] Spanish pack reviewed by a second fluent speaker → `Reviewed`
+- [x] Spanish pack reviewed by a second fluent speaker → `Reviewed`
 - [ ] First `good first issue` batch: one capsule per state, capsule review, language review
 
 ## 0.5 — Listen and speak

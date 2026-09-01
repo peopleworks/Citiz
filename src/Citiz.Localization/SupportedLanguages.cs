@@ -15,7 +15,7 @@ public static class SupportedLanguages
     public static IReadOnlyList<LanguageDefinition> All { get; } =
     [
         new("en", "English", "English", TextDirection.LeftToRight, TranslationReviewStatus.Source),
-        new("es", "Spanish", "Español", TextDirection.LeftToRight, TranslationReviewStatus.Draft),
+        new("es", "Spanish", "Español", TextDirection.LeftToRight, TranslationReviewStatus.Reviewed),
         new("zh-Hans", "Chinese (Simplified)", "简体中文", TextDirection.LeftToRight, TranslationReviewStatus.MachineDraft),
         new("zh-Hant", "Chinese (Traditional)", "繁體中文", TextDirection.LeftToRight, TranslationReviewStatus.MachineDraft),
         new("fil", "Filipino", "Filipino", TextDirection.LeftToRight, TranslationReviewStatus.MachineDraft),
