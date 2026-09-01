@@ -47,7 +47,9 @@ now `Reviewed`; `Citiz.Hybrid` runs on the iOS simulator for the first time.
   steps, including why a Debug build must be deployed with the `Install` target.
 - Native text-to-speech on Android and iOS (`MauiTextToSpeechService`, MAUI's `TextToSpeech`):
   Android's system WebView has no speech voices, so the native host now reads words and questions
-  aloud with the platform engine, on the device. Verified on the emulator with Google TTS.
+  aloud with the platform engine, on the device. Verified on the Android emulator with Google TTS and
+  by ear on the iOS simulator, where the rate is mapped to Apple's 0–1 scale (0.5 is normal) so the
+  learner hears the intended, slightly slow pace instead of near-maximum speed.
 - Safe-area insets on Android (`SafeAreaEdges="All"`), so the status bar and gesture bar no longer
   overlap Citiz's own bars on Android 15+.
 - Singular strings for a one-day streak and an interview tomorrow, in all seven languages, so Home no

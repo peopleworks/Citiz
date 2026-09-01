@@ -295,6 +295,14 @@ findings in ten minutes:
 3. **"Download my progress" works natively**: the system *Save* picker opened with
    `citiz-progress.json` pre-filled, and the file read back from the device with the expected JSON.
 
+Then Pedro listened, which no script here can. iOS spoke "too fast to understand": MAUI documents
+`SpeechOptions.Rate` as 0.1–2.0 but hands it straight to `AVSpeechUtterance.Rate`, whose scale is
+0–1 with 0.5 as normal — so the Web Speech value 0.9 was nearly Apple's maximum. Halved on iOS and
+Mac Catalyst only. And Android played nothing at all, which looked like a Mac limitation and was
+the emulator having been started with `-no-audio` by the same person who then went looking for a
+bug. Two lessons for the notebook: a rate is not a number until you know its scale, and the first
+suspect when a simulator is silent is the command line that started it.
+
 **Content angle:** "the interface you wrote for Windows paid for itself on Android" — a tidy
 before/after with two screenshots (WebView says no; native engine says yes), plus a short "two
 Android traps" explainer for anyone doing MAUI from a Mac without Android Studio.

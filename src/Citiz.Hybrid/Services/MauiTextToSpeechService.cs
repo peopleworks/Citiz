@@ -26,7 +26,8 @@ public sealed class MauiTextToSpeechService(ITextToSpeech tts) : ISpeechService
     /// <summary>
     /// Speaks <paramref name="text"/> in <paramref name="lang"/>. Returns as soon as speech starts,
     /// like the browser implementation, so a page's click handler does not wait for the sentence
-    /// to end. <paramref name="rate"/> maps to the engine's speech rate (1 is normal).
+    /// to end. <paramref name="rate"/> is on the Web Speech scale (1 is normal) and is mapped to the
+    /// platform engine's scale by <see cref="PlatformRate"/>.
     /// </summary>
     public async ValueTask SpeakAsync(string text, string lang = "en-US", double rate = 0.9)
     {
@@ -39,7 +40,7 @@ public sealed class MauiTextToSpeechService(ITextToSpeech tts) : ISpeechService
         var locale = Find(await LocalesAsync().ConfigureAwait(false), lang);
         var cts = new CancellationTokenSource();
         _current = cts;
-        _ = SpeakInBackgroundAsync(text, locale, (float)rate, cts);
+        _ = SpeakInBackgroundAsync(text, locale, PlatformRate(rate), cts);
     }
 
     /// <summary>Stops the utterance in progress, if any.</summary>
@@ -70,6 +71,22 @@ public sealed class MauiTextToSpeechService(ITextToSpeech tts) : ISpeechService
             Interlocked.CompareExchange(ref _current, null, cts);
             cts.Dispose();
         }
+    }
+
+    /// <summary>
+    /// MAUI documents <see cref="SpeechOptions.Rate"/> as 0.1–2.0 but hands the value straight to the
+    /// platform. Android's engine takes 1 as normal, so the Web Speech value passes through; Apple's
+    /// <c>AVSpeechUtterance.Rate</c> runs from 0 (slowest) to 1 (fastest) with 0.5 as normal, so the
+    /// same 0.9 there is nearly the maximum — Pedro heard it on the iOS simulator on 2026-09-01 as
+    /// "too fast to understand". Halving it gives the learner the slightly slow pace intended.
+    /// </summary>
+    private static float PlatformRate(double rate)
+    {
+#if IOS || MACCATALYST
+        return (float)Math.Clamp(rate * 0.5, 0.05, 1.0);
+#else
+        return (float)Math.Clamp(rate, 0.1, 2.0);
+#endif
     }
 
     private async Task<IReadOnlyList<Microsoft.Maui.Media.Locale>> LocalesAsync()

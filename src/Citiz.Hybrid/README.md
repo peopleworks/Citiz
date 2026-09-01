@@ -70,10 +70,14 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
     `env(safe-area-inset-*)`, so the status bar sat on Citiz's top bar and the gesture bar on the tab
     bar. `MainPage.xaml` sets `SafeAreaEdges="All"` on the page; iOS was already inset by default.
 11. ⏳ **Still open:**
-    - On iOS, `ISpeechService` and `IFileExporter` still have not been *exercised* (both need a tap
-      inside the WebView, which `simctl` cannot script); the native speech service is the same
-      class that passed on Android, and the file saver is CommunityToolkit's, so the risk is low but
-      the proof is missing. macOS (Mac Catalyst) is untested.
+    - On iOS, speech was exercised by hand on the simulator (it spoke, at first far too fast: Apple's
+      rate scale runs 0–1 with 0.5 as normal and MAUI passes the value through, so
+      `MauiTextToSpeechService.PlatformRate` halves it there). `IFileExporter` on iOS still has not
+      been exercised — it needs a tap inside the WebView, which `simctl` cannot script; the file saver
+      is CommunityToolkit's, so the risk is low but the proof is missing. macOS (Mac Catalyst) is
+      untested.
+    - When testing sound on the Android emulator, start it *without* `-no-audio` — the first session
+      here did, and "nothing plays" was the flag, not the Mac.
     - No app icon/splash beyond the template defaults, no store provisioning, no CI job for
       `Citiz.Hybrid.slnx`.
 
