@@ -65,7 +65,9 @@ terminal; an optional API; a worker that watches the official sources for change
 GitHub Pages deployment.
 
 **Not built yet** (designed, on the [roadmap](ROADMAP.md)): speech recognition and interview
-simulation, AI explanations, the .NET MAUI hybrid apps, community features, the remaining games.
+simulation, AI explanations, community features, the remaining games. The .NET MAUI hybrid app
+([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md)) runs on the iOS and Android simulators and on
+Windows, with native text-to-speech, but is not published to any store yet.
 
 <p align="center">
   <img src="Docs/screenshots/practice-desktop.png" alt="A multiple-choice practice question answered correctly, with the accepted answer highlighted, the bank's 'Verified' badge, and the official sources with their verification dates">

@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Citiz.Hybrid"
              xmlns:sharedUi="clr-namespace:Citiz.SharedUI;assembly=Citiz.SharedUI"
-             x:Class="Citiz.Hybrid.MainPage">
+             x:Class="Citiz.Hybrid.MainPage"
+             SafeAreaEdges="All">
 
+    <!-- SafeAreaEdges="All": Android 15+ draws edge to edge and, unlike iOS, gives the WebView no
+         env(safe-area-inset-*) values, so without this the status bar sat on top of Citiz's own
+         top bar and the gesture bar on top of the tab bar (seen on the Android 16 emulator). -->
     <!-- The whole app — every page, the layout, the router — is Citiz.SharedUI.App, the same
          component Citiz.Web mounts at "#app". Nothing about the UI is specific to this host. -->
     <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">

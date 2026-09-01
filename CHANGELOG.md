@@ -42,8 +42,14 @@ now `Reviewed`; `Citiz.Hybrid` runs on the iOS simulator for the first time.
   heading, asterisk and vocabulary word with `content/`; exit code 1 on any difference.
 - `verifiedOn` dates on every source; the official PDFs and speaker.gov added to the monitored
   sources catalog.
-- `Citiz.Hybrid` builds and runs on the iOS simulator (iPhone 17, iOS 26.5) from a Mac with the
-  `maui` workload; the README documents the `simctl` steps.
+- `Citiz.Hybrid` builds and runs on the iOS simulator (iPhone 17, iOS 26.5) and on the Android 16
+  emulator from a Mac with the `maui` workload; the README documents the `simctl`, SDK and `adb`
+  steps, including why a Debug build must be deployed with the `Install` target.
+- Native text-to-speech on Android and iOS (`MauiTextToSpeechService`, MAUI's `TextToSpeech`):
+  Android's system WebView has no speech voices, so the native host now reads words and questions
+  aloud with the platform engine, on the device. Verified on the emulator with Google TTS.
+- Safe-area insets on Android (`SafeAreaEdges="All"`), so the status bar and gesture bar no longer
+  overlap Citiz's own bars on Android 15+.
 - Singular strings for a one-day streak and an interview tomorrow, in all seven languages, so Home no
   longer says "1 days".
 
@@ -57,6 +63,8 @@ now `Reviewed`; `Citiz.Hybrid` runs on the iOS simulator for the first time.
   free of charge).
 - The Spanish interface pack is `Reviewed` (a second fluent speaker read all 254 strings); five
   packs remain machine drafts.
+- The "What runs where" table in Settings answers the speech row from the speech service in use
+  ("On your device" for a local voice) instead of always saying "Your browser's voice service".
 
 ## [0.3.0] — 2026-08-25
 

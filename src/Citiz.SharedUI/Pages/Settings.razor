@@ -4,6 +4,7 @@
 @inject ContentRepository Content
 @inject BrowserStorage Browser
 @inject IFileExporter Exporter
+@inject ISpeechService Speech
 
 <PageTitle>@L.T("settings.title") — @L.T("app.name")</PageTitle>
 
@@ -131,7 +132,7 @@
           <tr><td>@L.T("settings.privacy.f.progress")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.check")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.translations")</td><td>@L.T("settings.privacy.local")</td></tr>
-          <tr><td>@L.T("settings.privacy.f.speech")</td><td>@L.T("settings.privacy.browserVoice")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.speech")</td><td>@L.T(speechIsLocal ? "settings.privacy.local" : "settings.privacy.browserVoice")</td></tr>
           <tr><td>@L.T("settings.privacy.f.ai")</td><td>@L.T("settings.privacy.notBuilt")</td></tr>
         </tbody>
       </table>
@@ -146,6 +147,12 @@
   private string interviewDate = string.Empty;
   private string name = string.Empty;
   private bool confirmingDelete;
+
+  // The speech row of "What runs where" is answered by the ISpeechService in use, not hard-coded:
+  // the native hosts speak with the platform engine on the device, and a browser may use a local
+  // or a network voice. Asked after the first render because the browser implementation needs JS
+  // interop, which BlazorWebView only attaches once the first render has committed.
+  private bool speechIsLocal;
   private string? message;
   private string? error;
 
@@ -163,6 +170,25 @@
     {
       error = ex.Message;
     }
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (!firstRender)
+    {
+      return;
+    }
+
+    try
+    {
+      speechIsLocal = await Speech.IsAvailableAsync() && await Speech.IsLocalVoiceAsync("en-US");
+    }
+    catch (Exception)
+    {
+      speechIsLocal = false;
+    }
+
+    StateHasChanged();
   }
 
   private static string StatusKey(TranslationReviewStatus status) => status switch

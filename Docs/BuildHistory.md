@@ -265,6 +265,42 @@ proves parity, not grammar.
 
 ---
 
+## 2026-09-01 — Android, from zero, and the WebView that could not speak
+
+No Android tooling on this Mac at all. Homebrew gave it OpenJDK 17 and the command-line tools; the
+.NET Android SDK's own `InstallAndroidDependencies` target then pulled exactly the platform and
+build-tools it wanted; `sdkmanager` added the emulator and an Android 16 arm64 image; a Pixel-7
+AVD booted in 48 seconds. Two traps on the way, each worth an hour if unknown: Homebrew's
+`avdmanager` wrapper looks in its own SDK root and reports "Package path is not valid" for an image
+that is plainly installed (use the SDK's own `cmdline-tools/latest/bin/avdmanager`); and a Debug
+APK installed with `adb install` aborts at launch with "No assemblies found … Assuming this is part
+of Fast Deployment" — Debug builds keep the assemblies out of the APK and push them separately, so
+the deploy has to be `dotnet build -t:Install`.
+
+Then the app was up, and Android could tap what iOS could not (`adb shell input tap`). Three
+findings in ten minutes:
+
+1. **The status bar sat on top of Citiz's own top bar**, and the gesture bar on the tab bar. Android
+   15+ is edge to edge and, unlike iOS, hands the WebView no `env(safe-area-inset-*)` values, so
+   the CSS that handles the iPhone notch does nothing. Targeting API 36 the old opt-out attribute is
+   ignored, so the fix is MAUI 10's `SafeAreaEdges="All"` on the page — one attribute.
+2. **"Your browser cannot read text aloud."** Android's system WebView exposes no speech voices;
+   the page degraded honestly, exactly as designed, but a Communicate page that cannot communicate
+   is not much use. This is what the `ISpeechService` seam was carved out for on 2026-08-26:
+   `MauiTextToSpeechService` (80 lines over MAUI's `TextToSpeech`) speaks through Google TTS on
+   Android and AVSpeechSynthesizer on iOS, on the device — logcat shows the synthesis request
+   going to the local voice `en-us-x-tpf-local`. Registered for every platform except Windows,
+   whose WebView2 voices were verified earlier. The Settings privacy table then had to stop
+   hard-coding "your browser's voice service"; it now asks the service.
+3. **"Download my progress" works natively**: the system *Save* picker opened with
+   `citiz-progress.json` pre-filled, and the file read back from the device with the expected JSON.
+
+**Content angle:** "the interface you wrote for Windows paid for itself on Android" — a tidy
+before/after with two screenshots (WebView says no; native engine says yes), plus a short "two
+Android traps" explainer for anyone doing MAUI from a Mac without Android Studio.
+
+---
+
 <!--
   Adding an entry: date heading (`## YYYY-MM-DD — short title`), then what shipped, the story, and a
   one-line **Content angle**. Write it close to when it happened, while the reasoning is still fresh

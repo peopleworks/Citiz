@@ -53,14 +53,29 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
    the first try; installed and launched on an iPhone 17 simulator (iOS 26.5), the app shows real
    translated text and content from the app package, the bottom tab bar and the safe-area padding,
    and the system log has no managed exceptions. Verified 2026-09-01 with `xcrun simctl`.
-8. ⏳ **Still open:**
-   - On iOS, `ISpeechService` (WKWebView's `speechSynthesis` voices) and `IFileExporter` (the native
-     share/save sheet) have not been exercised — both need a tap inside the WebView, which `simctl`
-     cannot script. Android and macOS are untested; older Android System WebViews in particular have a
-     history of inconsistent `speechSynthesis` voice availability, so verify on a device or emulator
-     before relying on it.
-   - No app icon/splash beyond the template defaults, no store provisioning, no CI job for
-     `Citiz.Hybrid.slnx`.
+8. ✅ **Android: builds, runs and speaks on the emulator.** Same Mac, Android 16 (API 36) arm64
+   emulator, deployed with the `Install` target (see below for why not `adb install`). Content and
+   translations load from the package; the tab bar works; native text-to-speech reads words and
+   questions aloud through Google TTS with an on-device voice (`en-us-x-tpf-local`, confirmed in
+   logcat); "Download my progress" opens the system *Save* picker and writes `citiz-progress.json`
+   where the learner chooses (confirmed by reading the file back). Verified 2026-09-01.
+9. ✅ **Speech is native on Android and iOS.** Android's system WebView exposes no speech voices at
+   all — with the browser implementation the Communicate page correctly said "Your browser cannot
+   read text aloud" — so `Services/MauiTextToSpeechService.cs` speaks through MAUI's
+   `TextToSpeech` (Google TTS on Android, AVSpeechSynthesizer on iOS/macOS), registered for every
+   platform except Windows, where WebView2's Web Speech voices are already verified. The
+   "What runs where" table in Settings now asks the speech service whether the voice is local
+   instead of hard-coding "your browser's voice service".
+10. ✅ **Safe areas on Android.** Android 15+ draws edge to edge and gives the WebView no
+    `env(safe-area-inset-*)`, so the status bar sat on Citiz's top bar and the gesture bar on the tab
+    bar. `MainPage.xaml` sets `SafeAreaEdges="All"` on the page; iOS was already inset by default.
+11. ⏳ **Still open:**
+    - On iOS, `ISpeechService` and `IFileExporter` still have not been *exercised* (both need a tap
+      inside the WebView, which `simctl` cannot script); the native speech service is the same
+      class that passed on Android, and the file saver is CommunityToolkit's, so the risk is low but
+      the proof is missing. macOS (Mac Catalyst) is untested.
+    - No app icon/splash beyond the template defaults, no store provisioning, no CI job for
+      `Citiz.Hybrid.slnx`.
 
 ## Try it
 
@@ -84,7 +99,31 @@ xcrun simctl io booted screenshot citiz-ios.png                      # proof for
 ```
 
 `dotnet build -t:Run -f net10.0-ios -p:_DeviceName=:v2:udid=<UDID>` does the install-and-launch in one
-step. The web app can be checked in the same simulator's Safari against `dotnet run --project
+step.
+
+Android on the same Mac (no Android Studio needed):
+
+```bash
+brew install openjdk@17 android-commandlinetools               # JDK 17 and sdkmanager/avdmanager
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+export ANDROID_HOME=$HOME/Library/Android/sdk
+yes | sdkmanager --sdk_root=$ANDROID_HOME "cmdline-tools;latest" "platform-tools" && yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+dotnet build src/Citiz.Hybrid -f net10.0-android -t:InstallAndroidDependencies \
+  -p:AndroidSdkDirectory=$ANDROID_HOME -p:JavaSdkDirectory=$JAVA_HOME -p:AcceptAndroidSDKLicenses=True
+yes | sdkmanager --sdk_root=$ANDROID_HOME "emulator" "system-images;android-36;google_apis;arm64-v8a"
+$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n citiz -k "system-images;android-36;google_apis;arm64-v8a" -d pixel_7
+$ANDROID_HOME/emulator/emulator -avd citiz &                   # boots in a window; `adb devices` shows emulator-5554
+dotnet build src/Citiz.Hybrid -f net10.0-android -t:Install -p:AndroidSdkDirectory=$ANDROID_HOME -p:JavaSdkDirectory=$JAVA_HOME
+$ANDROID_HOME/platform-tools/adb shell am start -n com.peopleworks.citiz/crc64dee97667ff9d55d1.MainActivity
+$ANDROID_HOME/platform-tools/adb exec-out screencap -p > citiz-android.png
+```
+
+Two things that cost an hour if you do not know them: use the SDK's own `avdmanager`, not
+Homebrew's wrapper (the wrapper looks in `/opt/homebrew/share/android-commandlinetools` and will not
+see the system image); and deploy Debug builds with the `Install` target, never `adb install` of the
+APK — a Debug APK relies on *Fast Deployment*, which pushes the assemblies separately, so an
+`adb install`ed one aborts on launch with "No assemblies found … Assuming this is part of Fast
+Deployment". (`-p:EmbedAssembliesIntoApk=true`, or a Release build, produces a self-contained APK.) The web app can be checked in the same simulator's Safari against `dotnet run --project
 src/Citiz.Web --urls http://localhost:5050` (port 5000 is taken by macOS AirPlay Receiver, which
 answers 403).
 

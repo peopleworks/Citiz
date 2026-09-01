@@ -64,8 +64,9 @@ una fecha de presentación y ejecuta un simulacro en la terminal; una API opcion
 las fuentes oficiales; un Dockerfile; despliegue a GitHub Pages.
 
 **Todavía no construido** (diseñado, en la [hoja de ruta](ROADMAP.md)): reconocimiento de voz y
-simulación de entrevista, explicaciones con IA, las apps híbridas .NET MAUI, funciones comunitarias, el
-resto de los juegos.
+simulación de entrevista, explicaciones con IA, funciones comunitarias, el resto de los juegos. La app
+híbrida .NET MAUI ([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md)) ya corre en los simuladores de
+iOS y Android y en Windows, con voz nativa, pero todavía no está publicada en ninguna tienda.
 
 <p align="center">
   <img src="Docs/screenshots/practice-desktop.png" alt="Una pregunta de opción múltiple contestada correctamente, con la respuesta aceptada resaltada, la insignia 'Verificado' del banco y las fuentes oficiales con su fecha de verificación">
