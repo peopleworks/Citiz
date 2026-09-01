@@ -59,23 +59,37 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
    questions aloud through Google TTS with an on-device voice (`en-us-x-tpf-local`, confirmed in
    logcat); "Download my progress" opens the system *Save* picker and writes `citiz-progress.json`
    where the learner chooses (confirmed by reading the file back). Verified 2026-09-01.
-9. ✅ **Speech is native on Android and iOS.** Android's system WebView exposes no speech voices at
-   all — with the browser implementation the Communicate page correctly said "Your browser cannot
-   read text aloud" — so `Services/MauiTextToSpeechService.cs` speaks through MAUI's
-   `TextToSpeech` (Google TTS on Android, AVSpeechSynthesizer on iOS/macOS), registered for every
-   platform except Windows, where WebView2's Web Speech voices are already verified. The
-   "What runs where" table in Settings now asks the speech service whether the voice is local
-   instead of hard-coding "your browser's voice service".
+9. ✅ **Speech is native on Android and iOS, with the best installed voice.** Android's system
+   WebView exposes no speech voices at all — with the browser implementation the Communicate page
+   correctly said "Your browser cannot read text aloud" — and MAUI's own `TextToSpeech` can pick a
+   language but not a voice, and hands the rate straight to Apple's 0–1 scale. So the hosts speak
+   through the platform engines directly: `Services/AndroidSpeechService.cs`
+   (`Android.Speech.Tts.TextToSpeech`, best local voice by quality, the engine's default among
+   equals, never a network voice) and `Services/AppleSpeechService.cs` (`AVSpeechSynthesizer`, best
+   voice by quality — Premium > Enhanced > Default — falling back to the system voice, never a
+   novelty one; rate mapped to Apple's scale). Windows keeps WebView2's verified Web Speech voices.
+   Both log the voices they see and the one they choose (`adb logcat -s Citiz:*`,
+   `xcrun simctl launch --console-pty`). The "What runs where" table in Settings asks the service
+   whether the voice is local instead of hard-coding "your browser's voice service".
+
+   **Why it still sounds like a computer on the simulators:** they only ship the compact voices.
+   The iPhone 17 simulator lists 68 voices, every en-US one "Default" quality (Samantha plus the
+   novelty set); the Android 16 emulator has nine Google en-US voices, all the same "High" tier.
+   On a real iPhone, download an Enhanced or Premium voice (Settings → Accessibility → Spoken
+   Content → Voices → English → e.g. Ava, Zoe, Evan) and Citiz picks it up on the next launch; on a
+   real Android phone, Settings → System → Languages → Text-to-speech output → Google → Install
+   voice data does the same. A switch of library would not change this: every on-device TTS library
+   ends in the same two engines. The genuinely better voice for the questions is USCIS's own
+   recorded audio (public domain, 100 tracks for the 2008 test, roughly 25 MB) — roadmap 0.5.
 10. ✅ **Safe areas on Android.** Android 15+ draws edge to edge and gives the WebView no
     `env(safe-area-inset-*)`, so the status bar sat on Citiz's top bar and the gesture bar on the tab
     bar. `MainPage.xaml` sets `SafeAreaEdges="All"` on the page; iOS was already inset by default.
 11. ⏳ **Still open:**
-    - On iOS, speech was exercised by hand on the simulator (it spoke, at first far too fast: Apple's
-      rate scale runs 0–1 with 0.5 as normal and MAUI passes the value through, so
-      `MauiTextToSpeechService.PlatformRate` halves it there). `IFileExporter` on iOS still has not
-      been exercised — it needs a tap inside the WebView, which `simctl` cannot script; the file saver
-      is CommunityToolkit's, so the risk is low but the proof is missing. macOS (Mac Catalyst) is
-      untested.
+    - On iOS, speech was exercised by hand on the simulator (it spoke, at first far too fast — the
+      rate mapping in `AppleSpeechService` fixed that). `IFileExporter` on iOS still has not been
+      exercised — it needs a tap inside the WebView, which `simctl` cannot script; the file saver is
+      CommunityToolkit's, so the risk is low but the proof is missing. macOS (Mac Catalyst) is
+      untested, including `AppleSpeechService`'s novelty-voice guard, which matters most there.
     - When testing sound on the Android emulator, start it *without* `-no-audio` — the first session
       here did, and "nothing plays" was the flag, not the Mac.
     - No app icon/splash beyond the template defaults, no store provisioning, no CI job for

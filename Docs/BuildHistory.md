@@ -303,6 +303,20 @@ the emulator having been started with `-no-audio` by the same person who then we
 bug. Two lessons for the notebook: a rate is not a number until you know its scale, and the first
 suspect when a simulator is silent is the command line that started it.
 
+Then the real question: "it works, but it sounds like a computer — would another library sound
+better?" No: Shiny, Plugin.TextToSpeech and MAUI all end in the same two engines, AVSpeechSynthesizer
+and Android's TextToSpeech, and the timbre comes from the voice data installed on the device. What
+a library *can* do is choose the voice, which MAUI's wrapper cannot, so the wrapper was replaced by
+two small platform services that rank the installed voices by quality and log what they see. The
+logs settled the matter: the iPhone simulator has 68 voices and every en-US one is the compact
+"Default" tier (Samantha, plus Bahh, Zarvox and friends — hence a guard that never picks a novelty
+voice); the Android emulator has nine Google voices, all the same tier. On a real phone the learner
+downloads an Enhanced/Premium voice (iOS) or high-quality voice data (Android) and Citiz uses it
+without a setting. ElevenLabs was on the table and off it in one sentence: a paid API with unknown
+usage, and text leaving the device. The honest best voice for the questions is USCIS's own human
+recordings, public domain, 100 tracks for the 2008 test at about 25 MB — the "official audio" item
+of roadmap 0.5, now with a size estimate.
+
 **Content angle:** "the interface you wrote for Windows paid for itself on Android" — a tidy
 before/after with two screenshots (WebView says no; native engine says yes), plus a short "two
 Android traps" explainer for anyone doing MAUI from a Mac without Android Studio.

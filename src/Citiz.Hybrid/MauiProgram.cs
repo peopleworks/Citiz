@@ -35,13 +35,15 @@ public static class MauiProgram
 
 		// Speech: Windows' WebView2 speaks through the Web Speech API with on-device voices
 		// (verified live, README.md). Android's system WebView has no speech voices at all, and
-		// WKWebView's are not something to rely on, so the mobile hosts use the platform engine
-		// through MAUI's TextToSpeech (Services/MauiTextToSpeechService.cs).
+		// WKWebView's are not something to rely on, so the mobile hosts speak through the platform
+		// engine directly — choosing the best installed voice, which MAUI's TextToSpeech cannot
+		// (Services/AndroidSpeechService.cs, Services/AppleSpeechService.cs). One engine per app.
 #if WINDOWS
 		builder.Services.AddScoped<ISpeechService, WebSpeechService>();
+#elif ANDROID
+		builder.Services.AddSingleton<ISpeechService, AndroidSpeechService>();
 #else
-		builder.Services.AddSingleton(TextToSpeech.Default);
-		builder.Services.AddScoped<ISpeechService, MauiTextToSpeechService>();
+		builder.Services.AddSingleton<ISpeechService, AppleSpeechService>();
 #endif
 
 		// CommunityToolkit.Maui.Storage's own Windows FileSaver throws a COMException there (it
