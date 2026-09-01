@@ -1,13 +1,20 @@
 {
   "$schema": "../../schemas/questions.schema.json",
   "versionId": "2025",
-  "reviewStatus": "needs-review",
+  "reviewStatus": "approved",
   "sources": [
     {
       "authority": "USCIS",
-      "title": "128 Civics Questions and Answers (2025 version)",
+      "title": "128 Civics Questions and Answers (2025 version), M-1778 (09/25)",
+      "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/2025-Civics-Test-128-Questions-and-Answers.pdf",
+      "verifiedOn": "2026-09-01",
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+    },
+    {
+      "authority": "USCIS",
+      "title": "2025 Civics Test",
       "url": "https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
     }
   ],
@@ -43,7 +50,7 @@
       "acceptedAnswers": [
         "Forms the government",
         "Defines powers of government",
-        "Defines the parts of the government",
+        "Defines the parts of government",
         "Protects the rights of the people"
       ]
     },
@@ -161,7 +168,7 @@
       "acceptedAnswers": [
         "Everyone must follow the law.",
         "Leaders must obey the law.",
-        "Government must follow the law.",
+        "Government must obey the law.",
         "No one is above the law."
       ]
     },
@@ -357,7 +364,8 @@
       "subcategory": "System of Government",
       "prompt": "Who does a U.S. senator represent?",
       "acceptedAnswers": [
-        "Citizens of their state"
+        "Citizens of their state",
+        "People of their state"
       ]
     },
     {
@@ -378,7 +386,9 @@
       "prompt": "Who does a member of the House of Representatives represent?",
       "acceptedAnswers": [
         "Citizens in their (congressional) district",
-        "Citizens in their district"
+        "Citizens in their district",
+        "People from their (congressional) district",
+        "People in their district"
       ]
     },
     {
@@ -465,7 +475,8 @@
         "Vetoes bills",
         "Enforces laws",
         "Commander in Chief (of the military)",
-        "Chief diplomat"
+        "Chief diplomat",
+        "Appoints federal judges"
       ]
     },
     {
@@ -540,7 +551,6 @@
         "Attorney General",
         "Secretary of Agriculture",
         "Secretary of Commerce",
-        "Secretary of Defense",
         "Secretary of Education",
         "Secretary of Energy",
         "Secretary of Health and Human Services",
@@ -552,7 +562,14 @@
         "Secretary of Transportation",
         "Secretary of the Treasury",
         "Secretary of Veterans Affairs",
-        "Vice President (of the United States)"
+        "Secretary of War (Defense)",
+        "Vice-President",
+        "Administrator of the Environmental Protection Agency",
+        "Administrator of the Small Business Administration",
+        "Director of the Central Intelligence Agency",
+        "Director of the Office of Management and Budget",
+        "Director of National Intelligence",
+        "United States Trade Representative"
       ]
     },
     {
@@ -689,7 +706,7 @@
       "subcategory": "System of Government",
       "prompt": "What is the purpose of the 10th Amendment?",
       "acceptedAnswers": [
-        "(It states that the) powers not given to the federal government belong to the states or the people."
+        "(It states that the) powers not given to the federal government belong to the states or to the people."
       ]
     },
     {
@@ -785,9 +802,9 @@
       "subcategory": "Rights and Responsibilities",
       "prompt": "How can people become United States citizens?",
       "acceptedAnswers": [
+        "Be born in the United States, under the conditions set by the 14th Amendment",
         "Naturalize",
-        "Derive citizenship",
-        "Be born in the United States"
+        "Derive citizenship (under conditions set by Congress)"
       ]
     },
     {
@@ -1124,7 +1141,7 @@
         "Sherman's March",
         "(Surrender at) Appomattox",
         "(Battle of) Antietam/Sharpsburg",
-        "Lincoln assassinated"
+        "Lincoln was assassinated."
       ]
     },
     {
@@ -1169,7 +1186,7 @@
       "number": 97,
       "category": "American History",
       "subcategory": "1800s",
-      "prompt": "What amendment gives citizenship to all persons born in the United States?",
+      "prompt": "What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?",
       "acceptedAnswers": [
         "14th Amendment"
       ]
@@ -1382,7 +1399,7 @@
         "Terrorists attacked the United States",
         "Terrorists took over two planes and crashed them into the World Trade Center in New York City",
         "Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia",
-        "Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field near Shanksville, Pennsylvania"
+        "Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field in Pennsylvania"
       ]
     },
     {
@@ -1429,7 +1446,8 @@
         "Sioux",
         "Teton",
         "Tuscarora"
-      ]
+      ],
+      "note": "For a complete list of tribes, please visit bia.gov."
     },
     {
       "id": "2025-118",
@@ -1439,7 +1457,7 @@
       "prompt": "Name one example of an American innovation.",
       "acceptedAnswers": [
         "Light bulb",
-        "Automobile (cars, combustible engine)",
+        "Automobile (cars, internal combustion engine)",
         "Skyscrapers",
         "Airplane",
         "Assembly line",
@@ -1465,7 +1483,10 @@
       "prompt": "Where is the Statue of Liberty?",
       "acceptedAnswers": [
         "New York (Harbor)",
-        "Liberty Island"
+        "Liberty Island",
+        "New Jersey",
+        "near New York City",
+        "on the Hudson (River)"
       ],
       "note": "[Also acceptable are New Jersey, near New York City, and on the Hudson (River).]"
     },

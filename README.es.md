@@ -48,11 +48,11 @@ móvil — sin construir una app aparte para cada uno.</sub>
 
 ---
 
-## Qué hace hoy (v0.3)
+## Qué hace hoy (v0.4)
 
 | Pilar | Construido | Cómo |
 | --- | --- | --- |
-| **Prepárate** | Los dos bancos cívicos oficiales: **2008** (100 preguntas) y **2025** (128 preguntas) | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido) y un banco explorable con fuentes |
+| **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido) y un banco explorable con fuentes |
 | **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla (voz del navegador, en el dispositivo cuando el navegador lo permite), práctica de dictado |
 | **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto |
 | **Juega y Aprende** | *Reto cívico* | Rondas de diez preguntas de opción múltiple donde cada opción es una respuesta oficial real; los resultados cuentan como práctica |
@@ -68,11 +68,12 @@ simulación de entrevista, explicaciones con IA, las apps híbridas .NET MAUI, f
 resto de los juegos.
 
 <p align="center">
-  <img src="Docs/screenshots/practice-desktop.png" alt="Una pregunta de opción múltiple contestada correctamente, con la respuesta aceptada resaltada y una insignia 'Sin verificar aún' junto a la pregunta">
+  <img src="Docs/screenshots/practice-desktop.png" alt="Una pregunta de opción múltiple contestada correctamente, con la respuesta aceptada resaltada, la insignia 'Verificado' del banco y las fuentes oficiales con su fecha de verificación">
 </p>
 
-<sub>Cada pregunta muestra su estado de revisión al lado — <code>Sin verificar aún</code> hasta que
-un responsable la coteja con el documento oficial de USCIS. Citiz nunca esconde qué tan seguro está.</sub>
+<sub>Cada pregunta muestra su fuente y su estado de revisión. Una etiqueta como <code>Sin verificar aún</code>
+aparece solo mientras algo no se ha cotejado con el documento oficial de USCIS; hoy ninguna pregunta de
+los bancos la lleva. Citiz nunca esconde qué tan seguro está.</sub>
 
 ## ¿Qué examen me toca?
 
@@ -85,9 +86,9 @@ modela como datos, no como código, en [`content/exams/versions.json`](content/e
 | **El 20 de octubre de 2025 o después** | 2025 Civics Test | 128 | hasta 20 | 12 correctas | 9 incorrectas |
 
 Quienes tienen 65 años o más y 20 o más años como residentes permanentes estudian un subconjunto
-designado de 20 preguntas y responden hasta 10 (la *consideración especial 65/20*). Citiz tiene la lista
-de 2008; la de 2025 falta copiarla del documento oficial, así que ese modo está desactivado para 2025
-hasta entonces. Citiz no adivina.
+designado de 20 preguntas y responden hasta 10 (la *consideración especial 65/20*). Citiz tiene las dos
+listas, copiadas de los documentos oficiales, así que el modo 65/20 funciona con cualquiera de las dos
+versiones.
 
 ## Contenido en el que se puede confiar, porque se puede comprobar
 
@@ -102,12 +103,15 @@ sencillo, con tres reglas que el validador y las pruebas hacen cumplir:
    se escriben en el banco. Viven en `dynamic-answers.json` y se vuelven a verificar con su propio
    calendario.
 
-El informe `citiz content report` es honesto sobre dónde está el proyecto: los bancos se transcribieron
-de las listas oficiales y todavía necesitan que un responsable los compare línea por línea con los
-documentos de USCIS antes de marcarlos como aprobados.
-[`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md) es la lista de comprobación. Hacer esa
-comparación es hoy la contribución más valiosa, y también, no por casualidad, una muy buena forma de
-estudiar.
+Cada entrada se cotejó con su documento oficial el **1 de septiembre de 2026**: el banco 2025 con el
+formulario M-1778 de USCIS, el banco 2008 con la lista vigente en uscis.gov, los cargos con
+whitehouse.gov, speaker.gov, supremecourt.gov y la página *Check for Test Updates* de USCIS, y cada
+cápsula con las páginas que cita. `citiz content report` responde hoy "Every entry is approved".
+[`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md) es la bitácora: qué se comparó, qué
+estaba mal (el banco 2025 difería del documento oficial en 13 preguntas antes de esta pasada) y las
+decisiones tomadas; [`tools/content-verify/`](tools/content-verify/README.md) reproduce la comparación
+con un comando, para que cualquiera pueda revisar al revisor. Cuando USCIS cambia un documento, el
+worker de contenido lo señala y la etiqueta vuelve hasta que un responsable lo re-verifica.
 
 ## Ejecutarlo
 
@@ -135,8 +139,9 @@ Todo lo que ejecuta la integración continua, de una vez: `scripts/bootstrap.sh`
 
 Las contribuciones más útiles no necesitan C#:
 
-- **Verificar contenido** contra los documentos oficiales y marcarlo como aprobado:
-  [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md).
+- **Re-verificar contenido** cuando USCIS actualiza un documento, o tras una elección o un nombramiento:
+  [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md) y
+  [`tools/content-verify/`](tools/content-verify/README.md).
 - **Revisar un paquete de idioma** si hablas ese idioma:
   [`Docs/Localization/README.md`](Docs/Localization/README.md). Cinco de los siete paquetes son
   borradores automáticos que esperan a un lector fluido.

@@ -67,6 +67,9 @@ Dates are `YYYY-MM-DD`. Keys are camelCase. A source is:
 ```
 
 `verifiedOn` is the date a maintainer last compared the content with that source; `null` means never.
+The log of what was compared, and the decisions taken, is
+[`exams/VERIFICATION.md`](exams/VERIFICATION.md); the comparison itself is reproducible with
+[`tools/content-verify/`](../tools/content-verify/README.md).
 
 ## `exams/versions.json`
 
@@ -95,9 +98,9 @@ Dates are `YYYY-MM-DD`. Keys are camelCase. A source is:
 - `passingAnswers + failingAnswers` must equal `questionsAsked + 1`: the officer stops the moment the
   outcome is decided, so this is the only shape a real rule set can have.
 - `seniorQuestionNumbers` are the official numbers USCIS marks with an asterisk for applicants who are
-  65 or older and have been permanent residents for 20 or more years. Leave the array **empty** until
-  the list has been copied from the official document: an empty list disables the 65/20 mode for
-  that version, which is safer than guessing.
+  65 or older and have been permanent residents for 20 or more years. Both versions have their list
+  recorded from the official document. If a future version's list is not yet known, leave the array
+  **empty**: an empty list disables the 65/20 mode for that version, which is safer than guessing.
 
 ## `exams/<version>/questions.json`
 
@@ -133,10 +136,17 @@ Dates are `YYYY-MM-DD`. Keys are camelCase. A source is:
 - `id` is `<versionId>-<number padded to 3 digits>`. Numbers are contiguous from 1 to `bankSize`.
 - `category` and `subcategory` are the official section headings, in title case.
 - `acceptedAnswers` has one element per official accepted answer, in official order. Keep USCIS's
-  parentheses; do not add answers USCIS does not list.
+  parentheses; do not add answers USCIS does not list. When USCIS attaches a bracketed remark to an
+  answer (`Liberty Island [Also acceptable are New Jersey, …]`), the remark goes in `note` verbatim and
+  the answers it names are listed after the main ones, so the matcher accepts what the officer accepts.
+- Curly quotes and apostrophes in the official PDFs are written as straight ASCII quotes; the matcher
+  and the verification tool ignore the difference.
 - `dynamicAnswerKey`, `note` and a per-question `reviewStatus` are optional. A question without its own
   `reviewStatus` inherits the file's.
-- The keys a question may reference are exactly those defined in `dynamic-answers.json`.
+- The keys a question may reference are exactly those defined in `dynamic-answers.json`. A question
+  whose official answer is "Visit uscis.gov/citizenship/testupdates …" or "Answers will vary …" is
+  always dynamic — including the number of Supreme Court justices in the 2008 test, which USCIS moved
+  to its updates page.
 
 ## `exams/dynamic-answers.json`
 
@@ -174,7 +184,8 @@ Dates are `YYYY-MM-DD`. Keys are camelCase. A source is:
 
 `scope` is `federal`, `state` or `district`. Only federal entries carry a `holder`; state and district
 entries carry a `lookupHint` telling the learner where to find their own answer, because Citiz does not
-ask where you live.
+ask where you live. `acceptedAnswers` lists exactly the forms USCIS accepts on its *Check for Test
+Updates* page; the office's own site confirms the holder.
 
 ## `english/*-vocabulary.json`
 

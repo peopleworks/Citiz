@@ -3,6 +3,46 @@
 All notable changes to Citiz. The format follows [Keep a Changelog](https://keepachangelog.com/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] — 2026-09-01
+
+Verified content. Every official fact Citiz shows was compared with its official document on
+2026-09-01; `citiz content report` answers "Every entry is approved" and the "Not yet verified" labels
+are gone from the interface because the content earned it. The log of what was compared, what was
+wrong and the decisions taken is `content/exams/VERIFICATION.md`.
+
+### Fixed
+
+- **2025 bank**: 13 questions differed from USCIS form M-1778 (09/25), because the bank had been
+  transcribed from the 2020 test wording. Corrected verbatim: the answers to questions 3, 13, 31, 33,
+  41, 60, 68, 93, 115 and 118; the prompt of question 97; the Cabinet-level list of question 48
+  ("Secretary of War (Defense)", "Vice-President", and six more positions); the official closing line
+  of question 117 kept as its note.
+- **2008 bank, question 39** (number of Supreme Court justices) is now a dynamic answer
+  (`supreme-court-justices`), as USCIS moved it to its *Check for Test Updates* page.
+- **Statue of Liberty** (2008 Q95, 2025 Q120): the answers USCIS marks "also acceptable" — New Jersey,
+  near New York City, on the Hudson (River) — are accepted by the matcher, with the official remark
+  kept as the note.
+- **Dynamic answers** list exactly the forms USCIS accepts; the Chief Justice is recorded as
+  "John G. Roberts, Jr." as the Court writes it.
+- **Discovery capsules**: the Grand Canyon capsule claimed the canyon's rocks are among the oldest
+  exposed on Earth; the National Park Service says otherwise (about two billion years, against four
+  billion for the oldest known). Reworded, and every capsule's facts now cite the page that states them.
+
+### Added
+
+- The 65/20 question list for the 2025 test (20 questions), which enables the 65/20 practice mode for
+  applicants who filed on or after October 20, 2025.
+- `tools/content-verify/`: downloads the official USCIS documents and compares every prompt, answer,
+  heading, asterisk and vocabulary word with `content/`; exit code 1 on any difference.
+- `verifiedOn` dates on every source; the official PDFs and speaker.gov added to the monitored
+  sources catalog.
+
+### Changed
+
+- `content/exams/VERIFICATION.md` is now a dated verification log with the transcription decisions,
+  instead of a to-do list.
+- READMEs, CONTRIBUTING and the roadmap describe the verified state.
+
 ## [0.3.0] — 2026-08-25
 
 The professional foundation. The scaffold from 0.2.0 did not compile; this release replaces every

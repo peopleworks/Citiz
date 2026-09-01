@@ -24,14 +24,16 @@ validation, language-pack validation. Green there means green on the pull reques
 
 ## Ways to contribute
 
-### 1. Verify content (no code)
+### 1. Re-verify content (no code)
 
-The question banks were transcribed from the official USCIS lists and are marked `needs-review`
-until a person has compared them, line by line, with the official document. That comparison is the
-most valuable thing you can do today. [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md)
-lists exactly what to check and how to mark it done. Open the official PDF, open the JSON, compare,
-and in the same pull request set `reviewStatus` to `approved` and `verifiedOn` to today's date for
-what you verified. Partial verification is welcome: approve the questions you checked, leave the rest.
+Every official fact in `content/` was compared with its official document on 2026-09-01 and is
+marked `approved` with a `verifiedOn` date. That is a snapshot, not a guarantee: USCIS revises its
+documents, officials change, capsule sources move. [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md)
+is the log of what was compared and how to run the next round, and
+[`tools/content-verify/`](tools/content-verify/README.md) reproduces the bank comparison in one
+command. If you find a difference, fix the content to match the source verbatim and, in the same pull
+request, set `verifiedOn` to today's date on the source you opened. If something cannot be confirmed,
+set it back to `needs-review` rather than leaving it approved.
 
 ### 2. Report a wrong or outdated answer (no code)
 

@@ -49,11 +49,11 @@ mobile — no separate app to build for either.</sub>
 
 ---
 
-## What it does today (v0.3)
+## What it does today (v0.4)
 
 | Pillar | Built | How |
 | --- | --- | --- |
-| **Prepare** | Both official civics banks: **2008** (100 questions) and **2025** (128 questions) | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), and a browsable bank with sources |
+| **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), and a browsable bank with sources |
 | **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it (browser voice, on-device where the browser allows), dictation practice |
 | **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for |
 | **Play & Learn** | *Civics challenge* | Ten multiple-choice rounds where every option is a real official answer; results count as practice |
@@ -68,11 +68,12 @@ GitHub Pages deployment.
 simulation, AI explanations, the .NET MAUI hybrid apps, community features, the remaining games.
 
 <p align="center">
-  <img src="Docs/screenshots/practice-desktop.png" alt="A multiple-choice practice question answered correctly, with the accepted answer highlighted and a 'not yet verified' badge next to the question">
+  <img src="Docs/screenshots/practice-desktop.png" alt="A multiple-choice practice question answered correctly, with the accepted answer highlighted, the bank's 'Verified' badge, and the official sources with their verification dates">
 </p>
 
-<sub>Every question shows its review status next to it — <code>Not yet verified</code> until a
-maintainer checks it against the official USCIS document. Citiz never hides how sure it is.</sub>
+<sub>Every question shows its source and its review status. A label such as <code>Not yet verified</code>
+appears only while something has not been checked against the official USCIS document — today, nothing
+in the banks carries one. Citiz never hides how sure it is.</sub>
 
 ## Which test do I take?
 
@@ -85,9 +86,8 @@ models this as data, not code, in [`content/exams/versions.json`](content/exams/
 | **On or after October 20, 2025** | 2025 Civics Test | 128 | up to 20 | 12 correct | 9 incorrect |
 
 Applicants who are 65 or older with 20 or more years as permanent residents study a designated subset
-of 20 questions and are asked up to 10 (the *65/20 special consideration*). Citiz has the 2008 list;
-the 2025 list is still to be copied from the official document, so that mode is disabled for 2025
-until it is — Citiz does not guess.
+of 20 questions and are asked up to 10 (the *65/20 special consideration*). Citiz has both lists,
+copied from the official documents, so the 65/20 practice mode works for either version.
 
 ## Content you can trust, because you can check it
 
@@ -106,17 +106,26 @@ three rules that the validator and the tests enforce:
 $ dotnet run --project src/Citiz.Cli -- content report
 
   File                                 Total Approved  Pending   By status
-  exams/versions.json                      2        0        2   needs-review 2
-  exams/2008/questions.json              100        0      100   needs-review 100
-  exams/2025/questions.json              128        0      128   needs-review 128
-  ...
+  exams/versions.json                      2        2        0   approved 2
+  exams/2008/questions.json              100      100        0   approved 100
+  exams/2025/questions.json              128      128        0   approved 128
+  exams/dynamic-answers.json              10       10        0   approved 10
+  english/reading-vocabulary.json          1        1        0   approved 1
+  english/writing-vocabulary.json          1        1        0   approved 1
+  discovery/topics.json                   12       12        0   approved 12
+
+Every entry is approved.
 ```
 
-That report is honest about where the project stands: the banks were transcribed from the official
-lists and still need a maintainer to compare them line by line with the USCIS documents before they are
-marked approved. [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md) is the checklist.
-Doing that comparison is the single most valuable contribution right now — and it is also, not by
-accident, a very good way to study.
+Every entry was compared with its official document on **2026-09-01**: the 2025 bank against USCIS
+form M-1778, the 2008 bank against the current uscis.gov list, the officeholders against
+whitehouse.gov, speaker.gov, supremecourt.gov and the USCIS *Check for Test Updates* page, and every
+capsule against the pages it cites. [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md)
+is the log — what was compared, what was wrong (the 2025 bank differed from the official document in
+13 questions before this pass), and the decisions taken — and
+[`tools/content-verify/`](tools/content-verify/README.md) reproduces the comparison in one command, so
+anyone can check the checker. When USCIS changes a document, the content worker flags it and the
+label comes back until a maintainer re-verifies.
 
 ## Run it
 
@@ -167,8 +176,9 @@ the server is optional ([ADR-0003](Docs/Architecture/ADR-0003-local-first-client
 
 The most useful contributions need no C# at all:
 
-- **Verify content** against the official documents and mark it approved — see
-  [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md).
+- **Re-verify content** when USCIS updates a document, or after an election or appointment — see
+  [`content/exams/VERIFICATION.md`](content/exams/VERIFICATION.md) and
+  [`tools/content-verify/`](tools/content-verify/README.md).
 - **Review a language pack** if you speak the language — see
   [`Docs/Localization/README.md`](Docs/Localization/README.md). Five of the seven packs are machine
   drafts waiting for a fluent reader.

@@ -26,3 +26,6 @@ appsettings.*.local.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Official documents downloaded by tools/content-verify/fetch.sh (compared locally, never committed)
+tools/content-verify/official/

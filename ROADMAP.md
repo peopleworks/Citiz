@@ -4,23 +4,25 @@ The founding vision is the [design document](Docs/Design/Citiz-Design-Document-v
 This file is the short, current list of what comes next, in order. Dates are deliberately absent:
 this is a community project, and each item ships when it is right.
 
-## 0.3 — Professional foundation *(this release)*
+## 0.3 — Professional foundation
 
 Both official banks, versioned rules, dynamic answers, official vocabulary, capsules; a deterministic
 exam session and answer matcher; a Blazor WebAssembly PWA with five practice modes, dictation, discovery
 and one game; seven interface languages; the `citiz` tool; CI, CodeQL, Pages; the documents in this
 folder.
 
-## 0.4 — Verified content
+## 0.4 — Verified content *(this release)*
 
-The release where "not yet verified" labels start disappearing.
+The release where the "not yet verified" labels disappeared — by verification, not by hiding them.
 
-- [ ] Compare the 2008 bank line by line with the official USCIS document; mark approved
-- [ ] Compare the 2025 bank with the official 2025 document; mark approved
-- [ ] Record the 2025 65/20 question list and enable the mode
-- [ ] Re-verify dynamic answers (officeholders) and vocabulary lists; record `verifiedOn`
-- [ ] Spanish pack reviewed by a second fluent speaker → `Reviewed`
+- [x] Compare the 2008 bank line by line with the official USCIS document; mark approved
+- [x] Compare the 2025 bank with the official 2025 document (M-1778); 13 questions corrected; mark approved
+- [x] Record the 2025 65/20 question list and enable the mode
+- [x] Re-verify dynamic answers (officeholders) and vocabulary lists; record `verifiedOn`
+- [x] Fact-check the twelve discovery capsules against their sources; mark approved
+- [x] A reproducible comparison tool (`tools/content-verify/`) and a dated verification log
 - [x] Enable GitHub Pages and put the live link in the README (https://peopleworks.github.io/Citiz/)
+- [ ] Spanish pack reviewed by a second fluent speaker → `Reviewed`
 - [ ] First `good first issue` batch: one capsule per state, capsule review, language review
 
 ## 0.5 — Listen and speak

@@ -1,13 +1,13 @@
 {
   "$schema": "../schemas/vocabulary.schema.json",
   "kind": "reading",
-  "reviewStatus": "needs-review",
+  "reviewStatus": "approved",
   "sources": [
     {
       "authority": "USCIS",
-      "title": "Reading Vocabulary for the Naturalization Test",
+      "title": "Reading Vocabulary for the Naturalization Test (rev. 08/08)",
       "url": "https://www.uscis.gov/sites/default/files/document/guides/reading_vocab.pdf",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
     }
   ],

@@ -1,13 +1,20 @@
 {
   "$schema": "../../schemas/questions.schema.json",
   "versionId": "2008",
-  "reviewStatus": "needs-review",
+  "reviewStatus": "approved",
   "sources": [
     {
       "authority": "USCIS",
-      "title": "100 Civics Questions and Answers (2008 version)",
+      "title": "100 Civics Questions and Answers for the 2008 Test with MP3 Audio (English version), page updated 01/26/2024",
       "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test/100-civics-questions-and-answers-with-mp3-audio-english-version",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+    },
+    {
+      "authority": "USCIS",
+      "title": "Civics (History and Government) Questions for the Naturalization Test, 100q.pdf (rev. 01/19)",
+      "url": "https://www.uscis.gov/sites/default/files/document/questions-and-answers/100q.pdf",
+      "verifiedOn": "2026-09-01",
       "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
     }
   ],
@@ -233,7 +240,7 @@
       "prompt": "Who is one of your state's U.S. Senators now?",
       "acceptedAnswers": [],
       "dynamicAnswerKey": "state-senator",
-      "note": "Answers will vary. District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. Senators."
+      "note": "Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. Senators.]"
     },
     {
       "id": "2008-021",
@@ -263,7 +270,7 @@
       "prompt": "Name your U.S. Representative.",
       "acceptedAnswers": [],
       "dynamicAnswerKey": "state-representative",
-      "note": "Answers will vary. Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) Representatives in Congress."
+      "note": "Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) Representatives in Congress.]"
     },
     {
       "id": "2008-024",
@@ -441,10 +448,9 @@
       "category": "American Government",
       "subcategory": "System of Government",
       "prompt": "How many justices are on the Supreme Court?",
-      "acceptedAnswers": [
-        "nine (9)"
-      ],
-      "note": "Visit uscis.gov/citizenship/testupdates for the current number of justices on the Supreme Court."
+      "acceptedAnswers": [],
+      "dynamicAnswerKey": "supreme-court-justices",
+      "note": "Visit uscis.gov/citizenship/testupdates for the number of justices on the Supreme Court."
     },
     {
       "id": "2008-040",
@@ -491,7 +497,7 @@
       "prompt": "Who is the Governor of your state now?",
       "acceptedAnswers": [],
       "dynamicAnswerKey": "state-governor",
-      "note": "Answers will vary. District of Columbia residents should answer that D.C. does not have a Governor."
+      "note": "Answers will vary. [District of Columbia residents should answer that D.C. does not have a Governor.]"
     },
     {
       "id": "2008-044",
@@ -501,7 +507,7 @@
       "prompt": "What is the capital of your state?",
       "acceptedAnswers": [],
       "dynamicAnswerKey": "state-capital",
-      "note": "Answers will vary. District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory."
+      "note": "Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]"
     },
     {
       "id": "2008-045",
@@ -1026,7 +1032,7 @@
         "Hopi",
         "Inuit"
       ],
-      "note": "USCIS Officers will be supplied with a list of federally recognized American Indian tribes."
+      "note": "[USCIS Officers will be supplied with a list of federally recognized American Indian tribes.]"
     },
     {
       "id": "2008-088",
@@ -1126,9 +1132,12 @@
       "prompt": "Where is the Statue of Liberty?",
       "acceptedAnswers": [
         "New York (Harbor)",
-        "Liberty Island"
+        "Liberty Island",
+        "New Jersey",
+        "near New York City",
+        "on the Hudson (River)"
       ],
-      "note": "Also acceptable are New Jersey, near New York City, and on the Hudson (River)."
+      "note": "[Also acceptable are New Jersey, near New York City, and on the Hudson (River).]"
     },
     {
       "id": "2008-096",

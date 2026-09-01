@@ -1,94 +1,93 @@
 # Verifying the exam content
 
-The banks, rules, dynamic answers and vocabulary lists in this folder were transcribed from the
-official USCIS lists and are marked `needs-review`. Nothing here is marked `approved` until a person
-has opened the official document and compared. This file says what to compare, what the transcribers
-flagged as uncertain, and how to record the result.
+Every official fact in this folder — the two question banks, the exam rules, the dynamic answers and
+the vocabulary lists — carries a `reviewStatus` and a `verifiedOn` date. This file is the log of what
+was compared with which official document, the decisions taken where a document leaves room for
+one, and the procedure for the next round. Re-verification is due whenever the content worker reports
+that a monitored source changed (`content/sources/sources.json`), after every election or
+appointment, and at least once a year.
 
-**Doing this is the most valuable contribution to Citiz right now.** It is also a very good way to
-study: you will read every question and every accepted answer, slowly, against the source.
+## Verification log
 
-## How to record a verification
+### 2026-09-01 — full verification, everything approved
 
-For each entry you verified against the official document:
+Done by the maintainer with the comparison tool in [`tools/content-verify/`](../../tools/content-verify/README.md):
+the official documents were downloaded that day, parsed, and compared entry by entry with the JSON;
+every reported difference was then read against the document by hand before a decision.
 
-1. Set `"reviewStatus": "approved"` on the entry (a question, a version, a dynamic answer, a
-   vocabulary file). A question without its own `reviewStatus` inherits the file's, so approving a
-   whole bank is changing the file-level value.
-2. Set `"verifiedOn"` on the source you used to today's date (`YYYY-MM-DD`).
-3. Run `dotnet run --project src/Citiz.Cli -- content validate` and `dotnet test`.
-4. Open a pull request titled like *Verify 2008 bank, questions 1–57 against USCIS PDF*.
+| Content | Compared with | Result |
+| --- | --- | --- |
+| `2025/questions.json` (128) | *128 Civics Questions and Answers (2025 version)*, form M-1778 (09/25), the PDF linked from the USCIS 2025 Civics Test page | 13 questions corrected (see below); 65/20 list recorded; approved |
+| `2008/questions.json` (100) | the uscis.gov *100 Civics Questions and Answers for the 2008 Test* page (last updated 01/26/2024), cross-checked with `100q.pdf` (rev. 01/19) | wording matched; Q39 made dynamic; Q95 remark split out; approved |
+| `versions.json` | *The Naturalization Interview and Test* (updated 10/31/2025), the *2025 Civics Test* page (09/17/2025), M-1778, *Check for Test Updates* (09/18/2025) | filing boundary Oct 20, 2025; 10/6/5 and 20/12/9; 65/20 10/6 for both; approved |
+| `dynamic-answers.json` | *Check for Test Updates* (the forms USCIS accepts), whitehouse.gov/administration, speaker.gov, supremecourt.gov/about/biographies.aspx, all read that day | holders confirmed; accepted forms aligned with USCIS; approved |
+| `../english/reading-vocabulary.json` (64 words) | *Reading Vocabulary for the Naturalization Test* (rev. 08/08) | identical; approved |
+| `../english/writing-vocabulary.json` (75 words) | *Writing Vocabulary for the Naturalization Test* (rev. 08/08) | identical; approved |
 
-If you find a difference, fix the content to match the source verbatim, and say so in the pull
-request. If you are not sure, leave the entry `needs-review` and open a content correction issue
-with what you saw.
+**What was wrong in the 2025 bank.** It had been transcribed from the 2020 test wording with the
+2025 changes applied from memory. The official 2025 document differs in:
 
-## 2008 Civics Test (`2008/questions.json`)
+| Q | Was | Official 2025 text |
+| --- | --- | --- |
+| 3 | "Defines the parts of **the** government" | "Defines the parts of government" |
+| 13 | "Government must **follow** the law." | "Government must obey the law." |
+| 31 | one answer | adds "People of their state" |
+| 33 | two answers | adds "People from their (congressional) district", "People in their district" |
+| 41 | five answers | adds "Appoints federal judges" |
+| 48 | the 2020 Cabinet list | "Secretary of War (Defense)", "Vice-President", and six more Cabinet-level positions (EPA, SBA, CIA, OMB, DNI, USTR), in the official order |
+| 60 | "…to the states or the people." | "…to the states or **to** the people." |
+| 68 | "Naturalize", "Derive citizenship", "Be born in the United States" | "Be born in the United States, under the conditions set by the 14th Amendment", "Naturalize", "Derive citizenship (under conditions set by Congress)" |
+| 93 | "Lincoln assassinated" | "Lincoln was assassinated." |
+| 97 | "What amendment gives citizenship to all persons born in the United States?" | "What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?" |
+| 115 | "…in a field near Shanksville, Pennsylvania" | "…in a field in Pennsylvania" |
+| 117 | — | the official closing line "For a complete list of tribes, please visit bia.gov." kept as the note |
+| 118 | "Automobile (cars, combustible engine)" | "Automobile (cars, internal combustion engine)" |
 
-Official source: USCIS, *100 Civics Questions and Answers (2008 version)* —
-https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test/100-civics-questions-and-answers-with-mp3-audio-english-version
-(the PDF linked from that page is the authoritative text).
+The 65/20 list for 2025 (the asterisked questions in M-1778) is
+`[2, 7, 12, 20, 30, 36, 38, 39, 44, 52, 61, 66, 74, 78, 86, 94, 113, 115, 121, 126]`; recording it
+enabled the 65/20 practice mode for 2025. The 2008 list was confirmed unchanged.
 
-Check all 100 prompts and accepted answers. The transcriber flagged these in particular:
+**Decisions taken** (the document leaves these to the transcriber; they are recorded here so the
+next verifier does not re-decide them silently):
 
-- **Q36** (Cabinet-level positions): membership and official order of the list.
-- **Q39** (justices on the Supreme Court): recorded as `nine (9)` with the "check testupdates"
-  note; the current USCIS page shows only the instruction to check for updates. Decide whether to
-  keep the number or make it dynamic.
-- **Q40** (Chief Justice): recorded as dynamic (`chief-justice`), because USCIS's current answer is
-  "visit uscis.gov/citizenship/testupdates". Confirm.
-- **Q87** (American Indian tribes): membership and order of the 22 names.
-- **Q92** (states bordering Canada): official order.
-- **Q100** (national holidays): includes *Juneteenth*, which USCIS added in 2022; a pre-2022 PDF will
-  not have it.
-- **Q12, Q48, Q65, Q86**: sentence-style answers; check exact punctuation.
-- **Q20, Q23, Q43, Q44**: the bracketed D.C./territory remarks in `note` were reproduced from memory.
-- **65/20 list** (`versions.json` → `seniorQuestionNumbers`): confirm the 20 asterisked numbers
-  `[6, 11, 13, 17, 20, 27, 28, 44, 45, 49, 54, 56, 70, 75, 78, 85, 94, 95, 97, 99]`.
+1. **Q39 (2008), number of justices.** The official answer is now "Visit
+   uscis.gov/citizenship/testupdates for the number of justices on the Supreme Court." It is modelled
+   like the officeholders: `dynamicAnswerKey: supreme-court-justices`, with `nine (9)` recorded in
+   `dynamic-answers.json` from the *Check for Test Updates* page. The 2025 document states the number
+   directly (Q53, "Nine (9)"), so that one stays in the bank.
+2. **Q95 (2008) and Q120 (2025), the Statue of Liberty.** USCIS prints "Liberty Island [Also
+   acceptable are New Jersey, near New York City, and on the Hudson (River).]". The remark is kept in
+   `note` verbatim, and the three answers it names are listed as accepted answers after the two main
+   ones, so the matcher accepts what the officer accepts. The current 2008 page has dropped the
+   remark; the 2019 PDF and the 2025 document both carry it.
+3. **Bracketed remarks** ("Answers will vary. [District of Columbia residents…]") are reproduced in
+   `note` with USCIS's square brackets, in both banks.
+4. **Typography.** Curly quotes and apostrophes in the PDFs are written as straight ASCII quotes.
+   The answer matcher ignores the difference, and so does the comparison tool.
+5. **Dynamic answers list exactly the forms USCIS accepts** on *Check for Test Updates* (for example
+   "JD Vance", "Vance"; "Republican (Party)"), not additional variants. The matcher already accepts
+   "J.D. Vance" for "JD Vance" because punctuation is ignored.
 
-## 2025 Civics Test (`2025/questions.json`)
+### Earlier
 
-Official source: USCIS, *2025 Civics Test* —
-https://www.uscis.gov/citizenship-resource-center/naturalization-test-and-study-resources/2025-civics-test
-(the *128 Civics Questions and Answers (2025 version)* PDF).
+Transcribed 2026-08-25 from the official lists (2025 from the 2020 wording) and marked
+`needs-review`; nothing approved.
 
-The 2025 test is based on the 2020 civics test with updates. The bank was transcribed from the 2020
-wording, with the known 2025 changes applied where the transcriber was confident. **Diff the whole
-file against the 2025 PDF**; in particular:
+## How to run the next verification
 
-- **Q31** ("Who does a U.S. senator represent?"): recorded with the 2020 answer *Citizens of their
-  state*. Confirm the 2025 wording.
-- **Q126** (national holidays): *Juneteenth* was added. Confirm position and wording.
-- **Q120** (Statue of Liberty): USCIS's remark "[Also acceptable are New Jersey, near New York City,
-  and on the Hudson (River).]" is in `note`, not in `acceptedAnswers`. Decide whether the matcher
-  should accept those (move them into `acceptedAnswers`) — the transcriber left it as a note.
-- **Q23, Q29, Q61, Q62**: bracketed D.C./territory remarks in `note` are from the 2020 wording.
-- **65/20 list**: `seniorQuestionNumbers` for 2025 is **empty on purpose**. Copy the asterisked
-  question numbers from the 2025 PDF into `versions.json`; that enables the 65/20 practice mode for
-  2025. The validator requires at least 10.
+1. `tools/content-verify/fetch.sh`, then `python tools/content-verify/verify.py` (see its README for
+   the one-time setup). Read every `DIFFERENCE` against the document; `info` lines are the modelling
+   decisions above.
+2. If USCIS changed the text, change the content to match **verbatim** (rule 1 in
+   [`content/README.md`](../README.md)); if the change is substantive, say so in the pull request.
+3. Open *Check for Test Updates*, whitehouse.gov/administration, speaker.gov and
+   supremecourt.gov/about/biographies.aspx; update `holder`, `acceptedAnswers`, `since` in
+   `dynamic-answers.json` if an office changed hands.
+4. Set `verifiedOn` to today's date on every source you actually opened, keep `reviewStatus` at
+   `approved` (or set it back to `needs-review` for anything you could not confirm), and run
+   `dotnet run --project src/Citiz.Cli -- content validate` and `dotnet test`.
+5. Add a dated entry to the log above and open a pull request titled like
+   *Re-verify 2025 bank against M-1778 (rev. …)*.
 
-## Dynamic answers (`dynamic-answers.json`)
-
-Federal entries (`president`, `vice-president`, `speaker-of-the-house`, `chief-justice`,
-`president-party`) name the officeholders as of the transcription. Verify each against its source
-(whitehouse.gov/administration, speaker.gov, supremecourt.gov) **on the day you verify**, set
-`verifiedOn`, and set `approved`. These go stale with every election and appointment; the content
-worker watches the source pages and reports changes.
-
-State and district entries have no holder by design; they only need their `lookupHint` URLs checked.
-
-## Vocabulary (`../english/*.json`)
-
-Sources: the USCIS reading and writing vocabulary PDFs linked from
-https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test.
-
-Check every word and its official heading. Flagged: the slash forms (`state/states`), the
-third-person verb forms (`meets`, `elects`), and the exact punctuation of `Washington, D.C.` in the
-writing list.
-
-## Exam rules (`versions.json`)
-
-Source: https://www.uscis.gov/citizenship/learn-about-citizenship/the-naturalization-interview-and-test
-and the 2025 test page. Confirm: filing-date boundary (October 20, 2025), bank sizes (100 / 128),
-questions asked (10 / 20), passing answers (6 / 12), and the 65/20 rules (10 asked, 6 to pass) for
-both versions.
+If you find a difference and are not sure, leave the entry as it is and open a
+[content correction issue](https://github.com/peopleworks/Citiz/issues/new/choose) quoting what you saw.

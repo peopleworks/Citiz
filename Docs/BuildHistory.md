@@ -184,6 +184,51 @@ tool for the actual question being asked, instead of reaching for the most liter
 
 ---
 
+## 2026-09-01 — Verified content: the 2025 bank was wrong in 13 places
+
+The banks had shipped as `needs-review`, honestly labelled, and people were already using the live
+site. Time to earn the "Verified" badge. First obstacle, unrelated to content: this Mac had .NET 6
+through 9 but not 10, so the SDK went into `~/.dotnet` with the official install script (no sudo,
+no system change), and `Citiz.slnx` built clean on the first try.
+
+Verification was done as a diff, not a reading exercise. A small Python tool
+(`tools/content-verify/`) downloads the official documents — uscis.gov answers 403 to anything
+that does not look like a browser, so it sends a browser user agent — extracts the text (pdfplumber
+for the PDFs, BeautifulSoup for the 2008 page, which is the current source: it has Juneteenth, the
+2019 PDF does not) and compares every prompt, every answer in order, every section heading and every
+asterisk with the JSON. Then every reported difference was read against the document by hand.
+
+The 2008 bank matched. The 2025 bank did not: it had been transcribed from the 2020 test wording
+with the 2025 changes applied from memory, and USCIS form M-1778 differs in 13 questions — some
+tiny ("obey" vs "follow", "or to the people"), some not (question 97's prompt is a different
+sentence; question 48's Cabinet list has "Secretary of War (Defense)" and six positions the 2020
+list never had; question 68's answers are restructured). Nobody would have caught the small ones by
+eye, and the small ones are exactly what a typed-answer checker trips on. The 65/20 list for 2025
+was also missing entirely, so that practice mode had been disabled for everyone filing after
+October 20, 2025 — recorded from the asterisks, enabled.
+
+Two judgement calls the documents leave open, written down so the next verifier does not re-decide
+them silently: the number of Supreme Court justices became a dynamic answer for 2008 (USCIS moved it
+to its updates page, exactly like the officeholders), and the "[Also acceptable are New Jersey, …]"
+remark on the Statue of Liberty became real accepted answers, because the matcher should accept
+what the officer accepts.
+
+Then the twelve discovery capsules, each fact against the page it cites. Most held. One did not: the
+Grand Canyon capsule said its rocks are "among the oldest exposed rocks on Earth", and the National
+Park Service FAQ answers that exact question with "No" — about two billion years, against four
+billion for the oldest known. Several capsules cited a park's landing page, which says nothing; each
+now cites the page that actually states the fact. Along the way the NPS Mississippi page turned out
+to say "Gulf of America" now, so the capsule says both names.
+
+Closed with a browser smoke test (Playwright against the local build): every page, no "Not yet
+verified", no "Editorial draft", no untranslated `[key]`, and fresh screenshots for the README.
+
+**Content angle:** "I trusted my transcription and the diff said no" — a concrete, slightly
+embarrassing story about why verbatim official content needs a mechanical check, not a careful
+reader; plus the smaller lesson that a source you cite has to be the page that says the thing.
+
+---
+
 <!--
   Adding an entry: date heading (`## YYYY-MM-DD — short title`), then what shipped, the story, and a
   one-line **Content angle**. Write it close to when it happened, while the reasoning is still fresh

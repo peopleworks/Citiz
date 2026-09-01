@@ -8,15 +8,22 @@
       "holder": "Donald J. Trump",
       "acceptedAnswers": ["Donald J. Trump", "Donald Trump", "Trump"],
       "since": "2025-01-20",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": null,
-      "reviewStatus": "needs-review",
+      "reviewStatus": "approved",
       "sources": [
         {
           "authority": "The White House",
           "title": "The Administration",
           "url": "https://www.whitehouse.gov/administration/",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -26,17 +33,24 @@
       "office": "Vice President of the United States",
       "scope": "federal",
       "holder": "JD Vance",
-      "acceptedAnswers": ["JD Vance", "J.D. Vance", "James David Vance", "Vance"],
+      "acceptedAnswers": ["JD Vance", "Vance"],
       "since": "2025-01-20",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": null,
-      "reviewStatus": "needs-review",
+      "reviewStatus": "approved",
       "sources": [
         {
           "authority": "The White House",
           "title": "The Administration",
           "url": "https://www.whitehouse.gov/administration/",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -46,17 +60,24 @@
       "office": "Speaker of the House of Representatives",
       "scope": "federal",
       "holder": "Mike Johnson",
-      "acceptedAnswers": ["Mike Johnson", "Michael Johnson", "Johnson"],
+      "acceptedAnswers": ["Mike Johnson", "Johnson", "James Michael Johnson"],
       "since": "2023-10-25",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": null,
-      "reviewStatus": "needs-review",
+      "reviewStatus": "approved",
       "sources": [
         {
           "authority": "Office of the Speaker of the House",
           "title": "Speaker of the House",
           "url": "https://www.speaker.gov/",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -65,38 +86,79 @@
       "key": "chief-justice",
       "office": "Chief Justice of the United States",
       "scope": "federal",
-      "holder": "John G. Roberts Jr.",
-      "acceptedAnswers": ["John G. Roberts Jr.", "John Roberts", "Roberts"],
+      "holder": "John G. Roberts, Jr.",
+      "acceptedAnswers": ["John Roberts", "John G. Roberts, Jr.", "Roberts"],
       "since": "2005-09-29",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": null,
-      "reviewStatus": "needs-review",
+      "reviewStatus": "approved",
       "sources": [
         {
           "authority": "Supreme Court of the United States",
           "title": "Biographies of Current Justices of the Supreme Court",
           "url": "https://www.supremecourt.gov/about/biographies.aspx",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        }
+      ]
+    },
+    {
+      "key": "supreme-court-justices",
+      "office": "number of justices on the Supreme Court",
+      "scope": "federal",
+      "holder": "nine (9)",
+      "acceptedAnswers": ["nine (9)"],
+      "since": null,
+      "verifiedOn": "2026-09-01",
+      "lookupHint": null,
+      "reviewStatus": "approved",
+      "sources": [
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
+        {
+          "authority": "Supreme Court of the United States",
+          "title": "Biographies of Current Justices of the Supreme Court",
+          "url": "https://www.supremecourt.gov/about/biographies.aspx",
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
     },
     {
       "key": "president-party",
-      "office": "Political party of the President of the United States",
+      "office": "political party of the President",
       "scope": "federal",
       "holder": "Republican",
-      "acceptedAnswers": ["Republican", "Republican Party"],
+      "acceptedAnswers": ["Republican (Party)"],
       "since": "2025-01-20",
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": null,
-      "reviewStatus": "needs-review",
+      "reviewStatus": "approved",
       "sources": [
+        {
+          "authority": "USCIS",
+          "title": "Check for Test Updates",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates",
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        },
         {
           "authority": "The White House",
           "title": "The Administration",
           "url": "https://www.whitehouse.gov/administration/",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -108,7 +170,7 @@
       "holder": null,
       "acceptedAnswers": [],
       "since": null,
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": "Find your state's two U.S. senators at senate.gov/senators. Residents of the District of Columbia and of U.S. territories answer that they have no U.S. senators.",
       "reviewStatus": "approved",
       "sources": [
@@ -116,7 +178,7 @@
           "authority": "U.S. Senate",
           "title": "Senators",
           "url": "https://www.senate.gov/senators/",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -128,7 +190,7 @@
       "holder": null,
       "acceptedAnswers": [],
       "since": null,
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": "Find your U.S. representative by ZIP code at house.gov/representatives/find-your-representative. Residents of territories may name their Delegate or Resident Commissioner, or state that the territory has no voting representative.",
       "reviewStatus": "approved",
       "sources": [
@@ -136,7 +198,7 @@
           "authority": "U.S. House of Representatives",
           "title": "Find Your Representative",
           "url": "https://www.house.gov/representatives/find-your-representative",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -148,7 +210,7 @@
       "holder": null,
       "acceptedAnswers": [],
       "since": null,
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": "Find your governor at usa.gov/state-governor. Residents of the District of Columbia answer that D.C. does not have a governor.",
       "reviewStatus": "approved",
       "sources": [
@@ -156,7 +218,7 @@
           "authority": "USA.gov",
           "title": "Find and contact your state governor",
           "url": "https://www.usa.gov/state-governor",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
@@ -168,7 +230,7 @@
       "holder": null,
       "acceptedAnswers": [],
       "since": null,
-      "verifiedOn": null,
+      "verifiedOn": "2026-09-01",
       "lookupHint": "Find your state government and its capital at usa.gov/state-governments. Residents of the District of Columbia answer that D.C. is not a state and does not have a capital; residents of U.S. territories name the capital of the territory.",
       "reviewStatus": "approved",
       "sources": [
@@ -176,7 +238,7 @@
           "authority": "USA.gov",
           "title": "State governments",
           "url": "https://www.usa.gov/state-governments",
-          "verifiedOn": null,
+          "verifiedOn": "2026-09-01",
           "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
         }
       ]
