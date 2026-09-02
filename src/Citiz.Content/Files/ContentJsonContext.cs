@@ -20,6 +20,7 @@ namespace Citiz.Content.Files;
 [JsonSerializable(typeof(VocabularyFile))]
 [JsonSerializable(typeof(DiscoveryTopicsFile))]
 [JsonSerializable(typeof(SourcesFile))]
+[JsonSerializable(typeof(AudioPacksFile))]
 public sealed partial class ContentJsonContext : JsonSerializerContext
 {
 }

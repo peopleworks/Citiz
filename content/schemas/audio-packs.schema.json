@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citiz.dev/schemas/audio-packs.schema.json",
+  "title": "Citiz audio packs",
+  "description": "Recordings the learner can download once as a pack: official USCIS tracks or a synthetic voice generated from the verified text. Files live at baseUrl; this file is the catalog.",
+  "type": "object",
+  "required": ["packs"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "description", "versionId", "version", "baseUrl", "sizeBytes", "license", "voice", "generatedOn", "reviewStatus", "sources", "clips"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "kind": { "type": "string", "enum": ["official", "synthetic"] },
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "versionId": { "type": ["string", "null"], "pattern": "^[0-9]{4}$", "description": "The exam version the clips belong to; null for vocabulary." },
+          "version": { "type": "integer", "minimum": 1, "description": "Increment when the files change." },
+          "baseUrl": { "type": "string", "format": "uri", "pattern": "^https://.*/$", "description": "Where the files are served from; clip files are relative to it." },
+          "sizeBytes": { "type": "integer", "minimum": 1 },
+          "license": { "type": "string", "minLength": 1 },
+          "voice": { "type": ["string", "null"], "description": "Synthetic packs: the service and voice used." },
+          "generatedOn": { "$ref": "common.schema.json#/$defs/nullableDate" },
+          "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" },
+          "sources": { "$ref": "common.schema.json#/$defs/sources" },
+          "clips": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "role", "file", "bytes", "seconds", "sha256"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string", "pattern": "^[a-z]-[a-z0-9]+(-[a-z0-9]+)*$" },
+                "role": { "type": "string", "enum": ["recording", "prompt", "answer", "word"], "description": "recording = official question and answers (offered after reveal); prompt = question only; answer = one accepted answer; word = one vocabulary word." },
+                "file": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*\\.mp3$" },
+                "bytes": { "type": "integer", "minimum": 1 },
+                "seconds": { "type": "number", "exclusiveMinimum": 0 },
+                "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                "questionId": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{3}$" },
+                "answerIndex": { "type": "integer", "minimum": 0 },
+                "word": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

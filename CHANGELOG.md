@@ -3,6 +3,28 @@
 All notable changes to Citiz. The format follows [Keep a Changelog](https://keepachangelog.com/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **Audio packs.** Recordings a learner downloads once and keeps on the device, listed in
+  `content/audio/packs.json`, hosted anywhere with HTTPS and CORS, cached in the browser's Cache
+  Storage or the app's data folder. Two kinds, labelled everywhere they play: *official* (USCIS's own
+  MP3 track per question of the 2008 test — the question and its answers read by a person, public
+  domain, 100 tracks, 30.5 MB) and *synthetic* (the "Citiz voice", generated once by the maintainer
+  with ElevenLabs from the verified text; no learner ever calls ElevenLabs). The official recording is
+  offered after the answer is revealed and in Browse, so no practice mode gives the answer away;
+  "Listen" keeps reading the question alone. Without a pack, the device voice is used, silently.
+- Settings › Audio: download, progress, cancel, delete, and where packs come from; the "What runs
+  where" table gains a recordings row that names the host only once a pack is on the device; a
+  one-time offer on Prepare for the 2008 test. Strings in all seven languages.
+- `tools/audio/`: `fetch_uscis_2008.py` builds the official pack from uscis.gov;
+  `generate_elevenlabs.py` lists voices, makes samples, counts characters and generates the
+  synthetic packs (resumable; key from `ELEVENLABS_API_KEY` or a git-ignored `.env`); the README
+  has the macOS setup and the IIS `web.config` for the host.
+- The content validator checks packs: every clip points at a real question, answer index or word;
+  official packs hold recordings only; answers of dynamic questions are never recorded; sizes add up.
+
 ## [0.4.0] — 2026-09-01
 
 Verified content. Every official fact Citiz shows was compared with its official document on

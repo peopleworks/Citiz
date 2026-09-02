@@ -5,6 +5,7 @@
 @inject BrowserStorage Browser
 @inject IFileExporter Exporter
 @inject ISpeechService Speech
+@inject AudioService Audio
 
 <PageTitle>@L.T("settings.title") — @L.T("app.name")</PageTitle>
 
@@ -99,6 +100,67 @@
     </div>
   </section>
 
+  <section class="card" aria-labelledby="audio">
+    <h2 id="audio">@L.T("settings.audio")</h2>
+    <p class="muted small">@L.T("settings.audioHint")</p>
+    @if (!Audio.IsSupported)
+    {
+      <p class="notice">@L.T("settings.audio.unsupported")</p>
+    }
+    else if (packs.Count == 0)
+    {
+      <p class="muted small">@L.T("settings.audio.none")</p>
+    }
+    else
+    {
+      <div class="pack-list">
+        @foreach (var state in packs)
+        {
+          <div class="pack-row">
+            <div class="pack-info">
+              <div class="row listen-row">
+                <b lang="en">@state.Pack.Title</b>
+                <AudioSourceBadge Source="@(state.Pack.Kind == AudioPackKind.Official ? AudioSource.OfficialRecording : AudioSource.SyntheticPack)" />
+              </div>
+              <span class="muted small" lang="en">@state.Pack.Description · @L.T("common.sizeMB", AudioFormat.Megabytes(state.Pack.SizeBytes))</span>
+              @if (state.Status == AudioPackStatus.Downloading)
+              {
+                <div class="row listen-row">
+                  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Percent(state)"><div style="width: @(Percent(state))%"></div></div>
+                  <span class="muted small">@L.T("settings.audio.downloading", AudioFormat.Megabytes(state.BytesDone), AudioFormat.Megabytes(state.Pack.SizeBytes))</span>
+                </div>
+              }
+              @if (state.Error is not null)
+              {
+                <p class="feedback bad" role="alert">@L.T("settings.audio.failed")</p>
+              }
+            </div>
+            @if (state.Status == AudioPackStatus.NotDownloaded)
+            {
+              <button type="button" class="button primary" @onclick="() => DownloadAsync(state.Pack.Id)">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14" /></svg>
+                @L.T("settings.audio.download")
+              </button>
+            }
+            else if (state.Status == AudioPackStatus.Downloading)
+            {
+              <button type="button" class="button ghost small" @onclick="() => Cancel(state.Pack.Id)">@L.T("settings.audio.cancel")</button>
+            }
+            else
+            {
+              <span class="pack-ready">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M4 12.5l5 5L20 6.5" /></svg>
+                @L.T("settings.audio.ready")
+              </span>
+              <button type="button" class="button ghost small" @onclick="() => Audio.DeleteAsync(state.Pack.Id)">@L.T("settings.audio.delete")</button>
+            }
+          </div>
+        }
+      </div>
+      <p class="muted small">@L.T("settings.audio.sources", string.Join(", ", packs.Select(p => p.Pack.BaseUrl.Host).Distinct()))</p>
+    }
+  </section>
+
   <section class="card" aria-labelledby="data">
     <h2 id="data">@L.T("settings.data")</h2>
     <p class="muted small">@L.T("settings.dataHint")</p>
@@ -133,6 +195,7 @@
           <tr><td>@L.T("settings.privacy.f.check")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.translations")</td><td>@L.T("settings.privacy.local")</td></tr>
           <tr><td>@L.T("settings.privacy.f.speech")</td><td>@L.T(speechIsLocal ? "settings.privacy.local" : "settings.privacy.browserVoice")</td></tr>
+          <tr><td>@L.T("settings.privacy.f.recordings")</td><td>@(packs.Any(p => p.Status == AudioPackStatus.Ready) ? L.T("settings.privacy.packs", string.Join(", ", packs.Where(p => p.Status == AudioPackStatus.Ready).Select(p => p.Pack.BaseUrl.Host).Distinct())) : L.T("settings.privacy.packsNone"))</td></tr>
           <tr><td>@L.T("settings.privacy.f.ai")</td><td>@L.T("settings.privacy.notBuilt")</td></tr>
         </tbody>
       </table>
@@ -153,13 +216,53 @@
   // or a network voice. Asked after the first render because the browser implementation needs JS
   // interop, which BlazorWebView only attaches once the first render has committed.
   private bool speechIsLocal;
+
+  // Audio packs: the list and its per-pack state come from AudioService; downloads run there too,
+  // so leaving this page does not cancel one.
+  private IReadOnlyList<AudioPackState> packs = [];
+  private readonly Dictionary<string, CancellationTokenSource> downloads = new(StringComparer.Ordinal);
+
+  private static int Percent(AudioPackState state) => state.Pack.SizeBytes == 0 ? 0 : (int)Math.Min(100, 100 * state.BytesDone / state.Pack.SizeBytes);
+
+  private async Task DownloadAsync(string packId)
+  {
+    var cts = new CancellationTokenSource();
+    downloads[packId] = cts;
+    try
+    {
+      await Audio.DownloadAsync(packId, cts.Token);
+    }
+    finally
+    {
+      downloads.Remove(packId);
+      cts.Dispose();
+    }
+  }
+
+  private void Cancel(string packId)
+  {
+    if (downloads.TryGetValue(packId, out var cts))
+    {
+      cts.Cancel();
+    }
+  }
+
+  private void OnAudioChanged() => _ = InvokeAsync(async () => { packs = await Audio.GetStatesAsync(); StateHasChanged(); });
+
+  public override void Dispose()
+  {
+    Audio.Changed -= OnAudioChanged;
+    base.Dispose();
+  }
   private string? message;
   private string? error;
 
   protected override async Task OnInitializedAsync()
   {
+    Audio.Changed += OnAudioChanged;
     try
     {
+      packs = await Audio.GetStatesAsync();
       versions = await Content.GetExamVersionsAsync();
       filingDate = Learner.Exam.FilingDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
       interviewDate = Learner.Exam.InterviewDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;

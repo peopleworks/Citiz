@@ -6,6 +6,7 @@
 @inject DiscoveryEngine Discovery
 @inject ICitizAiService Ai
 @inject BrowserStorage Browser
+@inject AudioService Audio
 
 <PageTitle>@L.T("prepare.title") — @L.T("app.name")</PageTitle>
 
@@ -37,6 +38,34 @@ else
     <SourceLine Sources="context.Bank.Sources" />
   </div>
 
+  @if (offer is { } pack)
+  {
+    <div class="notice audio-offer" role="region" aria-label="@L.T("audio.offer.title")">
+      <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" /></svg>
+      <div>
+        <p class="audio-offer-title">@L.T("audio.offer.title")</p>
+        <p>@L.T("audio.offer.body", context.Version.DisplayName, L.T("common.sizeMB", AudioFormat.Megabytes(pack.Pack.SizeBytes)))</p>
+        @if (pack.Status == AudioPackStatus.Downloading)
+        {
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Percent(pack)"><div style="width: @(Percent(pack))%"></div></div>
+          <p class="muted small">@L.T("settings.audio.downloading", AudioFormat.Megabytes(pack.BytesDone), AudioFormat.Megabytes(pack.Pack.SizeBytes))</p>
+        }
+        else
+        {
+          @if (pack.Error is not null)
+          {
+            <p class="feedback bad" role="alert">@L.T("settings.audio.failed")</p>
+          }
+          <div class="row">
+            <button type="button" class="button primary" @onclick="() => Audio.DownloadAsync(pack.Pack.Id)">@L.T("audio.offer.download")</button>
+            <button type="button" class="button ghost" @onclick="DismissOfferAsync">@L.T("audio.offer.later")</button>
+            <span class="small">@L.T("audio.offer.settings")</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
   <div class="segmented" role="group" aria-label="@L.T("prepare.title")" style="margin-block: 1.25rem">
     @foreach (var (key, label) in Modes)
     {
@@ -57,7 +86,7 @@ else
         <QuestionCard Question="current">
           @if (revealed)
           {
-            <AnswerList Question="current" Answers="context.AnswersFor(current)" Dynamic="context.DynamicFor(current)" />
+            <AnswerList Question="current" Answers="context.AnswersFor(current)" Dynamic="context.DynamicFor(current)" VersionName="@context.Version.DisplayName" />
             <div class="row" style="margin-block-start: 1rem">
               <button type="button" class="button primary" @onclick="() => AnswerFlashcardAsync(true)">@L.T("prepare.knewIt")</button>
               <button type="button" class="button" @onclick="() => AnswerFlashcardAsync(false)">@L.T("prepare.notYet")</button>
@@ -93,7 +122,7 @@ else
           @if (chosen is not null)
           {
             <p class="feedback @(choice.IsCorrect(chosen.Value) ? "ok" : "bad")" role="status">@L.T(choice.IsCorrect(chosen.Value) ? "feedback.exact" : "feedback.none")</p>
-            <AnswerList Question="choice.Question" Answers="context.AnswersFor(choice.Question)" Dynamic="context.DynamicFor(choice.Question)" />
+            <AnswerList Question="choice.Question" Answers="context.AnswersFor(choice.Question)" Dynamic="context.DynamicFor(choice.Question)" VersionName="@context.Version.DisplayName" />
             <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="NextChoice">@L.T("common.next")</button></div>
           }
         </QuestionCard>
@@ -138,7 +167,7 @@ else
                   <summary><span class="num">#@record.Question.Number</span> <span>@record.Question.Prompt</span> <span class="badge @(record.Correct ? "review-approved" : "review-outdated")">@L.T(record.Correct ? "prepare.simulationCorrect" : "prepare.simulationIncorrect")</span></summary>
                   <div>
                     @if (!string.IsNullOrWhiteSpace(record.Response)) { <p class="muted">@L.T("prepare.typedLabel"): @record.Response</p> }
-                    <AnswerList Question="record.Question" Answers="context.AnswersFor(record.Question)" Dynamic="context.DynamicFor(record.Question)" />
+                    <AnswerList Question="record.Question" Answers="context.AnswersFor(record.Question)" Dynamic="context.DynamicFor(record.Question)" VersionName="@context.Version.DisplayName" />
                   </div>
                 </details>
               </li>
@@ -185,7 +214,7 @@ else
                 <summary><span class="num">#@question.Number</span> <span lang="en">@question.Prompt</span></summary>
                 <div>
                   <p class="muted small">@question.Category · @question.Subcategory <ReviewBadge Status="question.ReviewStatus" /></p>
-                  <AnswerList Question="question" Answers="context.AnswersFor(question)" Dynamic="context.DynamicFor(question)" />
+                  <AnswerList Question="question" Answers="context.AnswersFor(question)" Dynamic="context.DynamicFor(question)" VersionName="@context.Version.DisplayName" />
                   @{ var related = Discovery.ForQuestion(question.Id, topics); }
                   @if (related.Count > 0)
                   {
@@ -248,14 +277,49 @@ else
     .Where(q => string.IsNullOrWhiteSpace(filter) || q.Prompt.Contains(filter, StringComparison.OrdinalIgnoreCase) || q.AcceptedAnswers.Any(a => a.Contains(filter, StringComparison.OrdinalIgnoreCase)))
     .ToList();
 
+  // The one-time offer to download the official recordings of the learner's test: shown while an
+  // official pack for this version is not on the device and the learner has not said "not now".
+  private AudioPackState? offer;
+
+  private static int Percent(AudioPackState state) => state.Pack.SizeBytes == 0 ? 0 : (int)Math.Min(100, 100 * state.BytesDone / state.Pack.SizeBytes);
+
+  private async Task RefreshOfferAsync()
+  {
+    offer = null;
+    if (context is null || Learner.AudioOfferDismissed || !Audio.IsSupported)
+    {
+      return;
+    }
+
+    offer = (await Audio.GetStatesAsync()).FirstOrDefault(s =>
+      s.Pack.Kind == AudioPackKind.Official && s.Pack.VersionId == context.Version.Id && s.Status != AudioPackStatus.Ready);
+  }
+
+  private async Task DismissOfferAsync()
+  {
+    await Learner.DismissAudioOfferAsync();
+    offer = null;
+  }
+
+  private void OnAudioChanged() => _ = InvokeAsync(async () => { await RefreshOfferAsync(); StateHasChanged(); });
+
+  public override void Dispose()
+  {
+    Audio.Changed -= OnAudioChanged;
+    base.Dispose();
+  }
+
   protected override async Task OnInitializedAsync()
   {
+    Audio.Changed += OnAudioChanged;
     try
     {
       context = await Study.GetContextAsync();
       topics = await Content.GetDiscoveryTopicsAsync();
       BuildQueue();
       NextFlashcard();
+      await Audio.GetStatesAsync();
+      await RefreshOfferAsync();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
     {
@@ -384,7 +448,7 @@ else
     {
       <div class="answer-list">
         <p class="answer-label">@L.T("prepare.selfAssess")</p>
-        <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" />
+        <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" VersionName="@context.Version.DisplayName" />
         <div class="row">
           <button type="button" class="button primary" @onclick="() => SelfAssessAsync(question, true, inSimulation)">@L.T("common.yes")</button>
           <button type="button" class="button" @onclick="() => SelfAssessAsync(question, false, inSimulation)">@L.T("common.no")</button>
@@ -410,7 +474,7 @@ else
         </p>
         <p class="muted small">@L.T("feedback.provider", evaluation.Provider)</p>
       }
-      <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" />
+      <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" VersionName="@context.Version.DisplayName" />
       <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="next">@L.T("common.next")</button></div>
     }
   };

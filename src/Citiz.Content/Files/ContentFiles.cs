@@ -322,3 +322,94 @@ public sealed class MonitoredSourceEntry
     /// <inheritdoc cref="Sources.MonitoredSource.LastCheckedOn"/>
     public DateOnly? LastCheckedOn { get; set; }
 }
+
+/// <summary><c>audio/packs.json</c>.</summary>
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+public sealed class AudioPacksFile
+{
+    /// <summary>The JSON Schema reference, ignored.</summary>
+    [JsonPropertyName("$schema")]
+    public string? Schema { get; set; }
+
+    /// <summary>The packs.</summary>
+    public List<AudioPackEntry> Packs { get; set; } = [];
+}
+
+/// <summary>One pack in <see cref="AudioPacksFile"/>.</summary>
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+public sealed class AudioPackEntry
+{
+    /// <inheritdoc cref="Core.Audio.AudioPack.Id"/>
+    public string? Id { get; set; }
+
+    /// <summary><c>official</c> or <c>synthetic</c>.</summary>
+    public string? Kind { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.Title"/>
+    public string? Title { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.Description"/>
+    public string? Description { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.VersionId"/>
+    public string? VersionId { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.Version"/>
+    public int Version { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.BaseUrl"/>
+    public string? BaseUrl { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.SizeBytes"/>
+    public long SizeBytes { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.License"/>
+    public string? License { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.Voice"/>
+    public string? Voice { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioPack.GeneratedOn"/>
+    public DateOnly? GeneratedOn { get; set; }
+
+    /// <summary>Kebab-case review status.</summary>
+    public string? ReviewStatus { get; set; }
+
+    /// <summary>Sources.</summary>
+    public List<SourceFile> Sources { get; set; } = [];
+
+    /// <summary>The clips.</summary>
+    public List<AudioClipEntry> Clips { get; set; } = [];
+}
+
+/// <summary>One clip in <see cref="AudioPackEntry"/>.</summary>
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
+public sealed class AudioClipEntry
+{
+    /// <inheritdoc cref="Core.Audio.AudioClip.Id"/>
+    public string? Id { get; set; }
+
+    /// <summary><c>recording</c>, <c>prompt</c>, <c>answer</c> or <c>word</c>.</summary>
+    public string? Role { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.File"/>
+    public string? File { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.Bytes"/>
+    public long Bytes { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.Seconds"/>
+    public double Seconds { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.Sha256"/>
+    public string? Sha256 { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.QuestionId"/>
+    public string? QuestionId { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.AnswerIndex"/>
+    public int? AnswerIndex { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.Word"/>
+    public string? Word { get; set; }
+}

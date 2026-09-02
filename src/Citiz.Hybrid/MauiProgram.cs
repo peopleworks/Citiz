@@ -38,6 +38,10 @@ public static class MauiProgram
 		// WKWebView's are not something to rely on, so the mobile hosts speak through the platform
 		// engine directly — choosing the best installed voice, which MAUI's TextToSpeech cannot
 		// (Services/AndroidSpeechService.cs, Services/AppleSpeechService.cs). One engine per app.
+		// Audio packs: downloaded into app data by the host and handed to the WebView's player.
+		builder.Services.AddSingleton<IAudioPackStore, AppDataAudioPackStore>();
+		builder.Services.AddScoped<AudioService>();
+
 #if WINDOWS
 		builder.Services.AddScoped<ISpeechService, WebSpeechService>();
 #elif ANDROID

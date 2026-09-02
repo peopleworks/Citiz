@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Citiz.Content.Files;
 using Citiz.Content.Sources;
+using Citiz.Core.Audio;
 using Citiz.Core.Discovery;
 using Citiz.Core.English;
 using Citiz.Core.Exams;
@@ -55,6 +56,10 @@ public sealed class ContentRepository
     /// <summary>The catalog of monitored official sources.</summary>
     public Task<IReadOnlyList<MonitoredSource>> GetMonitoredSourcesAsync(CancellationToken cancellationToken = default) =>
         CachedAsync(ContentPaths.MonitoredSources, ContentJsonContext.Default.SourcesFile, f => ContentMapper.ToMonitoredSources(f), cancellationToken);
+
+    /// <summary>The audio packs the learner can download.</summary>
+    public Task<IReadOnlyList<AudioPack>> GetAudioPacksAsync(CancellationToken cancellationToken = default) =>
+        CachedAsync(ContentPaths.AudioPacks, ContentJsonContext.Default.AudioPacksFile, f => ContentMapper.ToAudioPacks(f), cancellationToken);
 
     /// <summary>The bank for the version that applies to an N-400 filing date, or <c>null</c> when no version does.</summary>
     public async Task<(ExamVersion Version, QuestionBank Bank)?> GetExamForFilingDateAsync(DateOnly filingDate, CancellationToken cancellationToken = default)

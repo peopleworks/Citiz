@@ -84,7 +84,14 @@ Build and run it through [`Citiz.Hybrid.slnx`](../../Citiz.Hybrid.slnx) instead.
 10. ✅ **Safe areas on Android.** Android 15+ draws edge to edge and gives the WebView no
     `env(safe-area-inset-*)`, so the status bar sat on Citiz's top bar and the gesture bar on the tab
     bar. `MainPage.xaml` sets `SafeAreaEdges="All"` on the page; iOS was already inset by default.
-11. ⏳ **Still open:**
+11. ✅ **Audio packs download into app data.** `Services/AppDataAudioPackStore.cs` implements
+    `IAudioPackStore` for the native hosts: files go to `FileSystem.AppDataDirectory/audio/<pack>-v<n>/`,
+    each checked against the manifest's SHA-256 before the pack counts as complete, and play by
+    handing the bytes to the WebView's player (`citiz.audio.playBase64`), since a `BlazorWebView`
+    serves only the app's own static files. Not yet exercised on a device: the web store was
+    verified end to end in the browser; this one compiles for all targets and shares the service
+    above it.
+12. ⏳ **Still open:**
     - On iOS, speech was exercised by hand on the simulator (it spoke, at first far too fast — the
       rate mapping in `AppleSpeechService` fixed that). `IFileExporter` on iOS still has not been
       exercised — it needs a tap inside the WebView, which `simctl` cannot script; the file saver is

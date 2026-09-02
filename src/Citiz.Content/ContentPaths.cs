@@ -21,6 +21,9 @@ public static class ContentPaths
     /// <summary>The catalog of monitored official sources.</summary>
     public const string MonitoredSources = "sources/sources.json";
 
+    /// <summary>The audio packs the learner can download: official recordings and the synthetic voice.</summary>
+    public const string AudioPacks = "audio/packs.json";
+
     /// <summary>The question bank for one exam version.</summary>
     public static string Questions(string versionId)
     {

@@ -27,8 +27,9 @@ The release where the "not yet verified" labels disappeared — by verification,
 
 ## 0.5 — Listen and speak
 
-- [ ] Official audio: play the question the way it is asked (browser voice today; recorded human
-  audio if licensing allows)
+- [x] Official audio: USCIS's own recordings of the 2008 questions, downloaded once as a pack (public
+  domain); a synthetic "Citiz voice" pack for the 2025 test and the vocabulary, generated once by the
+  maintainer and labelled as such; the device voice as the fallback everywhere
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full
   sequence, scored per skill

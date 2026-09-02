@@ -12,6 +12,9 @@ Everything is in your browser's `localStorage`, on your device:
 | `citiz.profile` | Your interface, study and help languages | So the app opens in your language |
 | `citiz.exam` | The date you filed Form N-400 (optional), an explicit version choice (optional), whether you use the 65/20 consideration | So the app practices the right version with the right rules |
 | `citiz.progress` | Which questions and words you practiced, how many times, how well, and when they come back | Spaced review |
+| `citiz.audio.offer` | Whether you dismissed the one-time offer to download the official recordings | So the offer is not repeated |
+
+Audio packs you download (Settings → *Audio*) are kept in the browser's Cache Storage, or in the app's own data folder in the mobile apps, and are deleted from the same place.
 
 You can download all of it as a file (Settings → *Download my progress*) and delete all of it
 (Settings → *Delete everything*). Nothing is sent to a server. There is no account. There are no
@@ -36,7 +39,8 @@ version directly instead.
 | Answer checking | On your device (deterministic matcher; no AI) |
 | Progress and spaced review | On your device |
 | Interface translations | On your device |
-| Reading text aloud | Your browser's speech synthesis. Most browsers synthesize on the device; some use a network voice, and the interface tells you which one it is using |
+| Reading text aloud | On your device in the mobile apps (the phone's own voices). In the browser, its speech synthesis: most browsers synthesize on the device, some use a network voice, and the interface tells you which one it is using |
+| Question and word recordings | On your device, after you download a pack once (Settings → *Audio*, or the one-time offer). The pack's host sees that one download, never which question you study. Official USCIS recordings and the synthetic Citiz voice are labelled wherever they play; without a pack, your device's voice is used |
 | AI conversation and explanations | Not built yet. When they exist they will be optional, off by default, and will say what is sent and to whom before you turn them on |
 
 The full policy is [`Docs/Privacy/LOCAL_VS_CLOUD.md`](Docs/Privacy/LOCAL_VS_CLOUD.md): every

@@ -1,4 +1,5 @@
 using Citiz.Content.Validation;
+using Citiz.Core.Audio;
 using Citiz.Core.English;
 using Citiz.Core.Exams;
 using Citiz.Testing;
@@ -115,5 +116,23 @@ public sealed class RepositoryContentTests
 
         Assert.Same(first, second);
         Assert.NotSame(first, third);
+    }
+
+    [Fact]
+    public async Task The_official_2008_audio_pack_covers_every_question_once()
+    {
+        var repository = Repository();
+        var packs = await repository.GetAudioPacksAsync();
+        var bank = await repository.GetQuestionBankAsync("2008");
+
+        var pack = Assert.Single(packs, p => p.Id == "uscis-2008");
+        Assert.Equal(AudioPackKind.Official, pack.Kind);
+        Assert.Equal(100, pack.Clips.Count);
+        Assert.All(pack.Clips, c => Assert.Equal(AudioClipRole.Recording, c.Role));
+        Assert.Equal(bank.Questions.Select(q => q.Id).OrderBy(id => id), pack.Clips.Select(c => c.QuestionId).OrderBy(id => id));
+        Assert.Equal(pack.Clips.Sum(c => c.Bytes), pack.SizeBytes);
+        Assert.NotNull(pack.RecordingFor("2008-036"));
+        Assert.Null(pack.PromptFor("2008-036"));
+        Assert.NotEmpty(pack.Sources);
     }
 }

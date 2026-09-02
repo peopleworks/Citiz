@@ -49,7 +49,17 @@ public sealed class ContentValidatorTests
         { "sources": [ { "id": "s", "authority": "USCIS", "title": "T", "url": "https://www.uscis.gov/", "format": "html", "checkEvery": "P7D", "monitor": true, "requiresHumanReview": true, "feeds": ["exams/versions.json"], "lastHash": null, "lastCheckedOn": null } ] }
         """;
 
+    private const string Sha = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
+    private static string Packs(string kind = "official", string role = "recording", string questionId = "2008-001", string answerIndex = "", string word = "") => $$"""
+        { "packs": [ { "id": "uscis-2008", "kind": "{{kind}}", "title": "T", "description": "D", "versionId": "2008", "version": 1,
+            "baseUrl": "https://audio.example/uscis-2008/v1/", "sizeBytes": 10, "license": "Public domain", "voice": {{(kind == "synthetic" ? "\"ElevenLabs · Test\"" : "null")}}, "generatedOn": null,
+            "reviewStatus": "approved", "sources": [{{Source}}],
+            "clips": [ { "id": "r-2008-001", "role": "{{role}}", "file": "q001.mp3", "bytes": 10, "seconds": 9.5, "sha256": "{{Sha}}"{{(questionId.Length > 0 ? $", \"questionId\": \"{questionId}\"" : "")}}{{(answerIndex.Length > 0 ? $", \"answerIndex\": {answerIndex}" : "")}}{{(word.Length > 0 ? $", \"word\": \"{word}\"" : "")}} } ] } ] }
+        """;
+
     private static MemoryContentStore Valid() => new MemoryContentStore()
+        .With(ContentPaths.AudioPacks, Packs())
         .With(ContentPaths.ExamVersions, Versions())
         .With(ContentPaths.Questions("2008"), Bank("2008"))
         .With(ContentPaths.Questions("2025"), Bank("2025"))
@@ -182,5 +192,38 @@ public sealed class ContentValidatorTests
 
         Assert.Equal(ContentPaths.ExamVersions, ex.File);
         Assert.Contains("version '2030' standard", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Audio_pack_clips_must_point_at_real_questions()
+    {
+        var report = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(questionId: "2008-099"))).ValidateAsync();
+
+        Assert.False(report.IsValid);
+        Assert.Contains(report.Issues, i => i.File == ContentPaths.AudioPacks && i.Message.Contains("2008-099", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task Official_audio_packs_hold_recordings_and_synthetic_packs_never_do()
+    {
+        var official = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(role: "prompt"))).ValidateAsync();
+        var synthetic = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(kind: "synthetic", role: "recording"))).ValidateAsync();
+        var syntheticPrompt = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(kind: "synthetic", role: "prompt"))).ValidateAsync();
+
+        Assert.Contains(official.Issues, i => i.Message.Contains("official packs hold recordings", StringComparison.Ordinal));
+        Assert.Contains(synthetic.Issues, i => i.Message.Contains("official packs hold recordings", StringComparison.Ordinal));
+        Assert.True(syntheticPrompt.IsValid, string.Join("; ", syntheticPrompt.Issues.Select(i => i.Message)));
+    }
+
+    [Fact]
+    public async Task Audio_pack_answers_are_never_recorded_for_dynamic_questions_and_words_must_exist()
+    {
+        var dynamic = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(kind: "synthetic", role: "answer", questionId: "2008-002", answerIndex: "0"))).ValidateAsync();
+        var unknownWord = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(kind: "synthetic", role: "word", questionId: "", word: "Lincolnshire"))).ValidateAsync();
+        var knownWord = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, Packs(kind: "synthetic", role: "word", questionId: "", word: "Lincoln"))).ValidateAsync();
+
+        Assert.Contains(dynamic.Issues, i => i.Message.Contains("dynamic question", StringComparison.Ordinal));
+        Assert.Contains(unknownWord.Issues, i => i.Message.Contains("Lincolnshire", StringComparison.Ordinal));
+        Assert.True(knownWord.IsValid, string.Join("; ", knownWord.Issues.Select(i => i.Message)));
     }
 }

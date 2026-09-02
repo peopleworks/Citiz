@@ -323,6 +323,43 @@ Android traps" explainer for anyone doing MAUI from a Mac without Android Studio
 
 ---
 
+## 2026-09-01 — Official audio: the voice USCIS already recorded
+
+"The voice sounds like a computer" had a better answer than a better synthesizer: USCIS publishes
+a human recording of every 2008 question, public domain, one MP3 per question. Measured before
+designing: 100 tracks, 30.5 MB, 30 minutes — and every track reads the question **and** all its
+answers (question 36, the Cabinet list, runs 1:07). That single fact shaped the feature: the
+official recording cannot be the "Listen" button on a flashcard before the reveal, so there are
+two actions, "Listen" (question only, device voice or a synthetic clip) and "Play the USCIS
+recording" (after the reveal and in Browse), each with a badge saying what it is.
+
+Pedro has a paid ElevenLabs account, so the 2025 test — for which USCIS has published no audio —
+gets a synthetic "Citiz voice" pack generated once by the maintainer from the verified text (the
+key never ships; no learner ever calls ElevenLabs), labelled "Synthetic voice · not USCIS"
+wherever it plays. Counted from the JSON: 17,621 characters for the 2025 prompts, answers and the
+vocabulary, 35,202 for everything; ElevenLabs bills one credit per character, so a Starter plan
+covers it in two months and a Creator plan in one.
+
+Privacy decided the delivery: whole packs, downloaded once on the learner's request from a plain
+HTTPS host and kept on the device (Cache Storage in the browser, app data natively). One download
+reveals nothing about which questions are studied, which is exactly what the "What runs where"
+table now says, naming the host only once a pack is present. The mockup went through the design
+canvas first, and a second pair of eyes caught four things worth fixing before code: two names for
+one pack, the official-audio badge in the same green as "Verified", the 2025 "Listen" not saying it
+reads the question alone, and three frames too short for their content.
+
+Testing found only test bugs, three of them, each instructive: a zsh variable named `path` clobbers
+`PATH` (every command "not found" mid-script); a relative path run from the wrong directory
+silently edited nothing; and Chromium refuses port 5060 outright (`ERR_UNSAFE_PORT`, it is SIP's) —
+which at least proved the app's "The download did not finish" path works. On 5070 the whole flow
+ran in the browser: download, offer gone, reveal, the official track playing, privacy row, delete.
+
+**Content angle:** "the best voice was already recorded, for free, by the authority" — plus a
+clean example of a privacy constraint (whole-pack downloads) shaping architecture rather than
+being bolted on.
+
+---
+
 <!--
   Adding an entry: date heading (`## YYYY-MM-DD — short title`), then what shipped, the story, and a
   one-line **Content angle**. Write it close to when it happened, while the reasoning is still fresh

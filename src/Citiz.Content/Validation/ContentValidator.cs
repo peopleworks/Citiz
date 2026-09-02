@@ -1,4 +1,6 @@
+using System.Globalization;
 using Citiz.Content.Sources;
+using Citiz.Core.Audio;
 using Citiz.Core.Content;
 using Citiz.Core.Discovery;
 using Citiz.Core.English;
@@ -112,12 +114,14 @@ public sealed class ContentValidator
             CheckDynamicAnswers(dynamicAnswers, banks.Values);
         }
 
+        var vocabularies = new List<VocabularyList>();
         foreach (var kind in new[] { VocabularyKind.Reading, VocabularyKind.Writing })
         {
             var path = kind == VocabularyKind.Reading ? ContentPaths.ReadingVocabulary : ContentPaths.WritingVocabulary;
             var list = await LoadAsync(path, () => _repository.GetVocabularyAsync(kind, cancellationToken)).ConfigureAwait(false);
             if (list is not null)
             {
+                vocabularies.Add(list);
                 CheckVocabulary(list, kind, path);
             }
         }
@@ -132,6 +136,12 @@ public sealed class ContentValidator
         if (sources is not null)
         {
             await CheckMonitoredSourcesAsync(sources, cancellationToken).ConfigureAwait(false);
+        }
+
+        var packs = await LoadAsync(ContentPaths.AudioPacks, () => _repository.GetAudioPacksAsync(cancellationToken)).ConfigureAwait(false);
+        if (packs is not null)
+        {
+            CheckAudioPacks(packs, banks, vocabularies);
         }
 
         var ordered = _issues.OrderByDescending(i => i.Severity).ThenBy(i => i.File, StringComparer.Ordinal).ToList();
@@ -416,6 +426,124 @@ public sealed class ContentValidator
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Audio packs must point at real content: every clip names a question that exists in the pack's
+    /// version, an answer index inside that question's accepted answers, or a word in a vocabulary
+    /// list; official packs carry recordings only, synthetic packs never do; and the totals add up,
+    /// because the interface quotes them before a download.
+    /// </summary>
+    private void CheckAudioPacks(IReadOnlyList<AudioPack> packs, IReadOnlyDictionary<string, QuestionBank> banks, IReadOnlyList<VocabularyList> vocabularies)
+    {
+        const string path = ContentPaths.AudioPacks;
+        var words = vocabularies.SelectMany(v => v.AllWords).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var clipIds = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var duplicate in packs.GroupBy(p => p.Id, StringComparer.Ordinal).Where(g => g.Count() > 1))
+        {
+            Error(path, $"pack id '{duplicate.Key}' appears more than once.");
+        }
+
+        foreach (var pack in packs)
+        {
+            var where = $"pack '{pack.Id}'";
+            var bank = pack.VersionId is { } versionId && banks.TryGetValue(versionId, out var b) ? b : null;
+
+            if (pack.VersionId is not null && bank is null)
+            {
+                Error(path, $"{where} names version '{pack.VersionId}', which has no question bank.");
+            }
+
+            if (pack.Kind == AudioPackKind.Synthetic && pack.Voice is null)
+            {
+                Warning(path, $"{where} is synthetic but does not say which voice generated it.");
+            }
+
+            if (pack.Sources.Count == 0)
+            {
+                Error(path, $"{where} has no sources.");
+            }
+
+            var total = pack.Clips.Sum(c => c.Bytes);
+            if (total != pack.SizeBytes)
+            {
+                Error(path, $"{where} sizeBytes is {pack.SizeBytes.ToString(CultureInfo.InvariantCulture)} but its clips add up to {total.ToString(CultureInfo.InvariantCulture)}.");
+            }
+
+            foreach (var duplicate in pack.Clips.GroupBy(c => c.File, StringComparer.OrdinalIgnoreCase).Where(g => g.Count() > 1))
+            {
+                Error(path, $"{where} lists file '{duplicate.Key}' more than once.");
+            }
+
+            foreach (var clip in pack.Clips)
+            {
+                var clipWhere = $"{where} clip '{clip.Id}'";
+
+                if (!clipIds.Add(clip.Id))
+                {
+                    Error(path, $"{clipWhere} id appears more than once across packs.");
+                }
+
+                if (clip.Sha256.Length != 64 || !clip.Sha256.All(Uri.IsHexDigit))
+                {
+                    Error(path, $"{clipWhere} sha256 is not a 64-digit hex digest.");
+                }
+
+                var officialRole = clip.Role == AudioClipRole.Recording;
+                if (pack.Kind == AudioPackKind.Official != officialRole)
+                {
+                    Error(path, $"{clipWhere} role '{clip.Role}' does not fit a {pack.Kind.ToString().ToLowerInvariant()} pack: official packs hold recordings, synthetic packs hold prompts, answers and words.");
+                }
+
+                switch (clip.Role)
+                {
+                    case AudioClipRole.Recording:
+                    case AudioClipRole.Prompt:
+                    case AudioClipRole.Answer:
+                        var question = clip.QuestionId is { } qid && bank is not null ? bank.Questions.FirstOrDefault(q => q.Id == qid) : null;
+                        if (clip.QuestionId is null)
+                        {
+                            Error(path, $"{clipWhere} has no questionId.");
+                        }
+                        else if (question is null)
+                        {
+                            Error(path, $"{clipWhere} names question '{clip.QuestionId}', which is not in the bank of version '{pack.VersionId}'.");
+                        }
+                        else if (clip.Role == AudioClipRole.Answer)
+                        {
+                            if (clip.AnswerIndex is not { } index)
+                            {
+                                Error(path, $"{clipWhere} has no answerIndex.");
+                            }
+                            else if (question.IsDynamic)
+                            {
+                                Error(path, $"{clipWhere} voices an answer of dynamic question '{question.Id}'; dynamic answers change and are never recorded.");
+                            }
+                            else if (index >= question.AcceptedAnswers.Count)
+                            {
+                                Error(path, $"{clipWhere} answerIndex {index.ToString(CultureInfo.InvariantCulture)} is outside the {question.AcceptedAnswers.Count.ToString(CultureInfo.InvariantCulture)} accepted answers of '{question.Id}'.");
+                            }
+                        }
+
+                        break;
+
+                    case AudioClipRole.Word:
+                        if (clip.Word is null)
+                        {
+                            Error(path, $"{clipWhere} has no word.");
+                        }
+                        else if (!words.Contains(clip.Word))
+                        {
+                            Error(path, $"{clipWhere} voices '{clip.Word}', which is not in the reading or writing vocabulary.");
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        Summarize(path, packs.Select(p => p.ReviewStatus));
     }
 
     private void Summarize(string path, IEnumerable<ReviewStatus> statuses)

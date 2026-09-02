@@ -19,6 +19,8 @@ builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.H
 
 builder.Services.AddScoped<BrowserStorage>();
 builder.Services.AddScoped<ISpeechService, WebSpeechService>();
+builder.Services.AddScoped<IAudioPackStore, BrowserAudioPackStore>();
+builder.Services.AddScoped<AudioService>();
 builder.Services.AddScoped<IFileExporter, BrowserFileExporter>();
 builder.Services.AddScoped<IContentStore, HttpContentStore>();
 builder.Services.AddScoped<ContentRepository>();

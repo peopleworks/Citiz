@@ -4,6 +4,7 @@
 @inject ContentRepository Content
 @inject ISpeechService Speech
 @inject BrowserStorage Browser
+@inject AudioService Audio
 
 <PageTitle>@L.T("communicate.title") — @L.T("app.name")</PageTitle>
 
@@ -22,6 +23,10 @@ else
   @if (!speechAvailable)
   {
     <p class="notice warn">@L.T("communicate.speechUnavailable")</p>
+  }
+  else if (wordSource == AudioSource.SyntheticPack)
+  {
+    <p class="muted small row listen-row">@L.T("communicate.voicePack") <AudioSourceBadge Source="AudioSource.SyntheticPack" /> <span>@L.T("communicate.voicePackFallback")</span></p>
   }
   else
   {
@@ -84,6 +89,7 @@ else
   private string? error;
   private bool speechAvailable;
   private bool speechLocal;
+  private AudioSource wordSource;
 
   private string dictationWord = string.Empty;
   private string dictated = string.Empty;
@@ -91,12 +97,14 @@ else
 
   protected override async Task OnInitializedAsync()
   {
+    Audio.Changed += OnAudioChanged;
     try
     {
       reading = await Content.GetVocabularyAsync(VocabularyKind.Reading);
       writing = await Content.GetVocabularyAsync(VocabularyKind.Writing);
-      speechAvailable = await Speech.IsAvailableAsync();
-      speechLocal = speechAvailable && await Speech.IsLocalVoiceAsync("en-US");
+      wordSource = await Audio.WordSourceAsync();
+      speechAvailable = wordSource != AudioSource.None;
+      speechLocal = wordSource == AudioSource.SyntheticPack || (speechAvailable && await Speech.IsLocalVoiceAsync("en-US"));
       PickDictationWord();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
@@ -107,7 +115,20 @@ else
 
   private static string WordId(VocabularyKind kind, string word) => $"vocab:{kind.ToString().ToLowerInvariant()}:{word.ToLowerInvariant()}";
 
-  private Task SpeakAsync(string text) => Speech.SpeakAsync(text).AsTask();
+  private Task SpeakAsync(string text) => Audio.PlayWordAsync(text);
+
+  private void OnAudioChanged() => _ = InvokeAsync(async () =>
+  {
+    wordSource = await Audio.WordSourceAsync();
+    speechAvailable = wordSource != AudioSource.None;
+    StateHasChanged();
+  });
+
+  public override void Dispose()
+  {
+    Audio.Changed -= OnAudioChanged;
+    base.Dispose();
+  }
 
   private void PickDictationWord()
   {

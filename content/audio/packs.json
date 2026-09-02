@@ -1,0 +1,930 @@
+{
+  "$schema": "../schemas/audio-packs.schema.json",
+  "packs": [
+    {
+      "id": "uscis-2008",
+      "kind": "official",
+      "title": "Official USCIS recordings · 2008 test",
+      "description": "The 100 questions of the 2008 test with their answers, read by USCIS",
+      "versionId": "2008",
+      "version": 1,
+      "baseUrl": "https://REPLACE-WITH-YOUR-HOST/citiz-audio/uscis-2008/v1/",
+      "sizeBytes": 30452143,
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)",
+      "voice": null,
+      "generatedOn": null,
+      "reviewStatus": "approved",
+      "sources": [
+        {
+          "authority": "USCIS",
+          "title": "100 Civics Questions and Answers for the 2008 Test with MP3 Audio (English version)",
+          "url": "https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test/100-civics-questions-and-answers-with-mp3-audio-english-version",
+          "verifiedOn": "2026-09-01",
+          "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"
+        }
+      ],
+      "clips": [
+        {
+          "id": "r-2008-001",
+          "role": "recording",
+          "file": "q001.mp3",
+          "bytes": 160673,
+          "seconds": 10.0,
+          "sha256": "b595a085105b57a9c20296599aa45ab0396733485cc42605e1c8bd111ef1533a",
+          "questionId": "2008-001"
+        },
+        {
+          "id": "r-2008-002",
+          "role": "recording",
+          "file": "q002.mp3",
+          "bytes": 250328,
+          "seconds": 15.6,
+          "sha256": "84b2d21ae5946d003c64b63dc8c867d20c8707e7b841b80fc0229984f7020069",
+          "questionId": "2008-002"
+        },
+        {
+          "id": "r-2008-003",
+          "role": "recording",
+          "file": "q003.mp3",
+          "bytes": 242405,
+          "seconds": 15.2,
+          "sha256": "8817c63bb7dabdf827a24a4d3a2c0a7a2ebf0790fa8639bb1207be07db70391b",
+          "questionId": "2008-003"
+        },
+        {
+          "id": "r-2008-004",
+          "role": "recording",
+          "file": "q004.mp3",
+          "bytes": 241571,
+          "seconds": 15.1,
+          "sha256": "14d5af8d112eee45bdbe01af469d47f129a36342277e762e962c969b8e37df1d",
+          "questionId": "2008-004"
+        },
+        {
+          "id": "r-2008-005",
+          "role": "recording",
+          "file": "q005.mp3",
+          "bytes": 186110,
+          "seconds": 11.6,
+          "sha256": "d2c125d85640a0adc0c2d44bdbe7392e17dc3a5ca932c453562cb09f8d3486c3",
+          "questionId": "2008-005"
+        },
+        {
+          "id": "r-2008-006",
+          "role": "recording",
+          "file": "q006.mp3",
+          "bytes": 320801,
+          "seconds": 20.1,
+          "sha256": "b8baebe84342428a3e22f7f4df9af49d9f237d14320cc79be577570ce27f1954",
+          "questionId": "2008-006"
+        },
+        {
+          "id": "r-2008-007",
+          "role": "recording",
+          "file": "q007.mp3",
+          "bytes": 150665,
+          "seconds": 9.4,
+          "sha256": "953cbe4ffc10896ee8b099ee8444eeaa0853f71f954b7635e2f3459c424d0b85",
+          "questionId": "2008-007"
+        },
+        {
+          "id": "r-2008-008",
+          "role": "recording",
+          "file": "q008.mp3",
+          "bytes": 371258,
+          "seconds": 23.2,
+          "sha256": "a98c82afb9038e9f4fce8e0cd74f3f65916f89c077262ced818750da0eadf178",
+          "questionId": "2008-008"
+        },
+        {
+          "id": "r-2008-009",
+          "role": "recording",
+          "file": "q009.mp3",
+          "bytes": 236567,
+          "seconds": 14.8,
+          "sha256": "c158aeaee0cb290359126f31d0116bd81973fe67a3fe5838db66742e70c86562",
+          "questionId": "2008-009"
+        },
+        {
+          "id": "r-2008-010",
+          "role": "recording",
+          "file": "q010.mp3",
+          "bytes": 179021,
+          "seconds": 11.2,
+          "sha256": "252c359d011aa9660efba75e782dc6c950046f68e6d306ae4050dbb0b0a52739",
+          "questionId": "2008-010"
+        },
+        {
+          "id": "r-2008-011",
+          "role": "recording",
+          "file": "q011.mp3",
+          "bytes": 219470,
+          "seconds": 13.7,
+          "sha256": "6227fe55ec4700c5e968594b2f0f531c2954ebc1b5d99b09754e033aa6e1473d",
+          "questionId": "2008-011"
+        },
+        {
+          "id": "r-2008-012",
+          "role": "recording",
+          "file": "q012.mp3",
+          "bytes": 337898,
+          "seconds": 21.1,
+          "sha256": "7a8469a8ca136ecd5844eb94df79689a03e821c57f6e0f08838ef6ff98bcdf7f",
+          "questionId": "2008-012"
+        },
+        {
+          "id": "r-2008-013",
+          "role": "recording",
+          "file": "q013.mp3",
+          "bytes": 365837,
+          "seconds": 22.9,
+          "sha256": "60065b9fa84005dedb6da645368ceedf5ec4a822d49a541549c8b09a3f451d02",
+          "questionId": "2008-013"
+        },
+        {
+          "id": "r-2008-014",
+          "role": "recording",
+          "file": "q014.mp3",
+          "bytes": 244073,
+          "seconds": 15.3,
+          "sha256": "d8f0cb64a9698cecdb6d64fbf5bed3b6b035e6fc9003fde68ee4c5a997a45bff",
+          "questionId": "2008-014"
+        },
+        {
+          "id": "r-2008-015",
+          "role": "recording",
+          "file": "q015.mp3",
+          "bytes": 161090,
+          "seconds": 10.1,
+          "sha256": "679183d97f01de5298412cbf28c7796be27f5d7ac9089030b3df326005abcf20",
+          "questionId": "2008-015"
+        },
+        {
+          "id": "r-2008-016",
+          "role": "recording",
+          "file": "q016.mp3",
+          "bytes": 289943,
+          "seconds": 18.1,
+          "sha256": "5e5f437a4bd6c2455a9566a0ab21d6e8f9c886f1cc29e12dd1f2594aecf6fdf7",
+          "questionId": "2008-016"
+        },
+        {
+          "id": "r-2008-017",
+          "role": "recording",
+          "file": "q017.mp3",
+          "bytes": 192365,
+          "seconds": 12.0,
+          "sha256": "41aae6612a0504a608a9bd19b412722f72668ac7b73c86f967aea0d54bd21529",
+          "questionId": "2008-017"
+        },
+        {
+          "id": "r-2008-018",
+          "role": "recording",
+          "file": "q018.mp3",
+          "bytes": 154001,
+          "seconds": 9.6,
+          "sha256": "99e7472e5f44f849153d59934427d067a41f04a98f41df67ce758a2ed781b5a0",
+          "questionId": "2008-018"
+        },
+        {
+          "id": "r-2008-019",
+          "role": "recording",
+          "file": "q019.mp3",
+          "bytes": 165677,
+          "seconds": 10.4,
+          "sha256": "8597bade796dafd71994288aa4c1c3a006dfbfeb590eb9162b5abf7630ba5a02",
+          "questionId": "2008-019"
+        },
+        {
+          "id": "r-2008-020",
+          "role": "recording",
+          "file": "q020.mp3",
+          "bytes": 368756,
+          "seconds": 23.0,
+          "sha256": "f09b008589e3246330925e208cce1612ff503d50534caa71b9299832c1e2b8cb",
+          "questionId": "2008-020"
+        },
+        {
+          "id": "r-2008-021",
+          "role": "recording",
+          "file": "q021.mp3",
+          "bytes": 184859,
+          "seconds": 11.6,
+          "sha256": "967f092e4a8e5ea1a70b49446729b836f7d6e4a296285a03f2f154b2561fe0ee",
+          "questionId": "2008-021"
+        },
+        {
+          "id": "r-2008-022",
+          "role": "recording",
+          "file": "q022.mp3",
+          "bytes": 169013,
+          "seconds": 10.6,
+          "sha256": "33a7f90b28671a55971ff258d869e29ae7c6bce2f6a7ddb6dfce26ee077ad5f7",
+          "questionId": "2008-022"
+        },
+        {
+          "id": "r-2008-023",
+          "role": "recording",
+          "file": "q023.mp3",
+          "bytes": 432974,
+          "seconds": 27.1,
+          "sha256": "4ddf1f043940eb0601461214935d7eddb30cca18ff6ab770dbd4bd1fb18f4ce8",
+          "questionId": "2008-023"
+        },
+        {
+          "id": "r-2008-024",
+          "role": "recording",
+          "file": "q024.mp3",
+          "bytes": 161090,
+          "seconds": 10.1,
+          "sha256": "50a7b58b62689a521ca473b047d3bc842d0a8ad328614f2da104e131866d4b6f",
+          "questionId": "2008-024"
+        },
+        {
+          "id": "r-2008-025",
+          "role": "recording",
+          "file": "q025.mp3",
+          "bytes": 332060,
+          "seconds": 20.8,
+          "sha256": "999419dab1ec9a99a6a586eef54544a57384e795832c5fdf6ae5b4da2cca5110",
+          "questionId": "2008-025"
+        },
+        {
+          "id": "r-2008-026",
+          "role": "recording",
+          "file": "q026.mp3",
+          "bytes": 155669,
+          "seconds": 9.7,
+          "sha256": "260dac7b9ff0cd1e4c98907199fceacfac281ee236fa0cd0157f81ce756fcd73",
+          "questionId": "2008-026"
+        },
+        {
+          "id": "r-2008-027",
+          "role": "recording",
+          "file": "q027.mp3",
+          "bytes": 161090,
+          "seconds": 10.1,
+          "sha256": "77fb1cbd87147120ec53eb3da948afa5f7bbdd00c4f91951f861a6befb3f7987",
+          "questionId": "2008-027"
+        },
+        {
+          "id": "r-2008-028",
+          "role": "recording",
+          "file": "q028.mp3",
+          "bytes": 382581,
+          "seconds": 15.5,
+          "sha256": "5092cc293c3c9f428a7fc0882140ee434556812ac0fa0840aa3b11d3c8cacf66",
+          "questionId": "2008-028"
+        },
+        {
+          "id": "r-2008-029",
+          "role": "recording",
+          "file": "q029.mp3",
+          "bytes": 425150,
+          "seconds": 17.2,
+          "sha256": "54970ddb27f0b518d160e6a3d6091341f74307099aa0b149a051282b6d1acc20",
+          "questionId": "2008-029"
+        },
+        {
+          "id": "r-2008-030",
+          "role": "recording",
+          "file": "q030.mp3",
+          "bytes": 208628,
+          "seconds": 13.0,
+          "sha256": "67167815abdabed29b5ca8931d41cbad944ae14e1eadd7ee793002fddc2fccfe",
+          "questionId": "2008-030"
+        },
+        {
+          "id": "r-2008-031",
+          "role": "recording",
+          "file": "q031.mp3",
+          "bytes": 238235,
+          "seconds": 14.9,
+          "sha256": "fd6d35d5bba7016547bb95d88a5c3201c44e25981cf55d87fa94ad2cfb8144a2",
+          "questionId": "2008-031"
+        },
+        {
+          "id": "r-2008-032",
+          "role": "recording",
+          "file": "q032.mp3",
+          "bytes": 161090,
+          "seconds": 10.1,
+          "sha256": "b685dd724c6d128d6a6ac4cb2d9b9cfb86cfc42491ba15933c4041c50976076a",
+          "questionId": "2008-032"
+        },
+        {
+          "id": "r-2008-033",
+          "role": "recording",
+          "file": "q033.mp3",
+          "bytes": 162758,
+          "seconds": 10.2,
+          "sha256": "936d84b59ec82883e43a36644f1e0f67d5f2b69eccf86e21992544cc62437d96",
+          "questionId": "2008-033"
+        },
+        {
+          "id": "r-2008-034",
+          "role": "recording",
+          "file": "q034.mp3",
+          "bytes": 144827,
+          "seconds": 9.1,
+          "sha256": "89517781bc4407d9ea49b16d6ffc859f6e0b42d935170de4414418db43c9b08d",
+          "questionId": "2008-034"
+        },
+        {
+          "id": "r-2008-035",
+          "role": "recording",
+          "file": "q035.mp3",
+          "bytes": 168179,
+          "seconds": 10.5,
+          "sha256": "8c2dba10bf7cf37f0776085a95c42748a374224a4b42ea398e5e3e8b3cd118a7",
+          "questionId": "2008-035"
+        },
+        {
+          "id": "r-2008-036",
+          "role": "recording",
+          "file": "q036.mp3",
+          "bytes": 1065146,
+          "seconds": 66.6,
+          "sha256": "a3b319c2efa27486e1e3b3166f45dc794aa81c0fc5181a3f7ebd9ef79df3e238",
+          "questionId": "2008-036"
+        },
+        {
+          "id": "r-2008-037",
+          "role": "recording",
+          "file": "q037.mp3",
+          "bytes": 357497,
+          "seconds": 22.3,
+          "sha256": "6a845958635a8f3bb0bd7c0cf6e219ed3d2a8be3624360d3c9730d39bb906a85",
+          "questionId": "2008-037"
+        },
+        {
+          "id": "r-2008-038",
+          "role": "recording",
+          "file": "q038.mp3",
+          "bytes": 163175,
+          "seconds": 10.2,
+          "sha256": "1f49e3b2c31ac489295e0530dda11824bc0b7728717b33f4d6f474375dc551bb",
+          "questionId": "2008-038"
+        },
+        {
+          "id": "r-2008-039",
+          "role": "recording",
+          "file": "q039.mp3",
+          "bytes": 412004,
+          "seconds": 16.7,
+          "sha256": "9bd43df44cb6d5d80cb7d03004d468a590b15b3040f88a554f53fdc886847e78",
+          "questionId": "2008-039"
+        },
+        {
+          "id": "r-2008-040",
+          "role": "recording",
+          "file": "q040.mp3",
+          "bytes": 440174,
+          "seconds": 17.9,
+          "sha256": "e95969f6c44cfd35f9e4d6e9c6e4fe369434380ca03ed24cf1ebd8a55f23c876",
+          "questionId": "2008-040"
+        },
+        {
+          "id": "r-2008-041",
+          "role": "recording",
+          "file": "q041.mp3",
+          "bytes": 418379,
+          "seconds": 26.1,
+          "sha256": "6a1f836b9ed38d6e25ba28f88ae1c62470a6d6bb837776f040a73af87be0c7f9",
+          "questionId": "2008-041"
+        },
+        {
+          "id": "r-2008-042",
+          "role": "recording",
+          "file": "q042.mp3",
+          "bytes": 496775,
+          "seconds": 31.0,
+          "sha256": "503c18c03310c01b8964e41d7af1ff03562ff8bbe9b97987b884f3b132c96816",
+          "questionId": "2008-042"
+        },
+        {
+          "id": "r-2008-043",
+          "role": "recording",
+          "file": "q043.mp3",
+          "bytes": 246158,
+          "seconds": 15.4,
+          "sha256": "7fd755de0d1c63abb86f8cb1f7ec99042cc6cd0cb60f1903aa169e121f4b7b60",
+          "questionId": "2008-043"
+        },
+        {
+          "id": "r-2008-044",
+          "role": "recording",
+          "file": "q044.mp3",
+          "bytes": 384185,
+          "seconds": 24.0,
+          "sha256": "31de52337a14ddcc7b8f7d9b3e1ff5af4925b7eb049439476b69be640084b725",
+          "questionId": "2008-044"
+        },
+        {
+          "id": "r-2008-045",
+          "role": "recording",
+          "file": "q045.mp3",
+          "bytes": 194867,
+          "seconds": 12.2,
+          "sha256": "f2d4413b39c8fe6fa68df58212a6d61648720407243979f198bec732a090aad4",
+          "questionId": "2008-045"
+        },
+        {
+          "id": "r-2008-046",
+          "role": "recording",
+          "file": "q046.mp3",
+          "bytes": 383834,
+          "seconds": 15.5,
+          "sha256": "166a1954b913e24098d19603dda86ea624ea00400f9a2d092ff7d28ad798a2ac",
+          "questionId": "2008-046"
+        },
+        {
+          "id": "r-2008-047",
+          "role": "recording",
+          "file": "q047.mp3",
+          "bytes": 420768,
+          "seconds": 17.1,
+          "sha256": "d3132fefad003911c1b46405270c7370834e6a9ba18e63cd800d7e6162662c9b",
+          "questionId": "2008-047"
+        },
+        {
+          "id": "r-2008-048",
+          "role": "recording",
+          "file": "q048.mp3",
+          "bytes": 479261,
+          "seconds": 30.0,
+          "sha256": "1931f7fefe7cf68a1ab1f8a5bbce6872b738dda75d82b8a0e8be459bdb7ce5f6",
+          "questionId": "2008-048"
+        },
+        {
+          "id": "r-2008-049",
+          "role": "recording",
+          "file": "q049.mp3",
+          "bytes": 271178,
+          "seconds": 16.9,
+          "sha256": "d831dd53763d627ed179176aae25efc8b8dfd61f897472716783d6fb5042265d",
+          "questionId": "2008-049"
+        },
+        {
+          "id": "r-2008-050",
+          "role": "recording",
+          "file": "q050.mp3",
+          "bytes": 248243,
+          "seconds": 15.5,
+          "sha256": "7c5da9739f25f944e48623f8180b5850da8d065249d07869432570eefbc5af24",
+          "questionId": "2008-050"
+        },
+        {
+          "id": "r-2008-051",
+          "role": "recording",
+          "file": "q051.mp3",
+          "bytes": 436904,
+          "seconds": 29.4,
+          "sha256": "1e72febbb0593b5e55b2f06d2dc02b1b0bdfc87c471f6c84fc015824d2a43295",
+          "questionId": "2008-051"
+        },
+        {
+          "id": "r-2008-052",
+          "role": "recording",
+          "file": "q052.mp3",
+          "bytes": 243656,
+          "seconds": 15.2,
+          "sha256": "cc3ad4c55f8cc9cb06cbcfcc62d60ac26ac8eafbf04a1888fed209766ae40336",
+          "questionId": "2008-052"
+        },
+        {
+          "id": "r-2008-053",
+          "role": "recording",
+          "file": "q053.mp3",
+          "bytes": 592685,
+          "seconds": 37.0,
+          "sha256": "0f203d2d26d54d5a5c9f767b070a1a43cba3776d678cb07e5c6908e6d7e435bb",
+          "questionId": "2008-053"
+        },
+        {
+          "id": "r-2008-054",
+          "role": "recording",
+          "file": "q054.mp3",
+          "bytes": 183608,
+          "seconds": 11.5,
+          "sha256": "b95478c201bb4b1ba20247cdaa882f838b1a7fbdeb935f1816c1cc48ce335b3b",
+          "questionId": "2008-054"
+        },
+        {
+          "id": "r-2008-055",
+          "role": "recording",
+          "file": "q055.mp3",
+          "bytes": 697352,
+          "seconds": 43.6,
+          "sha256": "2b0cadd85f32aeca8020c1620c2635e7a72955883d5ad31b8acc25e66f781050",
+          "questionId": "2008-055"
+        },
+        {
+          "id": "r-2008-056",
+          "role": "recording",
+          "file": "q056.mp3",
+          "bytes": 188195,
+          "seconds": 11.8,
+          "sha256": "01fdc1c3b1e8a10877fb4d52d2c8b9be35fc7a9cd3a8a18c5020a21efc3708db",
+          "questionId": "2008-056"
+        },
+        {
+          "id": "r-2008-057",
+          "role": "recording",
+          "file": "q057.mp3",
+          "bytes": 266591,
+          "seconds": 16.7,
+          "sha256": "06fb20f4bebf09dbb9e444c21de2c72880628084a1e1bcdda8825b85c6df4019",
+          "questionId": "2008-057"
+        },
+        {
+          "id": "r-2008-058",
+          "role": "recording",
+          "file": "q058.mp3",
+          "bytes": 400865,
+          "seconds": 25.1,
+          "sha256": "5ad5e1b4baac6fc240279417b5869223d92e5057f1b4eb9b804ca74f496bcc17",
+          "questionId": "2008-058"
+        },
+        {
+          "id": "r-2008-059",
+          "role": "recording",
+          "file": "q059.mp3",
+          "bytes": 197369,
+          "seconds": 12.3,
+          "sha256": "62415fa522560d8a789c684c53e8253ee9fe59c367b40dc099c8b00e3d77e4e6",
+          "questionId": "2008-059"
+        },
+        {
+          "id": "r-2008-060",
+          "role": "recording",
+          "file": "q060.mp3",
+          "bytes": 225308,
+          "seconds": 14.1,
+          "sha256": "58cc84fbeba621056b1ac52fe0ba44b0d9e0dc145f751d0ea6241ec906635263",
+          "questionId": "2008-060"
+        },
+        {
+          "id": "r-2008-061",
+          "role": "recording",
+          "file": "q061.mp3",
+          "bytes": 365003,
+          "seconds": 22.8,
+          "sha256": "8311c7b6c8cfde330350f422081af45484f746bcfe9335ecd9cfe9a76869dfea",
+          "questionId": "2008-061"
+        },
+        {
+          "id": "r-2008-062",
+          "role": "recording",
+          "file": "q062.mp3",
+          "bytes": 153167,
+          "seconds": 9.6,
+          "sha256": "753caef75cae592cb14112cf4b17d741f13d556cc20d0b5efed033563683a9be",
+          "questionId": "2008-062"
+        },
+        {
+          "id": "r-2008-063",
+          "role": "recording",
+          "file": "q063.mp3",
+          "bytes": 192365,
+          "seconds": 12.0,
+          "sha256": "c7d95e6d25b44f3be8fbbcec9f85cf20bf53ac150df78b678e88087a954d682e",
+          "questionId": "2008-063"
+        },
+        {
+          "id": "r-2008-064",
+          "role": "recording",
+          "file": "q064.mp3",
+          "bytes": 674834,
+          "seconds": 42.2,
+          "sha256": "331925bb2e557c369d38a2776122669987b3c15b756c95528355fce09ccfdadb",
+          "questionId": "2008-064"
+        },
+        {
+          "id": "r-2008-065",
+          "role": "recording",
+          "file": "q065.mp3",
+          "bytes": 250328,
+          "seconds": 15.6,
+          "sha256": "765bdad30c5ed6ae603cdbacf90fc6b5d411452a2b99a1e535808b789242f9b5",
+          "questionId": "2008-065"
+        },
+        {
+          "id": "r-2008-066",
+          "role": "recording",
+          "file": "q066.mp3",
+          "bytes": 161924,
+          "seconds": 10.1,
+          "sha256": "08b17b01b2d59d00fb90cc30add958513d8d2f68ef1e8d2ab8d3097ac92bf759",
+          "questionId": "2008-066"
+        },
+        {
+          "id": "r-2008-067",
+          "role": "recording",
+          "file": "q067.mp3",
+          "bytes": 367088,
+          "seconds": 22.9,
+          "sha256": "84d2b774411b41a90ad3eb7d553c6edd47daace60996c7e53d7751336439d50c",
+          "questionId": "2008-067"
+        },
+        {
+          "id": "r-2008-068",
+          "role": "recording",
+          "file": "q068.mp3",
+          "bytes": 450905,
+          "seconds": 28.2,
+          "sha256": "40ed05692d1dd0304d91d5d5d09b83d176e97cdb9cae7bc25aa27c901685a083",
+          "questionId": "2008-068"
+        },
+        {
+          "id": "r-2008-069",
+          "role": "recording",
+          "file": "q069.mp3",
+          "bytes": 142325,
+          "seconds": 8.9,
+          "sha256": "382c88d26716344ce7c3608d86d57232feae573ab394e8146a80817c66e655ec",
+          "questionId": "2008-069"
+        },
+        {
+          "id": "r-2008-070",
+          "role": "recording",
+          "file": "q070.mp3",
+          "bytes": 144410,
+          "seconds": 9.0,
+          "sha256": "595d62b46cb178c39235dc87ede62b8aa225c32b6557d2257ada9218c54aa523",
+          "questionId": "2008-070"
+        },
+        {
+          "id": "r-2008-071",
+          "role": "recording",
+          "file": "q071.mp3",
+          "bytes": 258668,
+          "seconds": 16.2,
+          "sha256": "609f65e80560d86f28d9fc3409567ac50754a972cd7b2b014250834975554f5f",
+          "questionId": "2008-071"
+        },
+        {
+          "id": "r-2008-072",
+          "role": "recording",
+          "file": "q072.mp3",
+          "bytes": 369590,
+          "seconds": 23.1,
+          "sha256": "493dc41d6df7a6af69b82b6689d364fc4dad3f000a5be270ae19cfebfef06d8e",
+          "questionId": "2008-072"
+        },
+        {
+          "id": "r-2008-073",
+          "role": "recording",
+          "file": "q073.mp3",
+          "bytes": 246575,
+          "seconds": 15.4,
+          "sha256": "d08750c7521da047d7f0b064a09db8da9e83b28145d5cc55cad171075b257d68",
+          "questionId": "2008-073"
+        },
+        {
+          "id": "r-2008-074",
+          "role": "recording",
+          "file": "q074.mp3",
+          "bytes": 279935,
+          "seconds": 17.5,
+          "sha256": "5c090a5b18ba57111320dd7a3c93bd5abd462ae7cf64d5d838b7cc1a76d4102e",
+          "questionId": "2008-074"
+        },
+        {
+          "id": "r-2008-075",
+          "role": "recording",
+          "file": "q075.mp3",
+          "bytes": 368339,
+          "seconds": 23.0,
+          "sha256": "f8a5331558ce7a55ae6d0ec9b561483f676f15d60f1fc16b1ba16bd38637634d",
+          "questionId": "2008-075"
+        },
+        {
+          "id": "r-2008-076",
+          "role": "recording",
+          "file": "q076.mp3",
+          "bytes": 396278,
+          "seconds": 24.8,
+          "sha256": "247f686a857820944780c60794a3c2c80f83f519f22b27648b20738a3db27f23",
+          "questionId": "2008-076"
+        },
+        {
+          "id": "r-2008-077",
+          "role": "recording",
+          "file": "q077.mp3",
+          "bytes": 240737,
+          "seconds": 15.0,
+          "sha256": "cb46e1d29ae332c9a81d52d6580de6b91a65e5569469f0e7878fbdfe8cb0f2a4",
+          "questionId": "2008-077"
+        },
+        {
+          "id": "r-2008-078",
+          "role": "recording",
+          "file": "q078.mp3",
+          "bytes": 392108,
+          "seconds": 24.5,
+          "sha256": "af5c8b1f8350294de262fd6f9e349bdee2340667b7191d6bd415da23c6697363",
+          "questionId": "2008-078"
+        },
+        {
+          "id": "r-2008-079",
+          "role": "recording",
+          "file": "q079.mp3",
+          "bytes": 164426,
+          "seconds": 10.3,
+          "sha256": "08a53d3523b9c08f5f62eab8462aadf5f3eea54b17fc43d9476cb8f7f4a67ae4",
+          "questionId": "2008-079"
+        },
+        {
+          "id": "r-2008-080",
+          "role": "recording",
+          "file": "q080.mp3",
+          "bytes": 204458,
+          "seconds": 12.8,
+          "sha256": "c99e6021af7827b5911470d9510ce56e49d9a0711943f9871c9176b5c3c4e236",
+          "questionId": "2008-080"
+        },
+        {
+          "id": "r-2008-081",
+          "role": "recording",
+          "file": "q081.mp3",
+          "bytes": 208628,
+          "seconds": 13.0,
+          "sha256": "4814bd4e2b6721ed5d603c722bf3fa4255fd1b4f1ec50dc3d492084b8f185389",
+          "questionId": "2008-081"
+        },
+        {
+          "id": "r-2008-082",
+          "role": "recording",
+          "file": "q082.mp3",
+          "bytes": 226142,
+          "seconds": 14.1,
+          "sha256": "ac975d015c434d821dbbd8b96ae876f7969fdc55050577a14454368fd8f3d844",
+          "questionId": "2008-082"
+        },
+        {
+          "id": "r-2008-083",
+          "role": "recording",
+          "file": "q083.mp3",
+          "bytes": 208211,
+          "seconds": 13.0,
+          "sha256": "82a4b32d4eb4ea22c3591952e453e83312869f1bb855427c7aaba5846a088a4d",
+          "questionId": "2008-083"
+        },
+        {
+          "id": "r-2008-084",
+          "role": "recording",
+          "file": "q084.mp3",
+          "bytes": 176936,
+          "seconds": 11.1,
+          "sha256": "012997f878aa198eb595a5547f472a9c3e8fbe2556f6c8331a20c3d131e4e3a9",
+          "questionId": "2008-084"
+        },
+        {
+          "id": "r-2008-085",
+          "role": "recording",
+          "file": "q085.mp3",
+          "bytes": 246575,
+          "seconds": 15.4,
+          "sha256": "df20f465705ad9fb40893a5ef35e7e2f9b0e6cf3b8d0a72a7a3438daa69ebf9c",
+          "questionId": "2008-085"
+        },
+        {
+          "id": "r-2008-086",
+          "role": "recording",
+          "file": "q086.mp3",
+          "bytes": 235733,
+          "seconds": 14.7,
+          "sha256": "7b7c81f573a359a77fe055c9a701341dccdb96f34b45f2575951ba9a91441e38",
+          "questionId": "2008-086"
+        },
+        {
+          "id": "r-2008-087",
+          "role": "recording",
+          "file": "q087.mp3",
+          "bytes": 1181072,
+          "seconds": 73.8,
+          "sha256": "e034f0b9289fb7a5fa884c81b95d7998159137cce3c6947aef86cae9fadcb9c6",
+          "questionId": "2008-087"
+        },
+        {
+          "id": "r-2008-088",
+          "role": "recording",
+          "file": "q088.mp3",
+          "bytes": 235733,
+          "seconds": 14.7,
+          "sha256": "9c7f77689ae8802fa535ec68ea7a8f48c3ea1c0b6da1120cea1fe7c779851b51",
+          "questionId": "2008-088"
+        },
+        {
+          "id": "r-2008-089",
+          "role": "recording",
+          "file": "q089.mp3",
+          "bytes": 188195,
+          "seconds": 11.8,
+          "sha256": "26da6203a3895cc4b57f79e62b003d8f928c07cdb151940d323c90aa53278c72",
+          "questionId": "2008-089"
+        },
+        {
+          "id": "r-2008-090",
+          "role": "recording",
+          "file": "q090.mp3",
+          "bytes": 186527,
+          "seconds": 11.7,
+          "sha256": "5e7e58cd0a8d9aa76f96131a064dfe6c3bfb6b0e729a016ef561a8db00a5501d",
+          "questionId": "2008-090"
+        },
+        {
+          "id": "r-2008-091",
+          "role": "recording",
+          "file": "q091.mp3",
+          "bytes": 357080,
+          "seconds": 22.3,
+          "sha256": "30969aa2f29d0ebfa3e8996a332cf9d2dfad8f6f221878e40907e9552e3927c7",
+          "questionId": "2008-091"
+        },
+        {
+          "id": "r-2008-092",
+          "role": "recording",
+          "file": "q092.mp3",
+          "bytes": 639389,
+          "seconds": 40.0,
+          "sha256": "78d931ef3c204b21991608f783792f40bdf685e14ed818168db3d2cea229ea3a",
+          "questionId": "2008-092"
+        },
+        {
+          "id": "r-2008-093",
+          "role": "recording",
+          "file": "q093.mp3",
+          "bytes": 294530,
+          "seconds": 18.4,
+          "sha256": "35d8ca88354e961ea9b0341a7186653db637e224ea6e48a333d228020eccf1ff",
+          "questionId": "2008-093"
+        },
+        {
+          "id": "r-2008-094",
+          "role": "recording",
+          "file": "q094.mp3",
+          "bytes": 174017,
+          "seconds": 10.9,
+          "sha256": "3dd340f328756f2d83b52ce6a72444e9d5f7fecc96099789b4d347b6e39dd924",
+          "questionId": "2008-094"
+        },
+        {
+          "id": "r-2008-095",
+          "role": "recording",
+          "file": "q095.mp3",
+          "bytes": 324137,
+          "seconds": 20.3,
+          "sha256": "d6b8e9381c61277efa7b126c80d6c4906db1d427bc45987d0036ac77e2e6b827",
+          "questionId": "2008-095"
+        },
+        {
+          "id": "r-2008-096",
+          "role": "recording",
+          "file": "q096.mp3",
+          "bytes": 288275,
+          "seconds": 18.0,
+          "sha256": "b2ab86361c867e87380c80aa02309b589fdc41de01070566ed40dfc62c1ec4b7",
+          "questionId": "2008-096"
+        },
+        {
+          "id": "r-2008-097",
+          "role": "recording",
+          "file": "q097.mp3",
+          "bytes": 316214,
+          "seconds": 19.8,
+          "sha256": "edf433faf7a3bfbe514c9b1497096537566b874bfe3be29c292eeb913da98a99",
+          "questionId": "2008-097"
+        },
+        {
+          "id": "r-2008-098",
+          "role": "recording",
+          "file": "q098.mp3",
+          "bytes": 174017,
+          "seconds": 10.9,
+          "sha256": "43755fd90a941b0450f78cf9f5840e715baed57d1bdc42ea849522c36f2b3636",
+          "questionId": "2008-098"
+        },
+        {
+          "id": "r-2008-099",
+          "role": "recording",
+          "file": "q099.mp3",
+          "bytes": 225533,
+          "seconds": 9.2,
+          "sha256": "d3e42e1ff78732d5bfe6f1926b2e512c29812de7a49d4c9f14a1dfcefd2ac554",
+          "questionId": "2008-099"
+        },
+        {
+          "id": "r-2008-100",
+          "role": "recording",
+          "file": "q100.mp3",
+          "bytes": 1000847,
+          "seconds": 41.3,
+          "sha256": "21715cd11c014fa38c5a446a32f520d6c27f4373a4da8532d4961f9d0ede8d51",
+          "questionId": "2008-100"
+        }
+      ]
+    }
+  ]
+}

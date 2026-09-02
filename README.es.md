@@ -52,8 +52,8 @@ móvil — sin construir una app aparte para cada uno.</sub>
 
 | Pilar | Construido | Cómo |
 | --- | --- | --- |
-| **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido) y un banco explorable con fuentes |
-| **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla (voz del navegador, en el dispositivo cuando el navegador lo permite), práctica de dictado |
+| **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido) y un banco explorable con fuentes, y las **grabaciones oficiales de USCIS** de las preguntas de 2008, descargadas una sola vez como paquete |
+| **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla (voz del dispositivo, o una grabación descargada), práctica de dictado |
 | **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto |
 | **Juega y Aprende** | *Reto cívico* | Rondas de diez preguntas de opción múltiple donde cada opción es una respuesta oficial real; los resultados cuentan como práctica |
 | **Idiomas** | 7 idiomas de interfaz | Inglés, español, chino (simplificado y tradicional), filipino, vietnamita, árabe (de derecha a izquierda); el idioma de la interfaz, el de estudio y el de ayuda son independientes |

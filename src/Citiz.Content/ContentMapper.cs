@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Xml;
 using Citiz.Content.Files;
 using Citiz.Content.Sources;
+using Citiz.Core.Audio;
 using Citiz.Core.Content;
 using Citiz.Core.Discovery;
 using Citiz.Core.English;
@@ -194,6 +195,72 @@ public static class ContentMapper
         {
             throw new ContentFormatException(path, $"{where}: {ex.Message}", ex);
         }
+    }
+
+    /// <summary>Maps <c>audio/packs.json</c>.</summary>
+    /// <exception cref="ContentFormatException">An entry is incomplete.</exception>
+    public static IReadOnlyList<AudioPack> ToAudioPacks(AudioPacksFile file, string path = ContentPaths.AudioPacks)
+    {
+        ArgumentNullException.ThrowIfNull(file);
+
+        return file.Packs.Select(entry =>
+        {
+            var id = Require(entry.Id, path, "packs[].id");
+            var where = $"pack '{id}'";
+            var kind = Require(entry.Kind, path, $"{where} kind").ToLowerInvariant() switch
+            {
+                "official" => AudioPackKind.Official,
+                "synthetic" => AudioPackKind.Synthetic,
+                var other => throw new ContentFormatException(path, $"{where} kind '{other}' must be 'official' or 'synthetic'."),
+            };
+
+            var baseUrl = ToUri(Require(entry.BaseUrl, path, $"{where} baseUrl"), path, where);
+            if (!baseUrl.AbsoluteUri.EndsWith('/'))
+            {
+                throw new ContentFormatException(path, $"{where} baseUrl must end with '/', so clip files can be appended.");
+            }
+
+            var clips = entry.Clips.Select(clip =>
+            {
+                var clipId = Require(clip.Id, path, $"{where} clips[].id");
+                var clipWhere = $"{where} clip '{clipId}'";
+                var role = Require(clip.Role, path, $"{clipWhere} role").ToLowerInvariant() switch
+                {
+                    "recording" => AudioClipRole.Recording,
+                    "prompt" => AudioClipRole.Prompt,
+                    "answer" => AudioClipRole.Answer,
+                    "word" => AudioClipRole.Word,
+                    var other => throw new ContentFormatException(path, $"{clipWhere} role '{other}' must be recording, prompt, answer or word."),
+                };
+
+                return new AudioClip(
+                    clipId,
+                    role,
+                    Require(clip.File, path, $"{clipWhere} file"),
+                    clip.Bytes > 0 ? clip.Bytes : throw new ContentFormatException(path, $"{clipWhere} bytes must be positive."),
+                    clip.Seconds > 0 ? clip.Seconds : throw new ContentFormatException(path, $"{clipWhere} seconds must be positive."),
+                    Require(clip.Sha256, path, $"{clipWhere} sha256").ToLowerInvariant(),
+                    Optional(clip.QuestionId),
+                    clip.AnswerIndex,
+                    Optional(clip.Word));
+            }).ToList();
+
+            return new AudioPack(
+                id,
+                kind,
+                Require(entry.Title, path, $"{where} title"),
+                Require(entry.Description, path, $"{where} description"),
+                Optional(entry.VersionId),
+                Positive(entry.Version, path, $"{where} version"),
+                baseUrl,
+                entry.SizeBytes > 0 ? entry.SizeBytes : throw new ContentFormatException(path, $"{where} sizeBytes must be positive."),
+                Require(entry.License, path, $"{where} license"),
+                Optional(entry.Voice),
+                entry.GeneratedOn,
+                ToReviewStatus(entry.ReviewStatus, path, where),
+                ToSources(entry.Sources, path, where),
+                clips);
+        }).ToList();
     }
 
     private static IReadOnlyList<SourceReference> ToSources(List<SourceFile> sources, string path, string where) =>

@@ -29,3 +29,7 @@ Thumbs.db
 
 # Official documents downloaded by tools/content-verify/fetch.sh (compared locally, never committed)
 tools/content-verify/official/
+
+# Audio packs built by tools/audio (uploaded to the audio host, never committed) and the ElevenLabs key
+tools/audio/dist/
+tools/audio/.env

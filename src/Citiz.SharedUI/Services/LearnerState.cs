@@ -36,6 +36,7 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
     private const string ProgressKey = "citiz.progress";
     private const string NameKey = "citiz.name";
     private const string ThemeKey = "citiz.theme";
+    private const string AudioOfferKey = "citiz.audio.offer";
 
     /// <summary>Raised after settings or progress change.</summary>
     public event Action? Changed;
@@ -52,8 +53,19 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
     /// <summary>The chosen appearance: <c>"light"</c>, <c>"dark"</c>, or <c>null</c> to follow the system.</summary>
     public string? Theme { get; private set; }
 
+    /// <summary>Whether the learner dismissed the one-time offer to download the official recordings.</summary>
+    public bool AudioOfferDismissed { get; private set; }
+
     /// <summary>Whether <see cref="InitializeAsync"/> has completed.</summary>
     public bool IsInitialized { get; private set; }
+
+    /// <summary>Remembers that the learner declined the offer to download the official recordings (it stays available in Settings).</summary>
+    public async Task DismissAudioOfferAsync()
+    {
+        AudioOfferDismissed = true;
+        await storage.SetAsync(AudioOfferKey, "dismissed");
+        Changed?.Invoke();
+    }
 
     /// <summary>Loads everything from localStorage and applies the language profile (browser language on first visit).</summary>
     public async Task InitializeAsync()
@@ -76,6 +88,7 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
 
         var theme = await storage.GetAsync(ThemeKey);
         Theme = theme is "light" or "dark" ? theme : null;
+        AudioOfferDismissed = await storage.GetAsync(AudioOfferKey) == "dismissed";
 
         IsInitialized = true;
         Changed?.Invoke();
@@ -156,6 +169,8 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
         await storage.RemoveAsync(ProgressKey);
         await storage.RemoveAsync(NameKey);
         await storage.RemoveAsync(ThemeKey);
+        await storage.RemoveAsync(AudioOfferKey);
+        AudioOfferDismissed = false;
         Exam = ExamSettings.Empty;
         Progress = new ProgressLedger();
         Name = null;

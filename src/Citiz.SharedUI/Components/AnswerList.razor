@@ -1,16 +1,27 @@
 @inherits LocalizedComponentBase
+@inject AudioService Audio
 
 @* The official answers for a question, with the dynamic-answer disclosure when the answer depends
-   on an officeholder or the learner's state. Never invents an answer: an unresolved dynamic question
-   says so and points to the official lookup. *@
+   on an officeholder or the learner's state, and the recordings when a pack is on the device: the
+   official USCIS track (question and answers, so only here, after the reveal) or per-answer clips
+   of the synthetic voice. Never invents an answer: an unresolved dynamic question says so and
+   points to the official lookup. *@
 <div class="answer-list">
   @if (Answers.Count > 0)
   {
     <p class="answer-label">@L.T("prepare.acceptedAnswers")</p>
     <ul>
-      @foreach (var answer in Answers)
+      @foreach (var (answer, index) in Answers.Select((a, i) => (a, i)))
       {
-        <li>@answer</li>
+        <li>
+          @if (index < answerClips.Length && answerClips[index])
+          {
+            <button type="button" class="play-mini" @onclick="() => PlayAnswerAsync(index, answer)" aria-label="@L.T("audio.playAnswer")" title="@L.T("audio.playAnswer")">
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5v14l11-7z" /></svg>
+            </button>
+          }
+          <span lang="en">@answer</span>
+        </li>
       }
     </ul>
   }
@@ -39,10 +50,66 @@
   {
     <p class="muted small">@Question.Note</p>
   }
+
+  @if (recording is { } found)
+  {
+    <div class="audio-panel">
+      <button type="button" class="button primary" @onclick="PlayRecordingAsync">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5v14l11-7z" /></svg>
+        @L.T("audio.playRecording")
+      </button>
+      <span class="muted"><b>@Duration(found.Clip.Seconds)</b></span>
+      <AudioSourceBadge Source="AudioSource.OfficialRecording" />
+      <span class="muted small audio-note">@L.T("audio.recordingNote", VersionName)</span>
+    </div>
+  }
 </div>
 
 @code {
   [Parameter, EditorRequired] public CivicsQuestion Question { get; set; } = default!;
   [Parameter, EditorRequired] public IReadOnlyList<string> Answers { get; set; } = [];
   [Parameter] public DynamicAnswer? Dynamic { get; set; }
+  [Parameter] public string? VersionName { get; set; }
+
+  private (AudioPack Pack, AudioClip Clip)? recording;
+  private bool[] answerClips = [];
+  private string? loadedForId;
+
+  protected override void OnInitialized() => Audio.Changed += OnAudioChanged;
+
+  protected override async Task OnParametersSetAsync()
+  {
+    if (loadedForId != Question.Id)
+    {
+      loadedForId = Question.Id;
+      recording = await Audio.RecordingForAsync(Question);
+      var clips = new bool[Answers.Count];
+      for (var i = 0; i < clips.Length; i++)
+      {
+        clips[i] = await Audio.HasAnswerClipAsync(Question, i);
+      }
+      answerClips = clips;
+    }
+  }
+
+  private Task PlayRecordingAsync() => Audio.PlayRecordingAsync(Question);
+  private Task PlayAnswerAsync(int index, string text) => Audio.PlayAnswerAsync(Question, index, text);
+
+  private static string Duration(double seconds)
+  {
+    var span = TimeSpan.FromSeconds(Math.Round(seconds));
+    return $"{(int)span.TotalMinutes}:{span.Seconds:00}";
+  }
+
+  private void OnAudioChanged()
+  {
+    loadedForId = null;
+    _ = InvokeAsync(async () => { await OnParametersSetAsync(); StateHasChanged(); });
+  }
+
+  public override void Dispose()
+  {
+    Audio.Changed -= OnAudioChanged;
+    base.Dispose();
+  }
 }

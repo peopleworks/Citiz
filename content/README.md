@@ -17,6 +17,8 @@ content/
 │   └── writing-vocabulary.json Official writing vocabulary for the English test
 ├── discovery/
 │   └── topics.json             "Today in the United States" capsules
+├── audio/
+│   └── packs.json              Recordings the learner can download once: official USCIS tracks, the synthetic Citiz voice
 └── sources/
     └── sources.json            Catalog of official sources the content worker watches for changes
 ```
@@ -229,6 +231,50 @@ Updates* page; the office's own site confirms the holder.
 `nature`. `difficulty` is `beginner`, `intermediate` or `advanced`. Every `relatedQuestionIds` entry
 must exist in a question bank; the validator checks it. Capsules are editorial content: they explain,
 they never restate an official answer as their own fact.
+
+## `audio/packs.json`
+
+The catalog of recordings a learner can download as a pack and keep on the device. The MP3 files
+are not in this repository: they live at each pack's `baseUrl` (any HTTPS host with CORS), and
+[`tools/audio/`](../tools/audio/README.md) builds both the files and this catalog.
+
+```json
+{
+  "$schema": "../schemas/audio-packs.schema.json",
+  "packs": [
+    {
+      "id": "uscis-2008",
+      "kind": "official",
+      "title": "Official USCIS recordings · 2008 test",
+      "description": "The 100 questions of the 2008 test with their answers, read by USCIS",
+      "versionId": "2008",
+      "version": 1,
+      "baseUrl": "https://example.org/citiz-audio/uscis-2008/v1/",
+      "sizeBytes": 30541211,
+      "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)",
+      "voice": null,
+      "generatedOn": null,
+      "reviewStatus": "approved",
+      "sources": [],
+      "clips": [
+        { "id": "r-2008-036", "role": "recording", "file": "q036.mp3", "bytes": 1065146, "seconds": 66.6, "sha256": "…", "questionId": "2008-036" }
+      ]
+    }
+  ]
+}
+```
+
+- `kind` is `official` (recorded by the authority; public domain) or `synthetic` (generated once from
+  the verified text by the maintainer; `voice` and `generatedOn` say how). The interface labels every
+  clip accordingly, and a synthetic clip is never presented as official.
+- `role` says what a clip contains and therefore where it may play: `recording` (an official track
+  that reads the question **and** its answers, so it is offered only after the answer is revealed and
+  in Browse), `prompt` (question only, behind "Listen"), `answer` (one accepted answer, with
+  `answerIndex`), `word` (one vocabulary word). Official packs hold recordings only; synthetic packs
+  never do. Answers of dynamic questions are never recorded.
+- The validator checks that every clip points at a real question, answer index or word, that the
+  bytes add up to `sizeBytes`, and that digests are 64-digit hex. `version` bumps when files change;
+  the app caches by id and version.
 
 ## `sources/sources.json`
 

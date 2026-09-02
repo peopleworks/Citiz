@@ -372,6 +372,33 @@ button, input, select { font: inherit; }
 .answer-label { font-weight: 700; margin-block-end: .35rem; }
 .answer-list ul { margin: 0; }
 
+/* Audio: recordings and the source badge ------------------------------------------------------ */
+
+.listen-row { align-items: center; gap: .6rem; flex-wrap: wrap; }
+.badge.audio-official { display: inline-flex; align-items: center; gap: .3rem; background: var(--brand-soft); color: var(--brand-strong); }
+.badge.audio-synthetic { background: var(--surface-2); color: var(--text-muted); border: 1px dashed var(--border); }
+.audio-panel {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  margin-block-start: .9rem; padding: .75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
+}
+.audio-panel .audio-note { flex-basis: 100%; }
+.play-mini {
+  display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; margin-inline-end: .4rem;
+  border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--brand); cursor: pointer; vertical-align: middle;
+}
+.play-mini:hover { background: var(--brand-soft); }
+.audio-offer { display: flex; gap: 1rem; align-items: flex-start; margin-block-start: 1rem; background: var(--brand-soft); color: var(--brand-strong); border-color: transparent; }
+.audio-offer > svg { flex-shrink: 0; margin-block-start: .15rem; }
+.audio-offer p { margin: 0 0 .6rem; }
+.audio-offer-title { font-weight: 700; font-size: 1.1rem; }
+.progress { flex-grow: 1; min-width: 8rem; height: .5rem; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.progress > div { height: 100%; background: var(--brand); transition: width .2s; }
+.pack-list { display: flex; flex-direction: column; margin-block-start: .5rem; }
+.pack-row { display: flex; align-items: center; gap: 1rem; padding: .9rem 0; border-block-start: 1px solid var(--border); }
+.pack-row:last-child { border-block-end: 1px solid var(--border); }
+.pack-info { flex-grow: 1; display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
+.pack-ready { display: inline-flex; align-items: center; gap: .35rem; color: var(--brand-strong); font-weight: 700; white-space: nowrap; }
+
 .option {
   display: flex; align-items: center; gap: .75rem; width: 100%; text-align: start;
   min-height: var(--tap); margin-block: .45rem; padding: .7rem .9rem;

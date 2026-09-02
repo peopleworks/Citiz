@@ -53,8 +53,8 @@ mobile — no separate app to build for either.</sub>
 
 | Pillar | Built | How |
 | --- | --- | --- |
-| **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), and a browsable bank with sources |
-| **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it (browser voice, on-device where the browser allows), dictation practice |
+| **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), a browsable bank with sources, and **USCIS's own recordings** of the 2008 questions, downloaded once as a pack |
+| **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it (on-device voice, or a downloaded recording), dictation practice |
 | **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for |
 | **Play & Learn** | *Civics challenge* | Ten multiple-choice rounds where every option is a real official answer; results count as practice |
 | **Languages** | 7 interface languages | English, Spanish, Chinese (Simplified and Traditional), Filipino, Vietnamese, Arabic (right-to-left) — interface, study and help language are independent |

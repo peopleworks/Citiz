@@ -22,7 +22,8 @@ is the learner-facing summary.
 | Interface translations | Local | Static JSON under `/i18n` |
 | Answer checking | Local | `AnswerMatcher` compiled into the WebAssembly bundle; `NoAiFallbackService` declares `AiExecutionClass.Local` |
 | Progress, spaced review, settings | Local | `localStorage`; exportable and deletable in Settings |
-| Reading text aloud | Browser service | Web Speech API; `SpeechService.IsLocalVoiceAsync` reports whether the chosen voice is on-device and the interface says so |
+| Reading text aloud | Local or browser service | Native text-to-speech in the mobile apps; in the browser the Web Speech API, where `SpeechService.IsLocalVoiceAsync` reports whether the chosen voice is on-device and the interface says so |
+| Question and word recordings (audio packs) | Local, after one download the learner starts | `content/audio/packs.json` lists packs; the learner downloads a whole pack once from the pack's host (Settings › Audio or the one-time offer) and it stays on the device: Cache Storage in the browser, app data in the native app. The host sees one download, never which question is studied. Without a pack, the device voice is used. Official recordings (USCIS, public domain) and the synthetic Citiz voice (generated once by the maintainer with ElevenLabs; no learner ever calls ElevenLabs) are labelled everywhere they play |
 | Speech recognition | — | Not built. Will be a browser service where available, disclosed; cloud only as opt-in |
 | AI explanations and conversation | — | Not built. `ICitizAiService.ExecutionClass` exists so every provider must declare itself; cloud providers are opt-in |
 | Sync, groups, organization dashboards | — | Not built; requires account by nature; never required for essential learning |
