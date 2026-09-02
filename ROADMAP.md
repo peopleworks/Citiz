@@ -29,7 +29,15 @@ The release where the "not yet verified" labels disappeared — by verification,
 
 - [x] Official audio: USCIS's own recordings of the 2008 questions, downloaded once as a pack (public
   domain); a synthetic "Citiz voice" pack for the 2025 test and the vocabulary, generated once by the
-  maintainer and labelled as such; the device voice as the fallback everywhere
+  maintainer and labelled as such; the device voice as the fallback everywhere. Built and verified
+  end to end on 2026-09-01; rolling out in this order:
+  - [x] Official pack uploaded to `https://peopleworksservices.com/citiz-audio/uscis-2008/v1/` and
+    verified byte for byte against the catalog
+  - [ ] CORS on the host (the `web.config` in `tools/audio/README.md`); without it the web app's
+    download is blocked and says so, the native apps are unaffected. Re-upload `manifest.json`.
+  - [ ] ElevenLabs key stored on the Mac (`tools/audio/set-elevenlabs-key.sh`), a voice chosen from
+    `--sample` files, then `--set 2025` and `--set words` generated and uploaded
+  - [ ] Listen to a few synthetic clips, set the packs `approved`, push, and tag
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full
   sequence, scored per skill

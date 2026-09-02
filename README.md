@@ -77,6 +77,19 @@ Windows, with native text-to-speech, but is not published to any store yet.
 appears only while something has not been checked against the official USCIS document — today, nothing
 in the banks carries one. Citiz never hides how sure it is.</sub>
 
+## Hear it the way an officer says it
+
+USCIS itself recorded the 100 questions of the 2008 test, with their answers, read by a person —
+public domain, one MP3 per question. Citiz offers them as an *audio pack*: downloaded once, on your
+request (Settings › Audio, or the one-time offer on Prepare), kept on your device, played offline.
+Because each official track reads the question **and** its answers, it plays after the answer is
+revealed and in Browse; "Listen" keeps reading the question alone. For the 2025 test, which USCIS
+has not recorded, a *Citiz voice* pack is generated once by the maintainer from the verified text
+and labelled "Synthetic voice · not USCIS" wherever it plays. Without a pack, your device's own
+voice reads the text. The pack host sees one download, never which question you study; the
+catalog is [`content/audio/packs.json`](content/audio/packs.json) and the packs are built with
+[`tools/audio/`](tools/audio/README.md).
+
 ## Which test do I take?
 
 USCIS administers two versions of the civics test, depending on when Form N-400 was filed. Citiz

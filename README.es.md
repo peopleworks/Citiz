@@ -76,6 +76,20 @@ iOS y Android y en Windows, con voz nativa, pero todavía no está publicada en 
 aparece solo mientras algo no se ha cotejado con el documento oficial de USCIS; hoy ninguna pregunta de
 los bancos la lleva. Citiz nunca esconde qué tan seguro está.</sub>
 
+## Escúchalo como lo dice un oficial
+
+USCIS grabó las 100 preguntas del examen 2008, con sus respuestas, leídas por una persona: dominio
+público, un MP3 por pregunta. Citiz las ofrece como *paquete de audio*: se descarga una sola vez, a
+petición tuya (Configuración › Audio, o el aviso único en Prepárate), se queda en tu dispositivo y
+se reproduce sin conexión. Como cada pista oficial lee la pregunta **y** sus respuestas, suena
+después de revelar la respuesta y en Explorar; "Escuchar" sigue leyendo solo la pregunta. Para el
+examen 2025, que USCIS no ha grabado, el responsable genera una sola vez un paquete de *voz de
+Citiz* a partir del texto verificado, etiquetado "Voz sintética · no es de USCIS" en todos los
+lugares donde suena. Sin paquete, lee el texto la voz de tu dispositivo. El servidor de los paquetes
+ve una descarga, nunca qué pregunta estudias; el catálogo es
+[`content/audio/packs.json`](content/audio/packs.json) y los paquetes se construyen con
+[`tools/audio/`](tools/audio/README.md).
+
 ## ¿Qué examen me toca?
 
 USCIS administra dos versiones del examen cívico según cuándo se presentó el Formulario N-400. Citiz lo
