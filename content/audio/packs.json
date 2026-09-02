@@ -8,7 +8,7 @@
       "description": "The 100 questions of the 2008 test with their answers, read by USCIS",
       "versionId": "2008",
       "version": 1,
-      "baseUrl": "https://REPLACE-WITH-YOUR-HOST/citiz-audio/uscis-2008/v1/",
+      "baseUrl": "https://peopleworksservices.com/citiz-audio/uscis-2008/v1/",
       "sizeBytes": 30452143,
       "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)",
       "voice": null,

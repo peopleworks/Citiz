@@ -24,15 +24,17 @@ for the 2025 test; when it does, an official pack replaces the synthetic voice f
 python3 -m venv .venv && .venv/bin/pip install -r tools/audio/requirements.txt
 ```
 
-The ElevenLabs key goes in an environment variable, exactly as on Windows, or in a git-ignored
-file — pick one:
+The ElevenLabs key stays on the machine, never in the repository and never in a chat. Create a
+key for this machine at elevenlabs.io → Settings → API keys (so it can be revoked on its own), then:
 
-- **Environment variable, for this terminal only:** `export ELEVENLABS_API_KEY="sk_..."`
-  (Windows' `set X=Y` is `export X=Y` in the Mac's zsh; the quotes keep special characters safe).
-- **Environment variable, permanently:** add that same `export` line to the end of `~/.zshrc`
-  (`nano ~/.zshrc`, paste, Ctrl+O, Enter, Ctrl+X), then open a new terminal.
-- **File:** create `tools/audio/.env` containing one line, `ELEVENLABS_API_KEY=sk_...`. The file is
-  listed in `.gitignore`, so it cannot be committed by accident.
+```bash
+tools/audio/set-elevenlabs-key.sh        # asks for the key with hidden typing, writes tools/audio/.env (mode 600)
+```
+
+That is permanent for this checkout: every tool run reads `tools/audio/.env`, which is listed in
+`.gitignore`. If you would rather have it in every terminal, as on Windows, the equivalent of
+`setx` is one line at the end of `~/.zshrc`: `export ELEVENLABS_API_KEY="sk_..."` (then open a new
+terminal); the environment variable wins over the file when both exist.
 
 Check it: `.venv/bin/python tools/audio/generate_elevenlabs.py --list-voices` prints your voices.
 
