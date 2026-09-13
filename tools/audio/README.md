@@ -66,18 +66,14 @@ re-download only what changed.
 
 Upload `tools/audio/dist/` so that `https://YOUR-HOST/citiz-audio/uscis-2008/v1/q001.mp3` resolves.
 The web app fetches across origins, so the folder must send CORS headers; the files are public
-domain or licensed for exactly this, so a wildcard is fine. Put this `web.config` in the
-`citiz-audio` folder:
+domain or licensed for exactly this, so a wildcard is fine. Add this block to the **site root**
+`web.config`, after `</system.webServer>` and before `</configuration>`, so the headers and the
+long cache apply to `citiz-audio` only and the rest of the site keeps its normal caching:
 
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
+<location path="citiz-audio">
   <system.webServer>
     <staticContent>
-      <remove fileExtension=".mp3" />
-      <mimeMap fileExtension=".mp3" mimeType="audio/mpeg" />
-      <remove fileExtension=".json" />
-      <mimeMap fileExtension=".json" mimeType="application/json" />
       <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" />
     </staticContent>
     <httpProtocol>
@@ -87,8 +83,16 @@ domain or licensed for exactly this, so a wildcard is fine. Put this `web.config
       </customHeaders>
     </httpProtocol>
   </system.webServer>
-</configuration>
+</location>
 ```
 
+No MIME maps are needed on peopleworksservices.com: IIS already serves `.mp3` as `audio/mpeg`, and
+the root `web.config` maps `.json`. Another host may need them; add each as a `<remove>` followed by
+a `<mimeMap>`, because declaring an extension twice makes IIS fail the whole folder. For the same
+reason, don't also put a `web.config` with these headers inside `citiz-audio`: a header added at two
+levels is a 500.19 error on every file.
+
 A long cache lifetime is right because a changed file gets a new pack version, hence a new URL.
-Check from a browser console on the live site: `fetch('https://YOUR-HOST/citiz-audio/uscis-2008/v1/manifest.json').then(r => r.status)` must print `200`.
+The web app downloads with a plain `GET` and no credentials, so there is no preflight and `*` works.
+Check after deploying: `curl -sI -H "Origin: https://example.org" https://YOUR-HOST/citiz-audio/uscis-2008/v1/manifest.json`
+must show `200`, `Access-Control-Allow-Origin: *` and `Cache-Control: max-age=31536000`.
