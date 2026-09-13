@@ -33,8 +33,9 @@ The release where the "not yet verified" labels disappeared — by verification,
   end to end on 2026-09-01; rolling out in this order:
   - [x] Official pack uploaded to `https://peopleworksservices.com/citiz-audio/uscis-2008/v1/` and
     verified byte for byte against the catalog
-  - [ ] CORS on the host (the `web.config` in `tools/audio/README.md`); without it the web app's
-    download is blocked and says so, the native apps are unaffected. Re-upload `manifest.json`.
+  - [x] CORS on the host: the `<location path="citiz-audio">` block in the site root `web.config`
+    (`tools/audio/README.md`), verified with curl on 2026-09-13; `manifest.json` re-uploaded with
+    the real `baseUrl` and verified byte for byte
   - [ ] ElevenLabs key stored on the Mac (`tools/audio/set-elevenlabs-key.sh`), a voice chosen from
     `--sample` files, then `--set 2025` and `--set words` generated and uploaded
   - [ ] Listen to a few synthetic clips, set the packs `approved`, push, and tag
