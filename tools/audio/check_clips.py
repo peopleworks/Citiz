@@ -8,8 +8,9 @@ the transcript is compared with the text the voice was given, and a page lists t
 
 The recogniser gets no hint of the expected text (ADR-0004, gate 3), so a wrong clip cannot be heard as the
 right one. A clip is listed when its transcript still differs from its text after numbers, ordinals,
-apostrophes and a few same-sounding words are normalised, or when its length is out of proportion to its
-text. The page adds a random sample of the other clips for a general listen. Everything runs on this machine.
+apostrophes and a few same-sounding words are normalised, when its length is out of proportion to its text,
+or when it ends while the voice is still sounding. The page adds a random sample of the other clips for a
+general listen. Everything runs on this machine.
 """
 from __future__ import annotations
 
@@ -53,6 +54,25 @@ def normalised(text: str) -> list[str]:
         if word != "and":
             words.append(word)
     return words
+
+
+def end_level(path) -> float:
+    """Loudness in dBFS of a clip's last 30 ms. Finished speech has faded to near silence by then (about
+    -90 dBFS in a typical clip); a clip still at speech level there was cut off mid-sound."""
+    import av
+    import numpy as np
+
+    with av.open(str(path)) as container:
+        stream = container.streams.audio[0]
+        hop = stream.rate // 100
+        parts = []
+        for frame in container.decode(stream):
+            samples = frame.to_ndarray()
+            samples = samples / 32768.0 if samples.dtype.kind == "i" else samples
+            parts.append(samples.reshape(samples.shape[0], -1).mean(axis=0))
+    tail = np.concatenate(parts)[-3 * hop:]
+    windows = tail[: len(tail) // hop * hop].reshape(-1, hop)
+    return float(20 * np.log10(np.sqrt(np.square(windows).mean(axis=1)).max() + 1e-9))
 
 
 def page(rows: list[dict], flagged: list[dict], sample: list[dict], model: str) -> str:
@@ -105,8 +125,11 @@ def main() -> int:
             row["heard"] = " ".join(segment.text.strip() for segment in segments).strip()
             row["similarity"] = round(difflib.SequenceMatcher(None, normalised(row["said"]), normalised(row["heard"])).ratio(), 3)
             row["seconds"] = round(MP3(path).info.length, 2)
+            row["end_db"] = round(end_level(path), 1)
             if row["similarity"] < args.threshold:
                 row["flags"].append("differs")
+            if row["end_db"] > -40:
+                row["flags"].append("ends cut")
 
     long_enough = [r for r in rows if "seconds" in r and len(r["said"]) >= 12]
     typical = statistics.median(r["seconds"] / len(r["said"]) for r in long_enough) if long_enough else None
