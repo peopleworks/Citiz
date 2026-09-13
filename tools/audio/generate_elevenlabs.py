@@ -134,7 +134,7 @@ NUMBER_WORD = (
 # USCIS writes some numbers twice, "Twenty-seven (27)" and "fifty/50": the voice says them once.
 NUMERAL_ECHO = re.compile(rf"\b({NUMBER_WORD})\s*(?:\(\d[\d,]*\)|/\d[\d,]*)", re.IGNORECASE)
 # Names the voice mispronounces from their spelling. Only the audio changes; the clip keeps the written name.
-SAY_AS = {"Sioux": "Soo"}
+SAY_AS = {"Sioux": "Sue"}
 
 
 def spoken(text: str) -> str:
