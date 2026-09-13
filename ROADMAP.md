@@ -35,9 +35,11 @@ The release where the "not yet verified" labels disappeared — by verification,
     verified byte for byte against the catalog
   - [x] CORS on the host: the `<location path="citiz-audio">` block in the site root `web.config`
     (`tools/audio/README.md`), verified with curl on 2026-09-13; `manifest.json` re-uploaded with
-    the real `baseUrl` and verified byte for byte
-  - [ ] ElevenLabs key stored on the Mac (`tools/audio/set-elevenlabs-key.sh`), a voice chosen from
-    `--sample` files, then `--set 2025` and `--set words` generated and uploaded
+    the real `baseUrl` and verified byte for byte; on the live site a browser downloaded all 100
+    clips (18 s) and played one
+  - [x] ElevenLabs key stored on the Mac (`tools/audio/set-elevenlabs-key.sh`), restricted to Text
+    to Speech and Voices; six voices sampled on 2026-09-13 (`tools/audio/dist/samples/index.html`)
+  - [ ] A voice chosen by ear, then `--set 2025` and `--set words` generated and uploaded
   - [ ] Listen to a few synthetic clips, set the packs `approved`, push, and tag
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full

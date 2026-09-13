@@ -33,3 +33,7 @@ tools/content-verify/official/
 # Audio packs built by tools/audio (uploaded to the audio host, never committed) and the ElevenLabs key
 tools/audio/dist/
 tools/audio/.env
+
+# Python tooling (tools/content-verify, tools/audio)
+__pycache__/
+.venv/

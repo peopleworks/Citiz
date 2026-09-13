@@ -19,9 +19,10 @@ versions follow [Semantic Versioning](https://semver.org/).
   where" table gains a recordings row that names the host only once a pack is on the device; a
   one-time offer on Prepare for the 2008 test. Strings in all seven languages.
 - `tools/audio/`: `fetch_uscis_2008.py` builds the official pack from uscis.gov;
-  `generate_elevenlabs.py` lists voices, makes samples, counts characters and generates the
-  synthetic packs (resumable; key from `ELEVENLABS_API_KEY` or a git-ignored `.env`); the README
-  has the macOS setup and the IIS `web.config` for the host.
+  `generate_elevenlabs.py` lists voices, makes samples with a page to compare them by ear, counts
+  characters and generates the synthetic packs (resumable; key from `ELEVENLABS_API_KEY` or a
+  git-ignored `.env`, which `set-elevenlabs-key.sh` writes only once ElevenLabs recognises the key);
+  the README has the macOS setup and the IIS `web.config` for the host.
 - The content validator checks packs: every clip points at a real question, answer index or word;
   official packs hold recordings only; answers of dynamic questions are never recorded; sizes add up.
 

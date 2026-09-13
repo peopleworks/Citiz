@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import html
 import os
 import sys
 import time
@@ -47,7 +48,58 @@ def api_key() -> str:
                 key = line.split("=", 1)[1].strip().strip('"').strip("'")
     if not key:
         sys.exit("No ElevenLabs key. Set ELEVENLABS_API_KEY in your environment or in tools/audio/.env (see README.md).")
+    if any(not ch.isprintable() or ch.isspace() for ch in key) or key.count("sk_") > 1:
+        sys.exit("The ElevenLabs key looks damaged (invisible characters, or pasted twice). Run tools/audio/set-elevenlabs-key.sh again.")
     return key
+
+
+def api_error(response: requests.Response) -> str:
+    """ElevenLabs' own explanation of a refused request (never includes the key)."""
+    try:
+        detail = response.json().get("detail")
+    except ValueError:
+        detail = response.text[:300]
+    if isinstance(detail, dict):
+        detail = ": ".join(str(part) for part in (detail.get("status"), detail.get("message")) if part)
+    return f"HTTP {response.status_code} {detail}".strip()
+
+
+PERMISSION_HINT = (
+    " New ElevenLabs keys are restricted by default: at elevenlabs.io → Developers → API Keys, edit this key"
+    " and enable 'Text to Speech' (to generate) and 'Voices: Read' (to list voices)."
+)
+
+
+def fetch_voices(key: str, required: bool = True) -> list[dict]:
+    response = requests.get(f"{API}/voices", headers={"xi-api-key": key}, timeout=60)
+    if response.status_code == 200:
+        return response.json().get("voices", [])
+    if not required:
+        return []
+    hint = PERMISSION_HINT if response.status_code in (401, 403) else ""
+    sys.exit(f"ElevenLabs refused the voice list: {api_error(response)}.{hint}")
+
+
+def write_sample_page(folder: Path, voices: list[dict], text: str) -> Path:
+    """A local page with one player per sample in the folder, to choose a voice by ear."""
+    known = {v["voice_id"]: v for v in voices}
+    rows = []
+    for mp3 in sorted(folder.glob("*.mp3"), key=lambda f: known.get(f.stem, {}).get("name", f.stem).lower()):
+        voice = known.get(mp3.stem, {})
+        labels = ", ".join(str(value).replace("_", " ") for value in (voice.get("labels") or {}).values())
+        rows.append(
+            f'<li><h2>{html.escape(voice.get("name", mp3.stem))}</h2><p>{html.escape(labels)}</p>'
+            f'<audio controls preload="none" src="{html.escape(mp3.name)}"></audio><code>--voice {html.escape(mp3.stem)}</code></li>'
+        )
+    page = folder / "index.html"
+    page.write_text(
+        '<!doctype html><meta charset="utf-8"><title>Citiz voice samples</title>'
+        "<style>body{font:16px system-ui;margin:2rem auto;max-width:44rem;padding:0 1rem}li{list-style:none;margin:0 0 1.6rem}"
+        "h2{font-size:1.1rem;margin:0}p{margin:.2rem 0 .5rem;color:#555}audio{width:100%}code{font-size:.8rem;color:#777}</style>"
+        f"<h1>Citiz voice samples</h1><p>Every sample reads the same text: {html.escape(text)}</p><ul>{''.join(rows)}</ul>",
+        encoding="utf-8",
+    )
+    return page
 
 
 def clips_for(set_name: str) -> list[dict]:
@@ -90,7 +142,9 @@ def synthesize(key: str, voice: str, text: str, target: Path) -> None:
         if response.status_code == 429 and attempt < 3:
             time.sleep(5 * (attempt + 1))
             continue
-        response.raise_for_status()
+        if response.status_code != 200:
+            hint = PERMISSION_HINT if response.status_code in (401, 403) else ""
+            sys.exit(f"ElevenLabs refused to synthesize {target.name}: {api_error(response)}.{hint}")
         target.write_bytes(response.content)
         return
 
@@ -107,7 +161,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.list_voices:
-        voices = requests.get(f"{API}/voices", headers={"xi-api-key": api_key()}, timeout=60).json()["voices"]
+        voices = fetch_voices(api_key())
         for v in sorted(voices, key=lambda v: v["name"]):
             labels = ", ".join(f"{k}={val}" for k, val in (v.get("labels") or {}).items())
             print(f"{v['voice_id']}  {v['name']:<22} {v.get('category', ''):<12} {labels}")
@@ -124,6 +178,8 @@ def main() -> int:
             target = folder / f"{voice}.mp3"
             synthesize(key, voice, text, target)
             print(f"sample -> {target}")
+        page = write_sample_page(folder, fetch_voices(key, required=False), text)
+        print(f"compare them by ear: open {page}")
         return 0
 
     if not args.set:
@@ -140,7 +196,7 @@ def main() -> int:
 
     key = api_key()
     voice_id = args.voice[0]
-    voice_name = next((v["name"] for v in requests.get(f"{API}/voices", headers={"xi-api-key": key}, timeout=60).json()["voices"] if v["voice_id"] == voice_id), voice_id)
+    voice_name = next((v["name"] for v in fetch_voices(key, required=False) if v["voice_id"] == voice_id), voice_id)
     pack_id = f"citiz-voice-{args.set}"
     folder = DIST / pack_id / f"v{args.version}"
     folder.mkdir(parents=True, exist_ok=True)
