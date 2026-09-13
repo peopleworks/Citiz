@@ -42,6 +42,7 @@ The release where the "not yet verified" labels disappeared — by verification,
   - [ ] A voice chosen by ear, then `--set 2025` and `--set words` generated and uploaded
   - [ ] Listen to a few synthetic clips, set the packs `approved`, push, and tag
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
+  ([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md), proposed)
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full
   sequence, scored per skill
 - [ ] Study plan: a daily "next thing" from the ledger (due reviews, weakest areas, a capsule)
@@ -52,6 +53,7 @@ The release where the "not yet verified" labels disappeared — by verification,
   opt-in, both restricted to approved content ([design §12](Docs/Design/Citiz-Design-Document-v0.4.es.md))
 - [ ] Explanations and mnemonics generated only from approved content, labelled as such
 - [ ] Ambiguous-answer evaluation as a second stage after the deterministic matcher
+  (its own ADR, once there is data on how often the matcher cannot settle; see ADR-0004)
 
 ## 0.7 — Everywhere
 
