@@ -23,6 +23,7 @@ import argparse
 import datetime as dt
 import html
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -126,9 +127,24 @@ def clips_for(set_name: str) -> list[dict]:
     return clips
 
 
+NUMBER_WORD = (
+    r"(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen"
+    r"|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)"
+)
+# USCIS writes some numbers twice, "Twenty-seven (27)" and "fifty/50": the voice says them once.
+NUMERAL_ECHO = re.compile(rf"\b({NUMBER_WORD})\s*(?:\(\d[\d,]*\)|/\d[\d,]*)", re.IGNORECASE)
+# Names the voice mispronounces from their spelling. Only the audio changes; the clip keeps the written name.
+SAY_AS = {"Sioux": "Soo"}
+
+
 def spoken(text: str) -> str:
-    """What the voice reads: USCIS's parentheses mark optional words, which are read as part of the answer."""
-    return text.replace("(", "").replace(")", "").replace("  ", " ").strip()
+    """What the voice reads. A numeral repeating the words before it is dropped; USCIS's other parentheses
+    mark optional words, which are read as part of the answer; slashes between word forms become pauses."""
+    text = NUMERAL_ECHO.sub(r"\1", text)
+    text = text.replace("(", "").replace(")", "").replace("/", ", ")
+    for written, said in SAY_AS.items():
+        text = re.sub(rf"\b{re.escape(written)}\b", said, text)
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def synthesize(key: str, voice: str, text: str, target: Path) -> None:

@@ -22,7 +22,8 @@ versions follow [Semantic Versioning](https://semver.org/).
   `generate_elevenlabs.py` lists voices, makes samples with a page to compare them by ear, counts
   characters and generates the synthetic packs (resumable; key from `ELEVENLABS_API_KEY` or a
   git-ignored `.env`, which `set-elevenlabs-key.sh` writes only once ElevenLabs recognises the key);
-  the README has the macOS setup and the IIS `web.config` for the host.
+  `check_clips.py` transcribes every generated clip with a local Whisper model, given no hints, and
+  lists the ones worth a listen; the README has the macOS setup and the IIS `web.config` for the host.
 - The content validator checks packs: every clip points at a real question, answer index or word;
   official packs hold recordings only; answers of dynamic questions are never recorded; sizes add up.
 

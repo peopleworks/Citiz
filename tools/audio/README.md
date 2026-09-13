@@ -60,11 +60,21 @@ open tools/audio/dist/samples/index.html   # one player per voice, with its name
 # 4. Generate (resumable; already generated clips are skipped)
 .venv/bin/python tools/audio/generate_elevenlabs.py --set 2025 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
 .venv/bin/python tools/audio/generate_elevenlabs.py --set words --voice <id> --base-url https://YOUR-HOST/citiz-audio/
+
+# 5. Check every clip: a local Whisper model transcribes it, with no hints, and a page lists what to hear
+.venv/bin/pip install -r tools/audio/requirements-check.txt   # once; the model downloads on first use
+.venv/bin/python tools/audio/check_clips.py --set 2025 --set words
+open tools/audio/dist/review/index.html
 ```
 
-Every command writes the pack into `content/audio/packs.json` (commit that) and the files into
-`tools/audio/dist/<pack-id>/v<version>/` (upload that; never committed). Synthetic packs land as
-`needs-review`: listen to a few clips, then set `approved` in `packs.json`, like any content.
+Every command writes the pack into `content/audio/packs.json` and the files into
+`tools/audio/dist/<pack-id>/v<version>/` (upload that; never committed). Commit `packs.json` only once
+the files are on the host: the app lists every pack in it. Synthetic packs land as `needs-review`:
+listen to what `check_clips.py` lists and to its random sample, then set `approved` in `packs.json`,
+like any content. The voice reads the text as written, with two exceptions in `generate_elevenlabs.py`:
+a numeral that repeats the words before it ("Twenty-seven (27)") is said once, and a few names the voice
+mispronounces are respelled for it (`SAY_AS`). To redo a clip, delete its file and run the same command
+again.
 
 Bump `--version` when files change; the app keys its cache on pack id and version, so learners
 re-download only what changed.
