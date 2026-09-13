@@ -1,3 +1,5 @@
 -r requirements.txt
 faster-whisper>=1.2
 num2words>=0.5
+av>=18
+numpy>=2
