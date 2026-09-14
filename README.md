@@ -7,6 +7,7 @@
 [![Live demo](https://img.shields.io/badge/demo-live-brightgreen?logo=googlechrome&logoColor=white)](https://peopleworks.github.io/Citiz/)
 [![CI](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/ci.yml?branch=main&label=CI&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/ci.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/codeql.yml?branch=main&label=CodeQL&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/codeql.yml)
+[![Release](https://img.shields.io/github/v/tag/peopleworks/Citiz?label=release&logo=github)](https://github.com/peopleworks/Citiz/tags)
 [![License: MIT](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![Content: CC BY 4.0](https://img.shields.io/badge/content-CC%20BY%204.0-blue)](content/README.md#licensing)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
@@ -54,7 +55,7 @@ mobile — no separate app to build for either.</sub>
 | Pillar | Built | How |
 | --- | --- | --- |
 | **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), a browsable bank with sources, and **USCIS's own recordings** of the 2008 questions, downloaded once as a pack |
-| **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it (on-device voice, or a downloaded recording), dictation practice |
+| **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it with your device's voice, dictation practice |
 | **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for |
 | **Play & Learn** | *Civics challenge* | Ten multiple-choice rounds where every option is a real official answer; results count as practice |
 | **Languages** | 7 interface languages | English, Spanish, Chinese (Simplified and Traditional), Filipino, Vietnamese, Arabic (right-to-left) — interface, study and help language are independent |
@@ -64,10 +65,12 @@ checks CI runs), resolves which test applies to a filing date, and runs a practi
 terminal; an optional API; a worker that watches the official sources for changes; a Dockerfile; a
 GitHub Pages deployment.
 
-**Not built yet** (designed, on the [roadmap](ROADMAP.md)): speech recognition and interview
-simulation, AI explanations, community features, the remaining games. The .NET MAUI hybrid app
+**Not built yet** (designed, on the [roadmap](ROADMAP.md)): speech recognition
+([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md)) and interview simulation, AI
+explanations, community features, the remaining games. The .NET MAUI app
 ([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md)) runs on the iOS and Android simulators and on
-Windows, with native text-to-speech, but is not published to any store yet.
+Windows, with each platform's own voice and the same audio packs; publishing it on Google Play and
+the App Store is [next on the roadmap](ROADMAP.md#07--everywhere).
 
 <p align="center">
   <img src="Docs/screenshots/practice-desktop.png" alt="A multiple-choice practice question answered correctly, with the accepted answer highlighted, the bank's 'Verified' badge, and the official sources with their verification dates">
@@ -77,16 +80,35 @@ Windows, with native text-to-speech, but is not published to any store yet.
 appears only while something has not been checked against the official USCIS document — today, nothing
 in the banks carries one. Citiz never hides how sure it is.</sub>
 
+## Milestones
+
+- **v0.3 (2026-08-25)** — the professional foundation: both official banks, versioned rules, a PWA
+  with five practice modes, seven interface languages, CI and CodeQL.
+- **v0.4 (2026-09-01)** — verified content: the banks, officeholders, vocabulary and capsules compared
+  with their official sources (13 corrections in the 2025 bank); Spanish reviewed; the .NET MAUI app
+  running on iOS and Android.
+- **2026-09-13** — USCIS's own recordings playing in the app; the Citiz voice generated, checked clip
+  by clip by a local speech recognizer, and now under human review; the plan for on-device speech
+  recognition revised ([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md)).
+- **Next** — Citiz on Google Play and the App Store.
+
+Every change is in the [changelog](CHANGELOG.md); how each step was built, in the
+[build history](Docs/BuildHistory.md).
+
 ## Hear it the way an officer says it
 
 USCIS itself recorded the 100 questions of the 2008 test, with their answers, read by a person —
 public domain, one MP3 per question. Citiz offers them as an *audio pack*: downloaded once, on your
 request (Settings › Audio, or the one-time offer on Prepare), kept on your device, played offline.
 Because each official track reads the question **and** its answers, it plays after the answer is
-revealed and in Browse; "Listen" keeps reading the question alone. For the 2025 test, which USCIS
-has not recorded, a *Citiz voice* pack is generated once by the maintainer from the verified text
-and labelled "Synthetic voice · not USCIS" wherever it plays. Without a pack, your device's own
-voice reads the text. The pack host sees one download, never which question you study; the
+revealed and in Browse; "Listen" keeps reading the question alone. The official pack is live: the
+app downloads the 100 recordings once (30 MB) and plays them offline. For the 2025 test, which USCIS
+has not recorded, and for the vocabulary words, a *Citiz voice* pack is generated once by the
+maintainer from the verified text and labelled "Synthetic voice · not USCIS" wherever it plays. The
+first one — ElevenLabs' Sarah voice, 533 clips for the 2025 test and 98 words — is generated and
+under review: a local Whisper model transcribed every clip with no hint of its text, which caught
+numbers read twice, a mispronounced name and clips cut off at the end, and a person listens before
+it is offered. Without a pack, your device's own voice reads the text. The pack host sees one download, never which question you study; the
 catalog is [`content/audio/packs.json`](content/audio/packs.json) and the packs are built with
 [`tools/audio/`](tools/audio/README.md).
 
@@ -175,11 +197,14 @@ Everything CI runs, in one go: `scripts/bootstrap.sh` (or `.ps1`). Docker: `dock
 | `src/Citiz.Games` | The game catalog, adaptive difficulty, multiple-choice building, the civics challenge. |
 | `src/Citiz.Localization` | The three-language profile, supported languages, translation catalogs and their validator. |
 | `src/Citiz.AI` | The AI contract and the no-AI fallback. Providers plug in here; the product works without one. |
+| `src/Citiz.SharedUI` | The Razor pages, components and services that the web app and the native app share. |
 | `src/Citiz.Web` | Host: the Blazor WebAssembly PWA. |
+| `src/Citiz.Hybrid` | Host: the .NET MAUI Blazor Hybrid app for iOS, Android and Windows, with each platform's own speech and audio packs kept on the device. |
 | `src/Citiz.Cli` | Host: `citiz`, the maintainer's tool. |
 | `src/Citiz.Api` | Host: optional server exposing the content and evaluator over HTTP. |
 | `src/Citiz.ContentWorker` | Host: polls the official sources and reports changes for human review. |
 | `content/` | The open content repository: banks, rules, dynamic answers, vocabulary, capsules, source catalog, schemas. |
+| `tools/` | Maintainer scripts: `content-verify` compares the banks with the USCIS documents; `audio` builds, generates and checks the audio packs. |
 | `tests/` | xUnit. The content that ships must validate; the language packs must agree with English. |
 | `Docs/` | Architecture decisions (ADR), editorial decisions (EDR), localization and privacy guides, the founding design document. |
 

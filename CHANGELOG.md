@@ -26,6 +26,9 @@ versions follow [Semantic Versioning](https://semver.org/).
   lists the ones worth a listen; the README has the macOS setup and the IIS `web.config` for the host.
 - The content validator checks packs: every clip points at a real question, answer index or word;
   official packs hold recordings only; answers of dynamic questions are never recorded; sizes add up.
+- ADR-0004 (proposed, revised 2026-09-13): spoken answers are transcribed on the device by the
+  lightest route that passes the accent, false-acceptance and privacy gates (the platform's own
+  recogniser, Whisper.net or Gemma 4 E2B); choosing among accepted answers gets its own ADR.
 
 ## [0.4.0] — 2026-09-01
 

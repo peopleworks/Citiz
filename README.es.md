@@ -7,6 +7,7 @@
 [![Demo en vivo](https://img.shields.io/badge/demo-en%20vivo-brightgreen?logo=googlechrome&logoColor=white)](https://peopleworks.github.io/Citiz/)
 [![CI](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/ci.yml?branch=main&label=CI&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/ci.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/peopleworks/Citiz/codeql.yml?branch=main&label=CodeQL&logo=github)](https://github.com/peopleworks/Citiz/actions/workflows/codeql.yml)
+[![Versión](https://img.shields.io/github/v/tag/peopleworks/Citiz?label=versi%C3%B3n&logo=github)](https://github.com/peopleworks/Citiz/tags)
 [![Licencia: MIT](https://img.shields.io/badge/código-MIT-blue)](LICENSE)
 [![Contenido: CC BY 4.0](https://img.shields.io/badge/contenido-CC%20BY%204.0-blue)](content/README.md#licensing)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
@@ -53,7 +54,7 @@ móvil — sin construir una app aparte para cada uno.</sub>
 | Pilar | Construido | Cómo |
 | --- | --- | --- |
 | **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido) y un banco explorable con fuentes, y las **grabaciones oficiales de USCIS** de las preguntas de 2008, descargadas una sola vez como paquete |
-| **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla (voz del dispositivo, o una grabación descargada), práctica de dictado |
+| **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla con la voz de tu dispositivo, práctica de dictado |
 | **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto |
 | **Juega y Aprende** | *Reto cívico* | Rondas de diez preguntas de opción múltiple donde cada opción es una respuesta oficial real; los resultados cuentan como práctica |
 | **Idiomas** | 7 idiomas de interfaz | Inglés, español, chino (simplificado y tradicional), filipino, vietnamita, árabe (de derecha a izquierda); el idioma de la interfaz, el de estudio y el de ayuda son independientes |
@@ -63,10 +64,12 @@ de idioma (las mismas comprobaciones que ejecuta la integración continua), resu
 una fecha de presentación y ejecuta un simulacro en la terminal; una API opcional; un worker que vigila
 las fuentes oficiales; un Dockerfile; despliegue a GitHub Pages.
 
-**Todavía no construido** (diseñado, en la [hoja de ruta](ROADMAP.md)): reconocimiento de voz y
-simulación de entrevista, explicaciones con IA, funciones comunitarias, el resto de los juegos. La app
-híbrida .NET MAUI ([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md)) ya corre en los simuladores de
-iOS y Android y en Windows, con voz nativa, pero todavía no está publicada en ninguna tienda.
+**Todavía no construido** (diseñado, en la [hoja de ruta](ROADMAP.md)): reconocimiento de voz
+([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md)) y simulación de entrevista,
+explicaciones con IA, funciones comunitarias, el resto de los juegos. La app .NET MAUI
+([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md)) ya corre en los simuladores de iOS y Android y en
+Windows, con la voz propia de cada plataforma y los mismos paquetes de audio; publicarla en Google Play
+y en la App Store es [lo siguiente en la hoja de ruta](ROADMAP.md#07--everywhere).
 
 <p align="center">
   <img src="Docs/screenshots/practice-desktop.png" alt="Una pregunta de opción múltiple contestada correctamente, con la respuesta aceptada resaltada, la insignia 'Verificado' del banco y las fuentes oficiales con su fecha de verificación">
@@ -76,16 +79,37 @@ iOS y Android y en Windows, con voz nativa, pero todavía no está publicada en 
 aparece solo mientras algo no se ha cotejado con el documento oficial de USCIS; hoy ninguna pregunta de
 los bancos la lleva. Citiz nunca esconde qué tan seguro está.</sub>
 
+## Logros
+
+- **v0.3 (25 de agosto de 2026)**: la base profesional: los dos bancos oficiales, reglas versionadas,
+  una PWA con cinco modos de práctica, siete idiomas de interfaz, integración continua y CodeQL.
+- **v0.4 (1 de septiembre de 2026)**: contenido verificado: los bancos, los cargos, el vocabulario y
+  las cápsulas cotejados con sus fuentes oficiales (13 correcciones en el banco 2025); el español
+  revisado; la app .NET MAUI funcionando en iOS y Android.
+- **13 de septiembre de 2026**: las grabaciones oficiales de USCIS ya suenan en la app; la voz de
+  Citiz, generada y revisada audio por audio por un reconocedor de voz local, ahora en revisión humana;
+  el plan de reconocimiento de voz en el dispositivo, revisado
+  ([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md)).
+- **Lo que sigue**: Citiz en Google Play y en la App Store.
+
+Cada cambio está en el [changelog](CHANGELOG.md), y cómo se construyó cada paso, en la
+[bitácora de construcción](Docs/BuildHistory.md).
+
 ## Escúchalo como lo dice un oficial
 
 USCIS grabó las 100 preguntas del examen 2008, con sus respuestas, leídas por una persona: dominio
 público, un MP3 por pregunta. Citiz las ofrece como *paquete de audio*: se descarga una sola vez, a
 petición tuya (Configuración › Audio, o el aviso único en Prepárate), se queda en tu dispositivo y
 se reproduce sin conexión. Como cada pista oficial lee la pregunta **y** sus respuestas, suena
-después de revelar la respuesta y en Explorar; "Escuchar" sigue leyendo solo la pregunta. Para el
-examen 2025, que USCIS no ha grabado, el responsable genera una sola vez un paquete de *voz de
-Citiz* a partir del texto verificado, etiquetado "Voz sintética · no es de USCIS" en todos los
-lugares donde suena. Sin paquete, lee el texto la voz de tu dispositivo. El servidor de los paquetes
+después de revelar la respuesta y en Explorar; "Escuchar" sigue leyendo solo la pregunta. El paquete
+oficial ya funciona: la app descarga una vez las 100 grabaciones (30 MB) y las reproduce sin conexión.
+Para el examen 2025, que USCIS no ha grabado, y para las palabras del vocabulario, el responsable
+genera una sola vez un paquete de *voz de Citiz* a partir del texto verificado, etiquetado "Voz
+sintética · no es de USCIS" en todos los lugares donde suena. El primero (la voz Sarah de ElevenLabs:
+533 audios del examen 2025 y 98 palabras) ya está generado y en revisión: un modelo Whisper local
+transcribió cada audio sin pistas de su texto, lo que detectó números leídos dos veces, un nombre mal
+pronunciado y audios cortados al final, y una persona los escucha antes de ofrecerlos. Sin paquete,
+lee el texto la voz de tu dispositivo. El servidor de los paquetes
 ve una descarga, nunca qué pregunta estudias; el catálogo es
 [`content/audio/packs.json`](content/audio/packs.json) y los paquetes se construyen con
 [`tools/audio/`](tools/audio/README.md).

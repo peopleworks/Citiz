@@ -358,6 +358,46 @@ ran in the browser: download, offer gone, reveal, the official track playing, pr
 clean example of a privacy constraint (whole-pack downloads) shaping architecture rather than
 being bolted on.
 
+## 2026-09-13 — A speech recognizer auditing a synthetic voice
+
+The Citiz voice was made today, and the most useful tool in the process was the opposite machine.
+First the key: Pedro stored an ElevenLabs key for this Mac, but the hidden prompt showed nothing,
+so it went in twice, plus a Ctrl+V character (a Windows habit), and ElevenLabs answered with a bare
+HTML 400. The key script now keeps one copy, drops invisible characters and asks ElevenLabs about
+the key before saving it. He chose Sarah from six samples of the same question, and 631 clips
+followed: the prompts and accepted answers of the 2025 test and the 98 vocabulary words, about
+17,300 characters.
+
+Nobody listens carefully to 631 clips, so a local Whisper model transcribed every one and each
+transcript was compared with the text the voice was given, with **no hint** of that text. That is
+the rule ADR-0004 had written down the day before for learners' spoken answers: a recognizer told
+what to expect tends to hear it. The first pass flagged 36 clips, of three kinds. A generator bug:
+USCIS writes some numbers twice, "Twenty-seven (27)", and the voice read both (Whisper heard
+"2727") in ten answers and two words; the generator now drops a numeral that repeats the words
+before it. A mispronounced name: "Sioux" came back as "See you!"; respelled "Soo", as "So?";
+respelled "Sue", it matched. And false alarms, where only the spelling differed: "KAYUGA",
+"World War one", "July 4th".
+
+Silence caught what transcripts could not. Six clips were heard word for word yet ended while the
+voice was still sounding: a typical clip's last 30 ms sit near -90 dBFS, and these were at -22 to
+-34. Regenerated, they end in silence, the checker now flags "ends cut" by itself, and the full
+scan found a seventh. Starts were measured too and left alone: almost a hundred clips begin without
+a pause, but none of them lost its first word in the transcripts. What remains is for a person: two
+answers that begin with "War", and a few single words such as "a", "come" and "want", on a review
+page with a random sample beside them.
+
+The packs went up to the PeopleWorks server as one zip, and every file came back down with the same
+SHA-256. In the app, the 2025 pack downloaded in 74 seconds and the words in 13, and Listen, each
+answer and a vocabulary word played under the "Synthetic voice · not USCIS" badge. The same day, a
+review of ADR-0004, sent over from a session on another project, turned "a 2.6 GB model first" into
+"the phone's own on-device recognizer first", added the browser's `processLocally`, and split the
+answer judge into its own decision. And `git push` from Terminal failed: git there had no GitHub
+credentials, since the earlier pushes had gone through a desktop client with its own sign-in, until
+`gh auth login` put a browser sign-in behind it.
+
+**Content angle:** "give the checker no hints": a speech recognizer auditing a synthesizer, and why
+the rule that protects learners from false acceptance also kept the quality check honest.
+
 ---
 
 <!--
