@@ -38,6 +38,9 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
     private const string ThemeKey = "citiz.theme";
     private const string AudioOfferKey = "citiz.audio.offer";
 
+    // The packs whose one-time offer the learner answered "Not now", kept comma-separated under AudioOfferKey.
+    private HashSet<string> dismissedAudioOffers = new(StringComparer.Ordinal);
+
     /// <summary>Raised after settings or progress change.</summary>
     public event Action? Changed;
 
@@ -53,17 +56,17 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
     /// <summary>The chosen appearance: <c>"light"</c>, <c>"dark"</c>, or <c>null</c> to follow the system.</summary>
     public string? Theme { get; private set; }
 
-    /// <summary>Whether the learner dismissed the one-time offer to download the official recordings.</summary>
-    public bool AudioOfferDismissed { get; private set; }
-
     /// <summary>Whether <see cref="InitializeAsync"/> has completed.</summary>
     public bool IsInitialized { get; private set; }
 
-    /// <summary>Remembers that the learner declined the offer to download the official recordings (it stays available in Settings).</summary>
-    public async Task DismissAudioOfferAsync()
+    /// <summary>Whether the learner declined the one-time offer to download <paramref name="packId"/>.</summary>
+    public bool IsAudioOfferDismissed(string packId) => dismissedAudioOffers.Contains(packId);
+
+    /// <summary>Remembers that the learner declined the offer to download <paramref name="packId"/> (it stays available in Settings).</summary>
+    public async Task DismissAudioOfferAsync(string packId)
     {
-        AudioOfferDismissed = true;
-        await storage.SetAsync(AudioOfferKey, "dismissed");
+        dismissedAudioOffers.Add(packId);
+        await storage.SetAsync(AudioOfferKey, string.Join(',', dismissedAudioOffers.Order(StringComparer.Ordinal)));
         Changed?.Invoke();
     }
 
@@ -88,7 +91,7 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
 
         var theme = await storage.GetAsync(ThemeKey);
         Theme = theme is "light" or "dark" ? theme : null;
-        AudioOfferDismissed = await storage.GetAsync(AudioOfferKey) == "dismissed";
+        dismissedAudioOffers = ParseDismissedAudioOffers(await storage.GetAsync(AudioOfferKey));
 
         IsInitialized = true;
         Changed?.Invoke();
@@ -170,7 +173,7 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
         await storage.RemoveAsync(NameKey);
         await storage.RemoveAsync(ThemeKey);
         await storage.RemoveAsync(AudioOfferKey);
-        AudioOfferDismissed = false;
+        dismissedAudioOffers.Clear();
         Exam = ExamSettings.Empty;
         Progress = new ProgressLedger();
         Name = null;
@@ -183,6 +186,12 @@ public sealed class LearnerState(BrowserStorage storage, LocalizationService loc
         storage.SetDocumentLanguageAsync(localization.Language.Code, localization.Language.HtmlDirection);
 
     private static string? NormalizeName(string? name) => string.IsNullOrWhiteSpace(name) ? null : name.Trim();
+
+    // Until there was more than one offer the key held "dismissed", and the only pack ever offered was
+    // the official 2008 recordings: that answer still stands for that pack, and for no other.
+    private static HashSet<string> ParseDismissedAudioOffers(string? value) => value == "dismissed"
+        ? new HashSet<string>(StringComparer.Ordinal) { "uscis-2008" }
+        : new HashSet<string>((value ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries), StringComparer.Ordinal);
 
     private static T? Deserialize<T>(string? json, System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> typeInfo)
         where T : class

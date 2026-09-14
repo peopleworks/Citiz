@@ -16,8 +16,10 @@ versions follow [Semantic Versioning](https://semver.org/).
   offered after the answer is revealed and in Browse, so no practice mode gives the answer away;
   "Listen" keeps reading the question alone. Without a pack, the device voice is used, silently.
 - Settings › Audio: download, progress, cancel, delete, and where packs come from; the "What runs
-  where" table gains a recordings row that names the host only once a pack is on the device; a
-  one-time offer on Prepare for the 2008 test. Strings in all seven languages.
+  where" table gains a recordings row that names the host only once a pack is on the device;
+  one-time offers where a pack helps: on Prepare the official recordings of the learner's test, then
+  the Citiz voice for it; on Communicate the Citiz voice for the vocabulary. Each pack is offered once,
+  one per visit, and wears the same label as its clips. Strings in all seven languages.
 - `tools/audio/`: `fetch_uscis_2008.py` builds the official pack from uscis.gov;
   `generate_elevenlabs.py` lists voices, makes samples with a page to compare them by ear, counts
   characters and generates the synthetic packs (resumable; key from `ELEVENLABS_API_KEY` or a

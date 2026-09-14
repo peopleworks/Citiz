@@ -388,6 +388,7 @@ button, input, select { font: inherit; }
 }
 .play-mini:hover { background: var(--brand-soft); }
 .audio-offer { display: flex; gap: 1rem; align-items: flex-start; margin-block-start: 1rem; background: var(--brand-soft); color: var(--brand-strong); border-color: transparent; }
+.audio-offer + .card { margin-block-start: 1rem; }
 .audio-offer > svg { flex-shrink: 0; margin-block-start: .15rem; }
 .audio-offer p { margin: 0 0 .6rem; }
 .audio-offer-title { font-weight: 700; font-size: 1.1rem; }

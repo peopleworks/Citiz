@@ -38,32 +38,13 @@ else
     <SourceLine Sources="context.Bank.Sources" />
   </div>
 
-  @if (offer is { } pack)
+  @if (offer is { } official && official.Pack.Kind == AudioPackKind.Official)
   {
-    <div class="notice audio-offer" role="region" aria-label="@L.T("audio.offer.title")">
-      <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" /></svg>
-      <div>
-        <p class="audio-offer-title">@L.T("audio.offer.title")</p>
-        <p>@L.T("audio.offer.body", context.Version.DisplayName, L.T("common.sizeMB", AudioFormat.Megabytes(pack.Pack.SizeBytes)))</p>
-        @if (pack.Status == AudioPackStatus.Downloading)
-        {
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Percent(pack)"><div style="width: @(Percent(pack))%"></div></div>
-          <p class="muted small">@L.T("settings.audio.downloading", AudioFormat.Megabytes(pack.BytesDone), AudioFormat.Megabytes(pack.Pack.SizeBytes))</p>
-        }
-        else
-        {
-          @if (pack.Error is not null)
-          {
-            <p class="feedback bad" role="alert">@L.T("settings.audio.failed")</p>
-          }
-          <div class="row">
-            <button type="button" class="button primary" @onclick="() => Audio.DownloadAsync(pack.Pack.Id)">@L.T("audio.offer.download")</button>
-            <button type="button" class="button ghost" @onclick="DismissOfferAsync">@L.T("audio.offer.later")</button>
-            <span class="small">@L.T("audio.offer.settings")</span>
-          </div>
-        }
-      </div>
-    </div>
+    <AudioOffer State="official" Title="@L.T("audio.offer.title")" Body="@L.T("audio.offer.body", context.Version.DisplayName, L.T("common.sizeMB", AudioFormat.Megabytes(official.Pack.SizeBytes)))" DownloadLabel="@L.T("audio.offer.download")" OnDismiss="DismissOfferAsync" />
+  }
+  else if (offer is { } voice)
+  {
+    <AudioOffer State="voice" Title="@L.T("audio.offer.voice.title")" Body="@L.T("audio.offer.voice.body", context.Version.DisplayName, L.T("common.sizeMB", AudioFormat.Megabytes(voice.Pack.SizeBytes)))" DownloadLabel="@L.T("audio.offer.voice.download")" OnDismiss="DismissOfferAsync" />
   }
 
   <div class="segmented" role="group" aria-label="@L.T("prepare.title")" style="margin-block: 1.25rem">
@@ -277,27 +258,35 @@ else
     .Where(q => string.IsNullOrWhiteSpace(filter) || q.Prompt.Contains(filter, StringComparison.OrdinalIgnoreCase) || q.AcceptedAnswers.Any(a => a.Contains(filter, StringComparison.OrdinalIgnoreCase)))
     .ToList();
 
-  // The one-time offer to download the official recordings of the learner's test: shown while an
-  // official pack for this version is not on the device and the learner has not said "not now".
+  // The one-time offer of audio for the learner's test: the official recordings first, then the Citiz
+  // voice. A pack is offered while it is not on the device and the learner has not said "not now", one
+  // pack per visit, so finishing one download does not put the next offer up straight away.
   private AudioPackState? offer;
-
-  private static int Percent(AudioPackState state) => state.Pack.SizeBytes == 0 ? 0 : (int)Math.Min(100, 100 * state.BytesDone / state.Pack.SizeBytes);
+  private string? offerPackId;
 
   private async Task RefreshOfferAsync()
   {
     offer = null;
-    if (context is null || Learner.AudioOfferDismissed || !Audio.IsSupported)
+    if (context is null || !Audio.IsSupported)
     {
       return;
     }
 
-    offer = (await Audio.GetStatesAsync()).FirstOrDefault(s =>
-      s.Pack.Kind == AudioPackKind.Official && s.Pack.VersionId == context.Version.Id && s.Status != AudioPackStatus.Ready);
+    var versionId = context.Version.Id;
+    var states = await Audio.GetStatesAsync();
+    bool Offered(AudioPackState s) => s.Pack.VersionId == versionId && s.Status != AudioPackStatus.Ready && !Learner.IsAudioOfferDismissed(s.Pack.Id);
+    offerPackId ??= (states.FirstOrDefault(s => s.Pack.Kind == AudioPackKind.Official && Offered(s))
+      ?? states.FirstOrDefault(s => s.Pack.Kind == AudioPackKind.Synthetic && Offered(s)))?.Pack.Id;
+    offer = states.FirstOrDefault(s => s.Pack.Id == offerPackId && Offered(s));
   }
 
   private async Task DismissOfferAsync()
   {
-    await Learner.DismissAudioOfferAsync();
+    if (offer is { } pack)
+    {
+      await Learner.DismissAudioOfferAsync(pack.Pack.Id);
+    }
+
     offer = null;
   }
 

@@ -1,0 +1,42 @@
+@inherits LocalizedComponentBase
+@inject AudioService Audio
+
+@* The one-time offer to download an audio pack, on the page where the pack helps. It wears the same
+   label as the clips it brings, quotes the size, shows the progress, and hands "Not now" back to the
+   page, which remembers it. The pack stays in Settings › Audio either way. *@
+<div class="notice audio-offer" role="region" aria-label="@Title">
+  <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" /></svg>
+  <div>
+    <p class="audio-offer-title">@Title <AudioSourceBadge Source="Source" /></p>
+    <p>@Body</p>
+    @if (State.Status == AudioPackStatus.Downloading)
+    {
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@Percent"><div style="width: @(Percent)%"></div></div>
+      <p class="muted small">@L.T("settings.audio.downloading", AudioFormat.Megabytes(State.BytesDone), AudioFormat.Megabytes(State.Pack.SizeBytes))</p>
+    }
+    else
+    {
+      @if (State.Error is not null)
+      {
+        <p class="feedback bad" role="alert">@L.T("settings.audio.failed")</p>
+      }
+      <div class="row">
+        <button type="button" class="button primary" @onclick="() => Audio.DownloadAsync(State.Pack.Id)">@DownloadLabel</button>
+        <button type="button" class="button ghost" @onclick="OnDismiss">@L.T("audio.offer.later")</button>
+        <span class="small">@L.T("audio.offer.settings")</span>
+      </div>
+    }
+  </div>
+</div>
+
+@code {
+  [Parameter, EditorRequired] public AudioPackState State { get; set; } = default!;
+  [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+  [Parameter, EditorRequired] public string Body { get; set; } = string.Empty;
+  [Parameter, EditorRequired] public string DownloadLabel { get; set; } = string.Empty;
+  [Parameter] public EventCallback OnDismiss { get; set; }
+
+  private AudioSource Source => State.Pack.Kind == AudioPackKind.Official ? AudioSource.OfficialRecording : AudioSource.SyntheticPack;
+
+  private int Percent => State.Pack.SizeBytes == 0 ? 0 : (int)Math.Min(100, 100 * State.BytesDone / State.Pack.SizeBytes);
+}

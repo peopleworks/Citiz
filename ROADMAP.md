@@ -44,6 +44,10 @@ The release where the "not yet verified" labels disappeared — by verification,
     and caught numbers read twice, a mispronounced name and seven clips cut off at the end, all
     regenerated. Uploaded on 2026-09-13 and verified byte for byte; both packs download and play in
     the app
+  - [x] One-time offers where each pack helps, so learners find the voice without opening Settings:
+    on Prepare the official recordings of their test first, then the Citiz voice for it; on
+    Communicate the Citiz voice for the vocabulary. One pack per visit, each labelled like its clips;
+    checked in a browser on 2026-09-13 for a 2025 and a 2008 learner
   - [ ] Listen to the clips the check lists and to its random sample, set the packs `approved`, and
     commit `content/audio/packs.json` (not before: the app offers every pack listed there), then push
   - [x] The 2008 questions in the Citiz voice: `--set 2008` (100 prompts, 2.5 MB) generated on

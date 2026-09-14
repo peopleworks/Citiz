@@ -33,6 +33,11 @@ else
     <p class="muted small">@L.T(speechLocal ? "communicate.speechLocal" : "communicate.speechRemote")</p>
   }
 
+  @if (offer is { } pack)
+  {
+    <AudioOffer State="pack" Title="@L.T("audio.offer.words.title")" Body="@L.T("audio.offer.words.body", L.T("common.sizeMB", AudioFormat.Megabytes(pack.Pack.SizeBytes)))" DownloadLabel="@L.T("audio.offer.voice.download")" OnDismiss="DismissOfferAsync" />
+  }
+
   <div class="card">
     <h2>@L.T("communicate.dictation") <ReviewBadge Status="writing.ReviewStatus" /></h2>
     <p class="muted">@L.T("communicate.dictationIntro")</p>
@@ -91,6 +96,10 @@ else
   private bool speechLocal;
   private AudioSource wordSource;
 
+  // The one-time offer of the Citiz voice for the vocabulary: shown while a pack with the words is not
+  // on the device and the learner has not said "not now".
+  private AudioPackState? offer;
+
   private string dictationWord = string.Empty;
   private string dictated = string.Empty;
   private bool? dictationResult;
@@ -105,6 +114,7 @@ else
       wordSource = await Audio.WordSourceAsync();
       speechAvailable = wordSource != AudioSource.None;
       speechLocal = wordSource == AudioSource.SyntheticPack || (speechAvailable && await Speech.IsLocalVoiceAsync("en-US"));
+      await RefreshOfferAsync();
       PickDictationWord();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
@@ -121,8 +131,28 @@ else
   {
     wordSource = await Audio.WordSourceAsync();
     speechAvailable = wordSource != AudioSource.None;
+    await RefreshOfferAsync();
     StateHasChanged();
   });
+
+  private async Task RefreshOfferAsync()
+  {
+    var states = await Audio.GetStatesAsync();
+    offer = Audio.IsSupported
+      ? states.FirstOrDefault(s => s.Pack.Kind == AudioPackKind.Synthetic && s.Pack.Clips.Any(c => c.Role == AudioClipRole.Word)
+        && s.Status != AudioPackStatus.Ready && !Learner.IsAudioOfferDismissed(s.Pack.Id))
+      : null;
+  }
+
+  private async Task DismissOfferAsync()
+  {
+    if (offer is { } pack)
+    {
+      await Learner.DismissAudioOfferAsync(pack.Pack.Id);
+    }
+
+    offer = null;
+  }
 
   public override void Dispose()
   {
