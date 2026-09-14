@@ -6,6 +6,8 @@ the transcript is compared with the text the voice was given, and a page lists t
     .venv/bin/python tools/audio/check_clips.py --set 2025 --set words
     open tools/audio/dist/review/index.html
 
+--review-dir writes the page somewhere else, so checking a new pack does not replace a page someone is still using.
+
 The recogniser gets no hint of the expected text (ADR-0004, gate 3), so a wrong clip cannot be heard as the
 right one. A clip is listed when its transcript still differs from its text after numbers, ordinals,
 apostrophes and a few same-sounding words are normalised, when its length is out of proportion to its text,
@@ -103,6 +105,7 @@ def main() -> int:
     parser.add_argument("--model", default="small.en", help="faster-whisper model (default: small.en)")
     parser.add_argument("--threshold", type=float, default=0.85, help="lowest similarity between the word sequences that passes")
     parser.add_argument("--sample", type=int, default=12, help="how many other clips to pick at random for a general listen")
+    parser.add_argument("--review-dir", default="review", help="folder under tools/audio/dist for the page and report (default: review)")
     args = parser.parse_args()
 
     from faster_whisper import WhisperModel
@@ -144,7 +147,7 @@ def main() -> int:
 
     flagged = [r for r in rows if r["flags"]]
     sample = random.Random(0).sample([r for r in rows if not r["flags"]], min(args.sample, len(rows) - len(flagged)))
-    review = DIST / "review"
+    review = DIST / args.review_dir
     review.mkdir(parents=True, exist_ok=True)
     (review / "report.json").write_text(json.dumps(rows, indent=1, ensure_ascii=False), encoding="utf-8")
     (review / "index.html").write_text(page(rows, flagged, sample, args.model), encoding="utf-8")

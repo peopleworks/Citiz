@@ -46,7 +46,9 @@ The release where the "not yet verified" labels disappeared — by verification,
     the app
   - [ ] Listen to the clips the check lists and to its random sample, set the packs `approved`, and
     commit `content/audio/packs.json` (not before: the app offers every pack listed there), then push
-  - [ ] Later: the 2008 questions in the Citiz voice (`--set 2008`, about 4,900 characters)
+  - [x] The 2008 questions in the Citiz voice: `--set 2008` (100 prompts, 2.5 MB) generated on
+    2026-09-13; the clip check lists none of them
+  - [ ] Upload `citiz-voice-2008/v1` and verify it byte for byte, like the other packs
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
   ([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md), proposed)
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full

@@ -60,11 +60,13 @@ open tools/audio/dist/samples/index.html   # one player per voice, with its name
 # 4. Generate (resumable; already generated clips are skipped)
 .venv/bin/python tools/audio/generate_elevenlabs.py --set 2025 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
 .venv/bin/python tools/audio/generate_elevenlabs.py --set words --voice <id> --base-url https://YOUR-HOST/citiz-audio/
+.venv/bin/python tools/audio/generate_elevenlabs.py --set 2008 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
 
 # 5. Check every clip: a local Whisper model transcribes it, with no hints, and a page lists what to hear
 .venv/bin/pip install -r tools/audio/requirements-check.txt   # once; the model downloads on first use
 .venv/bin/python tools/audio/check_clips.py --set 2025 --set words
 open tools/audio/dist/review/index.html
+.venv/bin/python tools/audio/check_clips.py --set 2008 --review-dir review-2008   # its own page; review/ stays
 ```
 
 Every command writes the pack into `content/audio/packs.json` and the files into
