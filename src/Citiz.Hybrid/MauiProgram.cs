@@ -8,7 +8,9 @@ using CommunityToolkit.Maui;
 #if !WINDOWS
 using CommunityToolkit.Maui.Storage;
 #endif
+#if DEBUG
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Citiz.Hybrid;
 
