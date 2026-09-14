@@ -395,6 +395,19 @@ answer judge into its own decision. And `git push` from Terminal failed: git the
 credentials, since the earlier pushes had gone through a desktop client with its own sign-in, until
 `gh auth login` put a browser sign-in behind it.
 
+That evening Pedro opened the live site and still heard the robotic voice. Nothing was broken: the
+Citiz voice played only after a download in Settings › Audio, and nobody opens Settings looking for
+a voice. So the one-time card on Prepare, which had offered only USCIS's recordings, learned to offer
+the Citiz voice too. The official pack still comes first, and only one pack is offered per visit,
+so finishing a 30 MB download does not put another card up at once. Communicate got its own card for
+the words, and each card wears the same badge as the clips it brings. Browsers that had already
+stored "not now" were declining the only pack ever offered, so that answer still hides that pack and
+nothing else. The 2008 questions got the voice as well: 100 prompts, none listed by the checker,
+uploaded and verified byte for byte. Checking that the native app still compiled turned up an older
+problem: its Release builds for iOS and Mac Catalyst had been failing on a `using` that only Debug
+needs. Then Pedro listened, called the voice "fenomenal", and the three packs were marked approved,
+a human act like every other approval in the content.
+
 **Content angle:** "give the checker no hints": a speech recognizer auditing a synthesizer, and why
 the rule that protects learners from false acceptance also kept the quality check honest.
 

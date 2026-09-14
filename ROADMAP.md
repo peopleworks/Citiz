@@ -28,9 +28,9 @@ The release where the "not yet verified" labels disappeared — by verification,
 ## 0.5 — Listen and speak
 
 - [x] Official audio: USCIS's own recordings of the 2008 questions, downloaded once as a pack (public
-  domain); a synthetic "Citiz voice" pack for the 2025 test and the vocabulary, generated once by the
-  maintainer and labelled as such; the device voice as the fallback everywhere. Built and verified
-  end to end on 2026-09-01; rolling out in this order:
+  domain); a synthetic "Citiz voice" for the 2025 and 2008 questions and the vocabulary, generated
+  once by the maintainer and labelled as such; the device voice as the fallback everywhere. Built and
+  verified end to end on 2026-09-01; rolled out in this order:
   - [x] Official pack uploaded to `https://peopleworksservices.com/citiz-audio/uscis-2008/v1/` and
     verified byte for byte against the catalog
   - [x] CORS on the host: the `<location path="citiz-audio">` block in the site root `web.config`
@@ -48,11 +48,11 @@ The release where the "not yet verified" labels disappeared — by verification,
     on Prepare the official recordings of their test first, then the Citiz voice for it; on
     Communicate the Citiz voice for the vocabulary. One pack per visit, each labelled like its clips;
     checked in a browser on 2026-09-13 for a 2025 and a 2008 learner
-  - [ ] Listen to the clips the check lists and to its random sample, set the packs `approved`, and
-    commit `content/audio/packs.json` (not before: the app offers every pack listed there), then push
   - [x] The 2008 questions in the Citiz voice: `--set 2008` (100 prompts, 2.5 MB) generated on
-    2026-09-13; the clip check lists none of them
-  - [ ] Upload `citiz-voice-2008/v1` and verify it byte for byte, like the other packs
+    2026-09-13; the clip check lists none of them. Uploaded the same day and verified byte for byte,
+    CORS included
+  - [x] The maintainer listened to the clips the check lists and to its random sample, and approved
+    the three Citiz voice packs on 2026-09-13; `content/audio/packs.json` committed with them `approved`
 - [ ] Speech-to-text for spoken answers, on-device where the browser supports it; disclosed when not
   ([ADR-0004](Docs/Architecture/ADR-0004-on-device-model-provider.md), proposed)
 - [ ] Interview simulation: greeting, N-400 vocabulary questions, reading, writing, civics — the full
@@ -73,8 +73,8 @@ The release where the "not yet verified" labels disappeared — by verification,
   `Citiz.SharedUI`; runs on iOS, Android and Windows with each platform's own speech and the audio
   packs ([`src/Citiz.Hybrid`](src/Citiz.Hybrid/README.md))
 - [ ] **Citiz on Google Play and the App Store**, through PeopleWorks organization accounts on both
-  stores. Next once the Citiz voice packs are approved (maintainer's decision, 2026-09-13). Checked
-  on 2026-09-13:
+  stores. Next, now that the Citiz voice packs are approved (the maintainer's condition, 2026-09-13).
+  Checked on 2026-09-13:
   - [x] Organization accounts, so the closed test with 12 testers for 14 days that Google Play
     requires of new personal accounts does not apply
     ([Play Console Help](https://support.google.com/googleplay/android-developer/answer/14151465))
@@ -82,6 +82,7 @@ The release where the "not yet verified" labels disappeared — by verification,
     2026-08-31 ([target API level](https://support.google.com/googleplay/android-developer/answer/11926878))
   - [x] Xcode 26.6 on the maintainer's Mac: App Store Connect accepts only builds made with Xcode 26
     and the iOS 26 SDK since 2026-04-28 ([Apple](https://developer.apple.com/news/upcoming-requirements/))
+  - [x] Release builds compile for iOS, Mac Catalyst and Android on the maintainer's Mac
   - [ ] A Citiz app icon and splash screen; the app still shows the .NET MAUI template's purple
   - [ ] Android: a signed release App Bundle with Play App Signing; decide who keeps the upload key,
     and where

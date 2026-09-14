@@ -15,6 +15,10 @@ versions follow [Semantic Versioning](https://semver.org/).
   with ElevenLabs from the verified text; no learner ever calls ElevenLabs). The official recording is
   offered after the answer is revealed and in Browse, so no practice mode gives the answer away;
   "Listen" keeps reading the question alone. Without a pack, the device voice is used, silently.
+- **The Citiz voice**, ElevenLabs' Sarah, in three packs: the 2025 test's questions and accepted
+  answers (533 clips, 9.7 MB), the 2008 test's questions (100 clips, 2.5 MB) and the reading and
+  writing words (98 clips, 0.9 MB). A local Whisper model transcribed every clip before a person
+  listened; the maintainer approved the three packs by ear on 2026-09-13.
 - Settings › Audio: download, progress, cancel, delete, and where packs come from; the "What runs
   where" table gains a recordings row that names the host only once a pack is on the device;
   one-time offers where a pack helps: on Prepare the official recordings of the learner's test, then
