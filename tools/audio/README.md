@@ -115,3 +115,12 @@ A long cache lifetime is right because a changed file gets a new pack version, h
 The web app downloads with a plain `GET` and no credentials, so there is no preflight and `*` works.
 Check after deploying: `curl -sI -H "Origin: https://example.org" https://YOUR-HOST/citiz-audio/uscis-2008/v1/manifest.json`
 must show `200`, `Access-Control-Allow-Origin: *` and `Cache-Control: max-age=31536000`.
+
+**Turn off access logging for the folder.** `PRIVACY.md` says the host keeps no record of which IP
+downloaded which pack, and the store privacy forms rely on it. IIS locks its logging section at the
+server level, so this cannot go in `web.config` (a `<httpLogging>` element there fails every file with
+500.19). On peopleworksservices.com it is done once on the server by
+[`ops/Set-IisPrivacyLogging.ps1`](https://github.com/peopleworks/peopleworksservices/blob/main/ops/Set-IisPrivacyLogging.ps1),
+which also deletes logs after 30 days and verifies the result against a control request. On another
+IIS host: IIS Manager, the site, the `citiz-audio` folder, **Logging**, **Disable**. On any other
+host, exclude the folder from access logs before publishing the packs there.

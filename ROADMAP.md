@@ -103,8 +103,9 @@ The release where the "not yet verified" labels disappeared — by verification,
     [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/) on misleading
     metadata); the privacy policy link ([PRIVACY.md](PRIVACY.md))
   - [ ] Privacy declarations: Google Play's Data safety form and Apple's App Privacy details. Citiz
-    sends nothing about the learner; the audio host sees a download, so decide how its server logs
-    are declared. The content and age rating questionnaires
+    sends nothing about the learner, and the audio host keeps no access log for `/citiz-audio/`
+    ([its policy](https://peopleworksservices.com/privacy.html)), so both forms can answer "no data
+    collected". The content and age rating questionnaires
   - [ ] CI builds `Citiz.Hybrid` for Android and iOS, so any store build can be reproduced
   - [ ] Internal testing on Google Play and TestFlight with volunteers, then production; store
     badges in the README
