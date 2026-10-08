@@ -51,6 +51,12 @@ the content against USCIS sources (all correct) and then the way the app grades 
 
 ### Changed
 
+- **The audio host keeps no access log for audio packs.** `peopleworksservices.com/citiz-audio/` is
+  excluded from the server's access logs and every log there is deleted after 30 days, so
+  `PRIVACY.md` now says no record is kept of which IP downloaded which pack, and the store privacy
+  forms can answer "no data collected". The host publishes the same at
+  <https://peopleworksservices.com/privacy.html>; `tools/audio/README.md` says how to do it on
+  another host.
 - **Store readiness.** The .NET MAUI template icon, splash, `dotnet_bot.svg` and unused OpenSans font
   are gone; the apps carry the Citiz shield and star on the brand navy. `PRIVACY.md` is a store-grade
   privacy policy (maintainer, contact, effective date, every stored item including the name, theme,

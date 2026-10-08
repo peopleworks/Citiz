@@ -72,10 +72,12 @@ Citiz makes no connection on its own. The only network traffic is:
    study.
 2. **Audio packs, only if you download one.** From *Settings › Audio* or the one-time offer, you can
    download the official USCIS recordings or the synthetic Citiz voice. The files come from
-   `peopleworksservices.com`, a server operated for this project. It sees the download request (your IP
-   address, the time and the files requested) and may keep standard web-server logs for operational
-   purposes; it never learns which question you study or how you answer, because playback is local
-   after the download. Nothing is sent back to it.
+   `peopleworksservices.com/citiz-audio/`, on a server PeopleWorks operates. That folder is excluded
+   from the server's access logs, so no record is kept of which IP address downloaded which pack. A
+   connection that fails before it reaches the site can still appear in the operating system's own
+   error log, which is deleted after 30 days. The server never learns which question you study or how
+   you answer, because playback is local after the download, and nothing is sent back to it. The host's
+   own policy: <https://peopleworksservices.com/privacy.html>.
 3. **Reading aloud with your device's voice.** On Android, iOS and Windows the phone's or computer's
    own speech engine speaks on the device. In a browser, speech synthesis is usually on the device too;
    some browsers use a network voice, and the app tells you when that is the case (*Settings › What
