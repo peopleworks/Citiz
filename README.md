@@ -18,7 +18,7 @@
 
 *¿Prefieres leer en español? → [README.es.md](README.es.md)*
 
-**[Try it now →](https://peopleworks.github.io/Citiz/)** — runs in your browser, no account, nothing uploaded. Install it as an app from the browser menu and it works offline.
+**[Try it now →](https://peopleworks.github.io/Citiz/)** — runs in your browser, no account, nothing uploaded. Install it as an app from the browser menu.
 
 **Citiz** is a free, open-source, multilingual, privacy-first companion for people preparing for
 United States citizenship. It practices the official civics questions the way an officer asks them,
@@ -26,9 +26,10 @@ drills the English test vocabulary, and teaches something about the country ever
 all of it in your browser.
 
 > 🔒 **Citiz runs entirely on your device.** There is no account, no server that sees what you
-> study, no analytics. Your progress is saved in your browser and you can download or delete it at any
-> time. The only thing Citiz ever asks you is *when you filed Form N-400*, so it can pick the right
-> version of the test — and even that is optional.
+> study, no analytics. Your progress is saved on your device and you can download or delete it at any
+> time. Citiz asks for nothing that identifies you: *when you filed Form N-400* (to pick the right
+> version of the test), your interview date (for a countdown) and a first name for the greeting are all
+> optional, and all of it stays on the device. The details are in [PRIVACY.md](PRIVACY.md).
 
 Citiz is an **independent educational tool**. It is not affiliated with USCIS or any government
 agency, it does not give legal advice, and it cannot guarantee the outcome of an interview or
@@ -54,7 +55,7 @@ mobile — no separate app to build for either.</sub>
 
 | Pillar | Built | How |
 | --- | --- | --- |
-| **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test scored exactly like the real one** (stops the moment the outcome is decided), a browsable bank with sources, **USCIS's own recordings** of the 2008 questions and a labelled synthetic **Citiz voice** for both tests, each downloaded once as a pack |
+| **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test that stops by the real test's rules** (the moment the outcome is decided), checked by a deterministic matcher that accepts only official answers and lets you judge the close calls, a browsable bank with sources, **USCIS's own recordings** of the 2008 questions and a labelled synthetic **Citiz voice** for both tests, each downloaded once as a pack |
 | **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it in the Citiz voice (downloaded once) or your device's voice, dictation practice |
 | **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for |
 | **Play & Learn** | *Civics challenge* | Ten multiple-choice rounds where every option is a real official answer; results count as practice |
@@ -126,8 +127,9 @@ models this as data, not code, in [`content/exams/versions.json`](content/exams/
 | **Before October 20, 2025** | 2008 Civics Test | 100 | up to 10 | 6 correct | 5 incorrect |
 | **On or after October 20, 2025** | 2025 Civics Test | 128 | up to 20 | 12 correct | 9 incorrect |
 
-Applicants who are 65 or older with 20 or more years as permanent residents study a designated subset
-of 20 questions and are asked up to 10 (the *65/20 special consideration*). Citiz has both lists,
+Applicants who, *on the date they filed Form N-400*, were 65 or older with 20 or more years as
+permanent residents study a designated subset of 20 questions and are asked up to 10 (the *65/20
+special consideration*); they may also take the test in their own language with an interpreter. Citiz has both lists,
 copied from the official documents, so the 65/20 practice mode works for either version.
 
 ## Content you can trust, because you can check it
@@ -165,8 +167,8 @@ capsule against the pages it cites. [`content/exams/VERIFICATION.md`](content/ex
 is the log — what was compared, what was wrong (the 2025 bank differed from the official document in
 13 questions before this pass), and the decisions taken — and
 [`tools/content-verify/`](tools/content-verify/README.md) reproduces the comparison in one command, so
-anyone can check the checker. When USCIS changes a document, the content worker flags it and the
-label comes back until a maintainer re-verifies.
+anyone can check the checker. When USCIS changes a document, the content worker (run on demand; it is not
+scheduled anywhere yet) flags it and the label comes back until a maintainer re-verifies.
 
 ## Run it
 

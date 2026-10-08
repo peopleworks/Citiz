@@ -18,7 +18,9 @@ public sealed record MultipleChoiceItem(CivicsQuestion Question, IReadOnlyList<s
 /// <summary>
 /// Builds multiple-choice items for beginners. Distractors are other official answers from the same
 /// bank, preferring the same subcategory, so every option a learner sees is a real answer to a real
-/// question and nothing is invented.
+/// question and nothing is invented. A distractor is never something the question itself would
+/// accept: "the Civil War" is not offered as a wrong option next to "Civil War", and "the President"
+/// is not offered as wrong for "Who vetoes bills?" because another question also answers "President".
 /// </summary>
 public static class MultipleChoiceBuilder
 {
@@ -27,7 +29,8 @@ public static class MultipleChoiceBuilder
 
     /// <summary>
     /// Builds an item for <paramref name="question"/>, or <c>null</c> when it has no resolvable
-    /// answer or the bank cannot supply enough distractors.
+    /// answer, asks the learner to name several items (one option cannot answer "Name three"), or
+    /// the bank cannot supply enough distractors.
     /// </summary>
     /// <param name="question">The question to present.</param>
     /// <param name="bank">The bank to draw distractors from.</param>
@@ -47,20 +50,21 @@ public static class MultipleChoiceBuilder
         ArgumentOutOfRangeException.ThrowIfLessThan(optionCount, 2);
 
         var answers = question.ResolveAnswers(dynamicAnswers);
-        if (answers.Count == 0)
+        if (answers.Count == 0 || question.AsksForSeveral)
         {
             return null;
         }
 
         var correct = answers[random.Next(answers.Count)];
-        var ownAnswers = answers.Select(AnswerMatcher.Normalize).ToHashSet(StringComparer.Ordinal);
 
+        // Officeholder names stay out of the distractors: "Trump" is a true answer to "Who is in
+        // charge of the executive branch?" even though the official answer there is "the President".
         var candidates = bank.Questions
-            .Where(q => !string.Equals(q.Id, question.Id, StringComparison.Ordinal))
+            .Where(q => !string.Equals(q.Id, question.Id, StringComparison.Ordinal) && !q.IsDynamic)
             .OrderBy(q => string.Equals(q.Subcategory, question.Subcategory, StringComparison.Ordinal) ? 0 : 1)
             .ThenBy(_ => random.Next())
-            .SelectMany(q => q.ResolveAnswers(dynamicAnswers))
-            .Where(a => !ownAnswers.Contains(AnswerMatcher.Normalize(a)))
+            .SelectMany(q => q.AcceptedAnswers)
+            .Where(a => IsDistractor(a, answers, question.Prompt))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .Take(optionCount - 1)
             .ToList();
@@ -72,5 +76,15 @@ public static class MultipleChoiceBuilder
 
         var options = candidates.Append(correct).OrderBy(_ => random.Next()).ToList();
         return new MultipleChoiceItem(question, options, options.IndexOf(correct));
+    }
+
+    /// <summary>
+    /// Whether <paramref name="candidate"/> can be shown as a wrong option for a question with
+    /// <paramref name="answers"/>: only when the checker would neither accept it nor call it close.
+    /// </summary>
+    public static bool IsDistractor(string candidate, IReadOnlyList<string> answers, string? prompt = null)
+    {
+        ArgumentNullException.ThrowIfNull(answers);
+        return AnswerMatcher.Evaluate(candidate, answers, prompt).Kind is AnswerMatchKind.None;
     }
 }

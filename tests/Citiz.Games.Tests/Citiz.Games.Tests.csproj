@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Citiz.Games\Citiz.Games.csproj" />
+    <ProjectReference Include="..\..\src\Citiz.Content\Citiz.Content.csproj" />
+    <ProjectReference Include="..\Citiz.Testing\Citiz.Testing.csproj" />
   </ItemGroup>
 
 </Project>

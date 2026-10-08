@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Citiz.Content.Sources;
 using Citiz.Core.Audio;
 using Citiz.Core.Content;
@@ -69,7 +70,7 @@ public sealed class ContentValidationReport
 /// exam rules are consistent, and nothing an officer would ask is missing. Runs in CI on every pull
 /// request and behind <c>citiz content validate</c>.
 /// </summary>
-public sealed class ContentValidator
+public sealed partial class ContentValidator
 {
     private readonly ContentRepository _repository;
     private readonly IContentStore _store;
@@ -272,6 +273,26 @@ public sealed class ContentValidator
             else if (question.AcceptedAnswers.Count == 0)
             {
                 Error(path, $"{where} has no accepted answers and no dynamicAnswerKey.");
+            }
+
+            if (question.RequiredCount > 1 && question.RequiredCount > question.AcceptedAnswers.Count)
+            {
+                Error(path, $"{where} requires {question.RequiredCount.ToString(CultureInfo.InvariantCulture)} items but lists only {question.AcceptedAnswers.Count.ToString(CultureInfo.InvariantCulture)} accepted answers.");
+            }
+
+            // "Name three…" / "What are two…" asks for that many items; the checker must know, or it
+            // accepts one holiday for "Name three national U.S. holidays".
+            if (NamedCountRegex().Match(question.Prompt) is { Success: true } named)
+            {
+                var asked = NumberWord(named.Groups[1].Value);
+                if (question.RequiredCount != asked)
+                {
+                    Error(path, $"{where} asks to name {asked.ToString(CultureInfo.InvariantCulture)} items ('{question.Prompt}') but requiredCount is {question.RequiredCount.ToString(CultureInfo.InvariantCulture)}.");
+                }
+            }
+            else if (question.RequiredCount > 1)
+            {
+                Warning(path, $"{where} has requiredCount {question.RequiredCount.ToString(CultureInfo.InvariantCulture)} but its prompt does not ask to name that many items.");
             }
 
             var duplicates = question.AcceptedAnswers
@@ -557,4 +578,18 @@ public sealed class ContentValidator
     private void Warning(string file, string message) => _issues.Add(new ContentIssue(ContentIssueSeverity.Warning, file, message));
 
     private void Info(string file, string message) => _issues.Add(new ContentIssue(ContentIssueSeverity.Info, file, message));
+
+    private static int NumberWord(string word) => word.ToLowerInvariant() switch
+    {
+        "two" => 2,
+        "three" => 3,
+        "four" => 4,
+        "five" => 5,
+        _ => 1,
+    };
+
+    // "Name three…", "What are two…" but not "What are the two parts…" or "Name the three branches…",
+    // which have one answer that lists them all.
+    [GeneratedRegex(@"\b(?:Name|What are) (two|three|four|five)\b")]
+    private static partial Regex NamedCountRegex();
 }

@@ -17,6 +17,7 @@ namespace Citiz.Core.Exams;
 /// <param name="DynamicAnswerKey">Key into the dynamic answers file when the answer depends on who holds an office now; <c>null</c> for stable answers.</param>
 /// <param name="Note">Editorial note shown with the answers, e.g. a USCIS instruction to check for updates.</param>
 /// <param name="ReviewStatus">Editorial state of this question.</param>
+/// <param name="RequiredCount">How many distinct accepted answers a response must name: 3 for "Name three national U.S. holidays", 1 for every ordinary question. An officer does not accept one holiday for that question, so neither does the checker.</param>
 public sealed record CivicsQuestion(
     string Id,
     string VersionId,
@@ -27,10 +28,14 @@ public sealed record CivicsQuestion(
     IReadOnlyList<string> AcceptedAnswers,
     string? DynamicAnswerKey = null,
     string? Note = null,
-    ReviewStatus ReviewStatus = ReviewStatus.NeedsReview)
+    ReviewStatus ReviewStatus = ReviewStatus.NeedsReview,
+    int RequiredCount = 1)
 {
     /// <summary>Whether the answer depends on a current officeholder or the learner's state.</summary>
     public bool IsDynamic => DynamicAnswerKey is not null;
+
+    /// <summary>Whether the question asks the learner to name more than one item.</summary>
+    public bool AsksForSeveral => RequiredCount > 1;
 
     /// <summary>
     /// The answers to accept right now: the official list, or, for a dynamic question, the current

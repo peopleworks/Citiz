@@ -101,11 +101,15 @@ public static class ExamCommands
             }
             else
             {
-                var match = AnswerMatcher.Evaluate(response, answers);
+                var match = AnswerMatcher.Evaluate(response, answers, question.Prompt, question.RequiredCount);
                 correct = match.IsAccepted;
                 if (correct)
                 {
                     ConsoleOutput.Success($"  Correct — matched \"{match.MatchedAnswer}\".");
+                }
+                else if (match.Kind == AnswerMatchKind.Partial)
+                {
+                    ConsoleOutput.Warning($"  \"{match.MatchedAnswer}\" is accepted, but this question asks you to name {question.RequiredCount}.");
                 }
                 else if (match.Kind == AnswerMatchKind.Close)
                 {

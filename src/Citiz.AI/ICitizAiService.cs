@@ -18,12 +18,14 @@ public enum AiExecutionClass
 /// <param name="AcceptedAnswers">The official accepted answers, already resolved for dynamic questions. The provider may only accept these.</param>
 /// <param name="Response">What the learner typed or said (transcribed).</param>
 /// <param name="HelpCulture">Language the feedback should be in.</param>
+/// <param name="RequiredCount">How many distinct accepted answers the question asks for (<see cref="CivicsQuestion.RequiredCount"/>).</param>
 public sealed record AnswerEvaluationRequest(
     string QuestionId,
     string Prompt,
     IReadOnlyList<string> AcceptedAnswers,
     string Response,
-    string HelpCulture);
+    string HelpCulture,
+    int RequiredCount = 1);
 
 /// <summary>A provider's judgement. Feedback is an interface-translation key, so it renders in the help language and no provider writes prose the learner sees unreviewed.</summary>
 /// <param name="Accepted">Whether the response matched an official answer.</param>

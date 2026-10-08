@@ -136,7 +136,8 @@
         "Natural rights",
         "Limited government",
         "Self-government"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2025-011",
@@ -570,7 +571,8 @@
         "Director of the Office of Management and Budget",
         "Director of National Intelligence",
         "United States Trade Representative"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2025-049",
@@ -767,7 +769,8 @@
         "Freedom to petition the government",
         "Freedom of religion",
         "The right to bear arms"
-      ]
+      ],
+      "requiredCount": 3
     },
     {
       "id": "2025-066",
@@ -793,7 +796,8 @@
         "Serve in the military (if needed)",
         "Serve (help, do important work for) the nation (if needed)",
         "Be loyal to the United States"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2025-068",
@@ -824,7 +828,8 @@
         "Contact elected officials",
         "Support or oppose an issue or policy",
         "Write to a newspaper"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2025-070",
@@ -988,7 +993,8 @@
         "North Carolina",
         "South Carolina",
         "Georgia"
-      ]
+      ],
+      "requiredCount": 5
     },
     {
       "id": "2025-082",
@@ -1563,7 +1569,8 @@
         "Veterans Day",
         "Thanksgiving Day",
         "Christmas Day"
-      ]
+      ],
+      "requiredCount": 3
     },
     {
       "id": "2025-127",

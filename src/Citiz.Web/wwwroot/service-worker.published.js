@@ -20,6 +20,11 @@ const base = "/";
 const baseUrl = new URL(base, self.origin);
 const manifestUrlList = self.assetsManifest.assets.map(asset => new URL(asset.url, baseUrl).href);
 
+// Official content and translations are served network-first: a corrected answer must reach a
+// learner on the next load, not after every tab has been closed. Everything else (the runtime, the
+// app) is cache-first, which is what makes it work offline.
+const networkFirst = [/\/content\/.*\.json$/, /\/i18n\/.*\.json$/];
+
 async function onInstall(event) {
   console.info('Citiz service worker: install');
   const assetsRequests = self.assetsManifest.assets
@@ -27,6 +32,8 @@ async function onInstall(event) {
     .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
     .map(asset => new Request(asset.url, { integrity: asset.hash, cache: 'no-cache' }));
   await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
+  // A new build takes over at the next load instead of waiting for every open tab to close.
+  await self.skipWaiting();
 }
 
 async function onActivate(event) {
@@ -35,16 +42,35 @@ async function onActivate(event) {
   await Promise.all(cacheKeys
     .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
     .map(key => caches.delete(key)));
+  await self.clients.claim();
 }
 
 async function onFetch(event) {
-  let cachedResponse = null;
-  if (event.request.method === 'GET') {
-    const shouldServeIndexHtml = event.request.mode === 'navigate'
-      && !manifestUrlList.some(url => url === event.request.url);
-    const request = shouldServeIndexHtml ? 'index.html' : event.request;
-    const cache = await caches.open(cacheName);
-    cachedResponse = await cache.match(request);
+  if (event.request.method !== 'GET') {
+    return fetch(event.request);
   }
+
+  const cache = await caches.open(cacheName);
+
+  if (networkFirst.some(pattern => pattern.test(event.request.url))) {
+    try {
+      const fresh = await fetch(event.request);
+      if (fresh.ok) {
+        await cache.put(event.request, fresh.clone());
+      }
+      return fresh;
+    } catch {
+      const cached = await cache.match(event.request);
+      if (cached) {
+        return cached;
+      }
+      throw new Error(`Citiz service worker: ${event.request.url} is not cached and the network is unavailable.`);
+    }
+  }
+
+  const shouldServeIndexHtml = event.request.mode === 'navigate'
+    && !manifestUrlList.some(url => url === event.request.url);
+  const request = shouldServeIndexHtml ? 'index.html' : event.request;
+  const cachedResponse = await cache.match(request);
   return cachedResponse || fetch(event.request);
 }
