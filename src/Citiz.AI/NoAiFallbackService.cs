@@ -20,7 +20,7 @@ public sealed class NoAiFallbackService : ICitizAiService
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var match = AnswerMatcher.Evaluate(request.Response, request.AcceptedAnswers);
+        var match = AnswerMatcher.Evaluate(request.Response, request.AcceptedAnswers, request.Prompt, request.RequiredCount);
         return Task.FromResult(new AnswerEvaluation(
             match.IsAccepted,
             match.MatchedAnswer,
@@ -36,6 +36,7 @@ public sealed class NoAiFallbackService : ICitizAiService
         AnswerMatchKind.Exact => "feedback.exact",
         AnswerMatchKind.Contains => "feedback.contains",
         AnswerMatchKind.Close => "feedback.close",
+        AnswerMatchKind.Partial => "feedback.partial",
         _ => "feedback.none",
     };
 }

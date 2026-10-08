@@ -132,7 +132,7 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
     /// <summary>Plays the official recording of a question (question and answers). Never falls back: there is no substitute for the real thing.</summary>
     public async Task<AudioSource> PlayRecordingAsync(CivicsQuestion question)
     {
-        if (await RecordingForAsync(question) is { } found && await store.PlayAsync(found.Pack, found.Clip))
+        if (await RecordingForAsync(question) is { } found && await TryPlayAsync(found.Pack, found.Clip))
         {
             return AudioSource.OfficialRecording;
         }
@@ -143,7 +143,7 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
     /// <summary>Stops any clip and any speech.</summary>
     public async Task StopAsync()
     {
-        await store.StopAsync();
+        await TryStopAsync();
         await speech.StopAsync();
     }
 
@@ -179,7 +179,7 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
             return;
         }
 
-        await store.StopAsync();
+        await TryStopAsync();
         await store.DeleteAsync(state.Pack);
         Update(state with { Status = AudioPackStatus.NotDownloaded, BytesDone = 0, Error = null });
     }
@@ -190,7 +190,7 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
         {
             if (state.Status == AudioPackStatus.Ready && state.Pack.Kind == AudioPackKind.Synthetic && clipOf(state.Pack) is { } clip)
             {
-                if (await store.PlayAsync(state.Pack, clip))
+                if (await TryPlayAsync(state.Pack, clip))
                 {
                     return AudioSource.SyntheticPack;
                 }
@@ -202,9 +202,37 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
             return AudioSource.None;
         }
 
-        await store.StopAsync();
+        await TryStopAsync();
         await speech.SpeakAsync(text);
         return AudioSource.DeviceVoice;
+    }
+
+    // The store plays through the host's JavaScript player. If that player cannot be reached (a
+    // WebView whose runtime is not attached yet, a browser that refused the Audio element), the
+    // learner still gets the device voice rather than an error banner: a clip that will not play is
+    // "no clip", and a stop that fails has nothing to stop.
+    private async Task<bool> TryPlayAsync(AudioPack pack, AudioClip clip)
+    {
+        try
+        {
+            return await store.PlayAsync(pack, clip);
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or Microsoft.JSInterop.JSException or IOException)
+        {
+            return false;
+        }
+    }
+
+    private async Task TryStopAsync()
+    {
+        try
+        {
+            await store.StopAsync();
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or Microsoft.JSInterop.JSException)
+        {
+            // Nothing was playing through a player we can reach.
+        }
     }
 
     private async Task<AudioPack?> FindReadyAsync(Func<AudioPack, bool> predicate) =>

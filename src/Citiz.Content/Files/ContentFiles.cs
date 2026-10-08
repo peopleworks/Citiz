@@ -137,6 +137,9 @@ public sealed class QuestionEntry
     /// <inheritdoc cref="Core.Exams.CivicsQuestion.Note"/>
     public string? Note { get; set; }
 
+    /// <inheritdoc cref="Core.Exams.CivicsQuestion.RequiredCount"/>
+    public int? RequiredCount { get; set; }
+
     /// <summary>Kebab-case review status; inherits the file's when absent.</summary>
     public string? ReviewStatus { get; set; }
 }

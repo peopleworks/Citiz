@@ -38,6 +38,31 @@ jobs:
           sed -i 's|<base href="/" />|<base href="/${{ github.event.repository.name }}/" />|g' publish/wwwroot/index.html
           sed -i 's|const base = "/";|const base = "/${{ github.event.repository.name }}/";|g' publish/wwwroot/service-worker.js
 
+      # The publish step recorded index.html's SHA-256 in the service-worker asset manifest before
+      # the rewrite above changed the file. The worker fetches every asset with that integrity hash,
+      # so a stale hash makes installation fail and the app never works offline (release audit,
+      # 2026-10-04). Recompute it from the file that will actually be served, and fail the deploy if
+      # the manifest has no index.html entry to update.
+      - name: Rehash index.html in the service-worker manifest
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, re, sys
+          manifest_path = "publish/wwwroot/service-worker-assets.js"
+          page = open("publish/wwwroot/index.html", "rb").read()
+          digest = "sha256-" + base64.b64encode(hashlib.sha256(page).digest()).decode("ascii")
+          source = open(manifest_path, encoding="utf-8").read()
+          prefix, body = "self.assetsManifest = ", source.strip()
+          if not body.startswith(prefix) or not body.endswith(";"):
+              sys.exit("service-worker-assets.js has an unexpected shape")
+          manifest = json.loads(body[len(prefix):-1])
+          entries = [a for a in manifest["assets"] if a["url"] == "index.html"]
+          if len(entries) != 1:
+              sys.exit(f"expected one index.html entry in the manifest, found {len(entries)}")
+          print(f"index.html: {entries[0]['hash']} -> {digest}")
+          entries[0]["hash"] = digest
+          open(manifest_path, "w", encoding="utf-8").write(prefix + json.dumps(manifest, indent=2) + ";\n")
+          PY
+
       # Deep links (e.g. /prepare) would 404 on Pages without a fallback; serve index.html as 404.
       - name: SPA fallback
         run: |

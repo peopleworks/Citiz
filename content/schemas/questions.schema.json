@@ -33,6 +33,12 @@
             "description": "Key in exams/dynamic-answers.json when the answer depends on a current officeholder or the learner's state."
           },
           "note": { "type": ["string", "null"], "description": "Editorial note shown with the answers." },
+          "requiredCount": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "How many distinct accepted answers a response must name: 3 for 'Name three national U.S. holidays'. Omit for ordinary questions."
+          },
           "reviewStatus": { "$ref": "common.schema.json#/$defs/reviewStatus" }
         }
       }

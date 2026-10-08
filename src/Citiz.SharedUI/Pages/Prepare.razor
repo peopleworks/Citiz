@@ -395,13 +395,25 @@ else
   private async Task CheckTypedAsync(CivicsQuestion question, bool inSimulation)
   {
     var answers = context!.AnswersFor(question);
-    evaluation = await Ai.EvaluateAnswerAsync(new AnswerEvaluationRequest(question.Id, question.Prompt, answers, typed, L.Profile.HelpCulture));
-    if (!inSimulation)
+    evaluation = await Ai.EvaluateAnswerAsync(new AnswerEvaluationRequest(question.Id, question.Prompt, answers, typed, L.Profile.HelpCulture, question.RequiredCount));
+    // A close call is the learner's to make: it is recorded after they say whether that is what
+    // they meant (SelfAssessAsync). Everything else is recorded now.
+    if (!inSimulation && evaluation.MatchKind != AnswerMatchKind.Close)
     {
       await Learner.RecordAsync(question.Id, evaluation.Accepted);
     }
-    await Browser.AnnounceAsync(L.T(evaluation.FeedbackKey));
+    await Browser.AnnounceAsync(FeedbackText(question, evaluation));
   }
+
+  // The feedback line for an evaluation. "Name three…" answered with one item says how many were
+  // asked for; a close call asks the learner whether that is what they meant.
+  private string FeedbackText(CivicsQuestion question, AnswerEvaluation result) => result.MatchKind switch
+  {
+    AnswerMatchKind.Partial => L.T("feedback.partial", question.RequiredCount),
+    AnswerMatchKind.Close when selfAssessed is null => L.T("feedback.close"),
+    AnswerMatchKind.Close => L.T(selfAssessed == true ? "feedback.closeAccepted" : "feedback.closeRejected"),
+    _ => L.T(result.FeedbackKey),
+  };
 
   private async Task SelfAssessAsync(CivicsQuestion question, bool correct, bool inSimulation)
   {
@@ -421,7 +433,7 @@ else
   private async Task AdvanceSimulationAsync()
   {
     var question = session!.CurrentQuestion!;
-    var correct = evaluation?.Accepted ?? selfAssessed ?? false;
+    var correct = selfAssessed ?? evaluation?.Accepted ?? false;
     session.Record(correct, typed);
     await Learner.RecordAsync(question.Id, correct);
     ResetTyped();
@@ -455,16 +467,28 @@ else
     }
     else
     {
+      var awaitingConfirm = evaluation is { MatchKind: AnswerMatchKind.Close } && selfAssessed is null;
       if (evaluation is not null)
       {
-        <p class="feedback @(evaluation.Accepted ? "ok" : evaluation.MatchKind == AnswerMatchKind.Close ? "close" : "bad")" role="status">
-          @L.T(evaluation.FeedbackKey)
+        <p class="feedback @(evaluation.Accepted || selfAssessed == true ? "ok" : evaluation.MatchKind == AnswerMatchKind.Close && selfAssessed is null ? "close" : "bad")" role="status">
+          @FeedbackText(question, evaluation)
           @if (evaluation.MatchedAnswer is not null) { <br /><span class="small">@L.T("feedback.matched", evaluation.MatchedAnswer)</span> }
         </p>
         <p class="muted small">@L.T("feedback.provider", evaluation.Provider)</p>
       }
       <AnswerList Question="question" Answers="answers" Dynamic="context.DynamicFor(question)" VersionName="@context.Version.DisplayName" />
-      <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="next">@L.T("common.next")</button></div>
+      @if (awaitingConfirm)
+      {
+        <p class="small" style="margin-block-start: .75rem">@L.T("prepare.closeConfirm")</p>
+        <div class="row">
+          <button type="button" class="button primary" @onclick="() => SelfAssessAsync(question, true, inSimulation)">@L.T("common.yes")</button>
+          <button type="button" class="button" @onclick="() => SelfAssessAsync(question, false, inSimulation)">@L.T("common.no")</button>
+        </div>
+      }
+      else
+      {
+        <div class="row" style="margin-block-start: 1rem"><button type="button" class="button primary" @onclick="next">@L.T("common.next")</button></div>
+      }
     }
   };
 }

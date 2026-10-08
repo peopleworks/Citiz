@@ -83,7 +83,14 @@ The release where the "not yet verified" labels disappeared — by verification,
   - [x] Xcode 26.6 on the maintainer's Mac: App Store Connect accepts only builds made with Xcode 26
     and the iOS 26 SDK since 2026-04-28 ([Apple](https://developer.apple.com/news/upcoming-requirements/))
   - [x] Release builds compile for iOS, Mac Catalyst and Android on the maintainer's Mac
-  - [ ] A Citiz app icon and splash screen; the app still shows the .NET MAUI template's purple
+  - [x] A Citiz app icon and splash screen (the web icon's shield and star on the brand navy;
+    `Resources/AppIcon`, `Resources/Splash`), replacing the .NET MAUI template's purple and bot
+  - [ ] Device pass before any upload: Listen, word chips, dictation, pack download, cancel, clip
+    playback and pack delete on an Android emulator and an iOS simulator. The audio store was
+    registered as a singleton until 2026-10-08 and every one of those threw on a device (release
+    audit, 2026-10-04); it is scoped now, and nothing but a device run proves it
+  - [x] A privacy-policy link inside the app (About and Settings) pointing at [PRIVACY.md](PRIVACY.md),
+    which now names the maintainer, a contact, every stored item, OS backups and the audio host
   - [ ] Android: a signed release App Bundle with Play App Signing; decide who keeps the upload key,
     and where
   - [ ] iOS: `PrivacyInfo.xcprivacy` with the three required-reason API categories every .NET app

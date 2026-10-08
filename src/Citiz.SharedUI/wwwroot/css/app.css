@@ -289,6 +289,14 @@ button, input, select { font: inherit; }
 .field input[type="checkbox"] { width: 1.3rem; height: 1.3rem; }
 .check { display: flex; align-items: center; gap: .6rem; }
 
+/* English inside a right-to-left interface --------------------------------------------------- */
+
+/* Official questions, answers, options and the answer box are English whatever the interface
+   language: they must read as USCIS prints them. Without this, an Arabic interface reorders the
+   words and parentheses of "The President (of the United States)". */
+[lang="en"] { direction: ltr; unicode-bidi: isolate; }
+[dir="rtl"] input[lang="en"], [dir="rtl"] .option[lang="en"] { text-align: left; }
+
 /* Badges and status ------------------------------------------------------------------------- */
 
 .badge { display: inline-block; padding: .15rem .55rem; border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }

@@ -18,7 +18,7 @@
 
 *English version → [README.md](README.md)*
 
-**[Pruébalo ahora →](https://peopleworks.github.io/Citiz/)** — funciona en tu navegador, sin cuenta y sin subir nada. Instálalo como app desde el menú del navegador y funciona sin conexión.
+**[Pruébalo ahora →](https://peopleworks.github.io/Citiz/)** — funciona en tu navegador, sin cuenta y sin subir nada. Instálalo como app desde el menú del navegador.
 
 **Citiz** es un acompañante gratuito, de código abierto, multilingüe y orientado a la privacidad para
 quienes se preparan para la ciudadanía de Estados Unidos. Practica las preguntas cívicas oficiales tal
@@ -26,9 +26,10 @@ como las hace el oficial, ejercita el vocabulario del examen de inglés y enseñ
 y todo ocurre en tu navegador.
 
 > 🔒 **Citiz funciona por completo en tu dispositivo.** No hay cuenta, no hay servidor que vea lo que
-> estudias, no hay analítica. Tu progreso se guarda en tu navegador y puedes descargarlo o borrarlo cuando
-> quieras. Lo único que Citiz te pregunta es *cuándo presentaste el Formulario N-400*, para elegir la
-> versión correcta del examen, y hasta eso es opcional.
+> estudias, no hay analítica. Tu progreso se guarda en tu dispositivo y puedes descargarlo o borrarlo cuando
+> quieras. Citiz no pide nada que te identifique: *cuándo presentaste el Formulario N-400* (para elegir la
+> versión correcta del examen), la fecha de tu entrevista (para la cuenta regresiva) y un nombre para el
+> saludo son opcionales, y todo se queda en el dispositivo. Los detalles están en [PRIVACY.md](PRIVACY.md).
 
 Citiz es una **herramienta educativa independiente**. No está afiliada a USCIS ni a ninguna agencia
 gubernamental, no ofrece asesoría legal y no puede garantizar el resultado de una entrevista o solicitud.
@@ -53,7 +54,7 @@ móvil — sin construir una app aparte para cada uno.</sub>
 
 | Pilar | Construido | Cómo |
 | --- | --- | --- |
-| **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro calificado exactamente como el examen real** (se detiene en cuanto el resultado queda decidido), un banco explorable con fuentes, las **grabaciones oficiales de USCIS** de las preguntas de 2008 y una **voz de Citiz** sintética y etiquetada para los dos exámenes, cada una descargada una sola vez como paquete |
+| **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro que se detiene según las reglas del examen real** (en cuanto el resultado queda decidido), comprobado por un verificador determinista que solo acepta respuestas oficiales y te deja juzgar los casos dudosos, un banco explorable con fuentes, las **grabaciones oficiales de USCIS** de las preguntas de 2008 y una **voz de Citiz** sintética y etiquetada para los dos exámenes, cada una descargada una sola vez como paquete |
 | **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla con la voz de Citiz (se descarga una sola vez) o con la de tu dispositivo, práctica de dictado |
 | **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto |
 | **Juega y Aprende** | *Reto cívico* | Rondas de diez preguntas de opción múltiple donde cada opción es una respuesta oficial real; los resultados cuentan como práctica |
@@ -126,8 +127,9 @@ modela como datos, no como código, en [`content/exams/versions.json`](content/e
 | **Antes del 20 de octubre de 2025** | 2008 Civics Test | 100 | hasta 10 | 6 correctas | 5 incorrectas |
 | **El 20 de octubre de 2025 o después** | 2025 Civics Test | 128 | hasta 20 | 12 correctas | 9 incorrectas |
 
-Quienes tienen 65 años o más y 20 o más años como residentes permanentes estudian un subconjunto
-designado de 20 preguntas y responden hasta 10 (la *consideración especial 65/20*). Citiz tiene las dos
+Quienes, *en la fecha en que presentaron el Formulario N-400*, tenían 65 años o más y 20 o más años
+como residentes permanentes estudian un subconjunto designado de 20 preguntas y responden hasta 10 (la
+*consideración especial 65/20*); además pueden hacer el examen en su idioma con un intérprete. Citiz tiene las dos
 listas, copiadas de los documentos oficiales, así que el modo 65/20 funciona con cualquiera de las dos
 versiones.
 
@@ -152,7 +154,8 @@ cápsula con las páginas que cita. `citiz content report` responde hoy "Every e
 estaba mal (el banco 2025 difería del documento oficial en 13 preguntas antes de esta pasada) y las
 decisiones tomadas; [`tools/content-verify/`](tools/content-verify/README.md) reproduce la comparación
 con un comando, para que cualquiera pueda revisar al revisor. Cuando USCIS cambia un documento, el
-worker de contenido lo señala y la etiqueta vuelve hasta que un responsable lo re-verifica.
+worker de contenido (que se ejecuta a petición; todavía no está programado en ningún sitio) lo señala
+y la etiqueta vuelve hasta que un responsable lo re-verifica.
 
 ## Ejecutarlo
 

@@ -74,10 +74,10 @@
       else if (context is not null)
       {
         <div style="margin-block-start: .4rem; font-size: 1.9rem; font-weight: 800; color: var(--brand)">
-          @Learner.Progress.MasteredCount<span class="muted" style="font-size: 1rem; font-weight: 600"> / @context.Bank.Count</span>
+          @MasteredQuestions<span class="muted" style="font-size: 1rem; font-weight: 600"> / @Pool.Count</span>
         </div>
-        <progress value="@Learner.Progress.MasteredCount" max="@Math.Max(context.Bank.Count, 1)" style="width: 100%; margin-block-start: .8rem"></progress>
-        <p class="muted small" style="margin-block-start: .6rem">@Learner.Progress.SeenCount @L.T("home.progressSeen") · @Learner.Progress.Due(DateTimeOffset.UtcNow).Count @L.T("home.progressDue")</p>
+        <progress value="@MasteredQuestions" max="@Math.Max(Pool.Count, 1)" style="width: 100%; margin-block-start: .8rem"></progress>
+        <p class="muted small" style="margin-block-start: .6rem">@SeenQuestions @L.T("home.progressSeen") · @Learner.Progress.Due(DateTimeOffset.UtcNow).Count @L.T("home.progressDue")</p>
       }
     </article>
 
@@ -119,7 +119,7 @@
       else
       {
         <p>@L.T("home.version", context.Version.DisplayName) <ReviewBadge Status="context.Bank.ReviewStatus" /></p>
-        <p class="muted small">@L.T("exam.rules", context.Version.Standard.QuestionsAsked, context.Version.Standard.PassingAnswers, context.Version.Standard.FailingAnswers)</p>
+        <p class="muted small">@L.T("exam.rules", Rules.QuestionsAsked, Rules.PassingAnswers, Rules.FailingAnswers)@(UseSenior ? " · 65/20" : string.Empty)</p>
         <a class="button small" href="settings">@L.T("home.versionChange")</a>
       }
       @if (context is not null && InterviewCountdownDays() is { } interviewDays)
@@ -199,6 +199,14 @@
   private MultipleChoiceItem? practiceChoice;
   private int? practiceChosen;
 
+  // The same rules and pool Prepare uses: a 65/20 learner sees 10/6/5 and "x / 20", not the
+  // standard numbers, and vocabulary words practiced in Communicate do not count as questions.
+  private bool UseSenior => context is not null && Learner.Exam.SeniorConsideration && context.Version.HasSeniorDesignation;
+  private ExamAdministrationRules Rules => UseSenior ? context!.Version.SeniorConsideration : context!.Version.Standard;
+  private IReadOnlyList<CivicsQuestion> Pool => UseSenior ? context!.Bank.SeniorQuestions(context.Version) : context!.Bank.Questions;
+  private int MasteredQuestions => Pool.Count(q => Learner.Progress.Get(q.Id)?.IsMastered == true);
+  private int SeenQuestions => Pool.Count(q => Learner.Progress.Get(q.Id) is not null);
+
   protected override async Task OnInitializedAsync()
   {
     Learner.Changed += StateHasChanged;
@@ -241,7 +249,7 @@
       return;
     }
 
-    foreach (var question in context.Bank.Questions.OrderBy(_ => Random.Shared.Next()))
+    foreach (var question in Pool.OrderBy(_ => Random.Shared.Next()))
     {
       practiceChoice = MultipleChoiceBuilder.Build(question, context.Bank, context.DynamicAnswers, Random.Shared);
       if (practiceChoice is not null)

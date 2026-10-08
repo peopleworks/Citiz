@@ -24,7 +24,7 @@ public static class ConsoleOutput
               citiz exam resolve <yyyy-MM-dd> [--content <dir>]
                                                               Which civics-test version applies to that N-400 filing date.
               citiz exam simulate [--version <id>] [--senior] [--seed <n>] [--content <dir>]
-                                                              A practice sitting in the terminal, scored like an officer would.
+                                                              A practice sitting in the terminal, stopped by the real test's rules.
 
             Options:
               --content <dir>   The content folder. Default: the nearest content/ above the current directory.

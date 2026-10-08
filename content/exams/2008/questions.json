@@ -118,7 +118,8 @@
         "life",
         "liberty",
         "pursuit of happiness"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2008-010",
@@ -417,7 +418,8 @@
         "Secretary of Veterans Affairs",
         "Attorney General",
         "Vice President"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2008-037",
@@ -587,7 +589,8 @@
         "freedom to petition the government",
         "freedom of religion",
         "the right to bear arms"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2008-052",
@@ -642,7 +645,8 @@
         "publicly support or oppose an issue or policy",
         "run for office",
         "write to a newspaper"
-      ]
+      ],
+      "requiredCount": 2
     },
     {
       "id": "2008-056",
@@ -754,7 +758,8 @@
         "North Carolina",
         "South Carolina",
         "Georgia"
-      ]
+      ],
+      "requiredCount": 3
     },
     {
       "id": "2008-065",
@@ -1200,7 +1205,8 @@
         "Veterans Day",
         "Thanksgiving",
         "Christmas"
-      ]
+      ],
+      "requiredCount": 2
     }
   ]
 }

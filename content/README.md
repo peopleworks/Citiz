@@ -35,6 +35,15 @@ dotnet run --project src/Citiz.Cli -- content report      # what still needs a h
 1. **Official text is transcribed, not paraphrased.** Questions and accepted answers keep the exact
    USCIS wording, including the parentheses USCIS uses for optional words: `"(U.S.) Constitution"`.
    The answer matcher understands that notation; a paraphrase would silently change what is accepted.
+   What the matcher does with it (`src/Citiz.Core/Exams/AnswerMatcher.cs`): parenthesised words are
+   optional; a numeral in parentheses stands alone only when the answer *is* that number
+   (`"Twenty-seven (27)"`, `"Six (6) years"`), never inside a longer statement; number words are read
+   as numbers, so `"twenty-five"` is not `"five"`; a response is accepted only when an accepted answer
+   appears in it whole and in order and every other word is filler, a lead-in ("I think it is…") or an
+   echo of the question, so `"the Vice President"`, `"not the President"` and `"2 or 6 years"` are not
+   accepted for `"the President"` or `"Six (6) years"`. Questions that ask to name several items
+   carry `requiredCount` (`"Name three national U.S. holidays."` → `3`); the validator derives the
+   expected value from the prompt and rejects a mismatch, and the matcher counts distinct items.
 2. **Nothing is published without a source and a review status.** Every file and every entry that can
    stand alone carries `sources` and `reviewStatus`. The interface labels anything that is not
    `approved`. Marking content `approved` is a human act: open the cited source, compare, then change

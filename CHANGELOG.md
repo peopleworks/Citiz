@@ -5,6 +5,64 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+Nine must-fix items from an independent pre-release audit of `main` (4 October 2026), which checked
+the content against USCIS sources (all correct) and then the way the app grades it (not correct).
+
+- **The checker accepted wrong answers that contained the right words.** "The Vice President" was
+  "Correct" for Commander in Chief, "non-citizens" for who can vote, "Theodore Roosevelt" for the WWII
+  president, "2 or 6 years" for a Senator's term, "not the Constitution" for the supreme law, and a bare
+  "18" for the 26th Amendment. `AnswerMatcher` now accepts a response only when an accepted answer
+  appears in it whole and in order and every other word is filler, a lead-in ("I think it is…") or an
+  echo of the question; a negation, a second number or any other extra word makes it at best *Close*.
+  Number words are read as numbers ("twenty-five" is not "five"; "27", "twenty-seven" and "27th"
+  compare equal), and a numeral in parentheses stands alone only when the answer is that number. The
+  tests that locked the old behaviour in were replaced; a corpus of the audit's cases runs against both
+  shipped banks, as does the check that every official answer, typed as printed, is still accepted.
+- **"Name two / three / five" accepted one item.** Thirteen questions (six on the 2008 test, seven on
+  the 2025 test, among them 65/20 question 126) carry `requiredCount` in the content; the schema and
+  validator enforce it from the prompt, the checker counts distinct items and says "this question asks
+  you to name three", and these questions are no longer presented as multiple choice.
+- **Multiple choice marked official answers wrong.** "Civil War" was graded wrong next to "the Civil
+  War", "The President" wrong for "Who vetoes bills?", and the current officeholder offered as a wrong
+  option for the office they hold. Distractors now go through the checker (anything it would accept or
+  call close is excluded), officeholder names are never distractors, and a sweep test builds every
+  question of both banks forty times to prove it.
+- **Close calls are the learner's to judge.** When the checker says *Close* ("Did you mean…?"), practice
+  and the practice test now ask whether that is what you meant before recording anything, instead of
+  counting it wrong, so stricter grading does not produce false failures.
+- **Every audio feature threw in the Android, iOS and Windows apps.** `AppDataAudioPackStore` was
+  registered as a singleton and captured a JavaScript runtime that is never attached to the WebView,
+  so Listen, word chips, dictation, clip playback and pack delete all failed with an error banner. It
+  is scoped now, and `AudioService` falls back to the device voice if a player cannot be reached.
+- **Wrong rules shown as fact.** The 65/20 checkbox now says "on the date I filed Form N-400", as
+  USCIS requires (all seven languages, both READMEs); "the interview is in English" now explains the
+  50/20 and 55/15 exemptions and the interpreter; Home shows a 65/20 learner the 10/6/5 rules and
+  "x of 20" instead of the standard numbers, and vocabulary words no longer count as questions mastered.
+- **Arabic interface reordered the English answers.** Official questions, answers, options and the
+  answer box are isolated left-to-right (`[lang="en"]`), so "The President (of the United States)"
+  reads as USCIS prints it.
+- **Offline never worked on the live site.** The Pages deploy rewrote `index.html` after its integrity
+  hash was recorded, so the service worker refused to install. The deploy now rehashes the page; the
+  worker also takes over on the next load and fetches content and translations network-first, so a
+  corrected answer reaches an installed app without waiting for every tab to close.
+- **"Delete everything" left audio packs on the device.** It removes them now.
+
+### Changed
+
+- **Store readiness.** The .NET MAUI template icon, splash, `dotnet_bot.svg` and unused OpenSans font
+  are gone; the apps carry the Citiz shield and star on the brand navy. `PRIVACY.md` is a store-grade
+  privacy policy (maintainer, contact, effective date, every stored item including the name, theme,
+  interview date and 65/20 flag, operating-system backups, the audio host and its logs, how to delete)
+  and the app links to it from About and Settings.
+- **Public claims brought in line with the code.** The READMEs no longer say the practice test is
+  "scored exactly like the real one" (it stops by the real test's rules and is checked by a
+  deterministic matcher), that the app "works offline" (until the deploy fix above is verified live),
+  that the filing date is "the only thing Citiz ever asks", or that the content worker flags changes on
+  its own (it runs on demand). Settings and privacy strings say "this device" rather than "this
+  browser", which was wrong in the apps.
+
 ### Added
 
 - **Audio packs.** Recordings a learner downloads once and keeps on the device, listed in

@@ -200,6 +200,7 @@
         </tbody>
       </table>
     </div>
+    <p class="small" style="margin-block-start: .75rem"><a href="https://github.com/peopleworks/Citiz/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer">@L.T("settings.privacyPolicy")</a></p>
   </section>
 </div>
 
@@ -359,6 +360,12 @@
   private async Task DeleteAsync()
   {
     confirmingDelete = false;
+    // "Delete everything" means everything: the packs on the device go too, so the confirmation
+    // text and PRIVACY.md stay true.
+    foreach (var pack in packs.Where(p => p.Status == AudioPackStatus.Ready))
+    {
+      await Audio.DeleteAsync(pack.Pack.Id);
+    }
     await Learner.ClearAllAsync();
     filingDate = string.Empty;
     interviewDate = string.Empty;

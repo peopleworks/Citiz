@@ -64,7 +64,8 @@ public static class ContentMapper
                 entry.AcceptedAnswers.AsReadOnly(),
                 Optional(entry.DynamicAnswerKey),
                 Optional(entry.Note),
-                entry.ReviewStatus is null ? defaultStatus : ToReviewStatus(entry.ReviewStatus, path, where));
+                entry.ReviewStatus is null ? defaultStatus : ToReviewStatus(entry.ReviewStatus, path, where),
+                entry.RequiredCount is null ? 1 : Positive(entry.RequiredCount.Value, path, $"{where} requiredCount"));
         }).ToList();
 
         try

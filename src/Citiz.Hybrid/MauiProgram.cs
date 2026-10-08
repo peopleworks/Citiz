@@ -21,11 +21,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			});
+			.UseMauiCommunityToolkit();
 
 		builder.Services.AddMauiBlazorWebView();
 
@@ -41,7 +37,12 @@ public static class MauiProgram
 		// engine directly — choosing the best installed voice, which MAUI's TextToSpeech cannot
 		// (Services/AndroidSpeechService.cs, Services/AppleSpeechService.cs). One engine per app.
 		// Audio packs: downloaded into app data by the host and handed to the WebView's player.
-		builder.Services.AddSingleton<IAudioPackStore, AppDataAudioPackStore>();
+		// Scoped, never singleton: the store plays through IJSRuntime, which AddMauiBlazorWebView
+		// registers as scoped and attaches only to the page's scope. A singleton would capture the
+		// root provider's runtime, which is never attached to the WebView, and every Listen tap,
+		// clip playback and pack Delete would throw "Cannot invoke JavaScript outside of a WebView
+		// context" (release audit, 2026-10-04). AudioService, the only consumer, is scoped too.
+		builder.Services.AddScoped<IAudioPackStore, AppDataAudioPackStore>();
 		builder.Services.AddScoped<AudioService>();
 
 #if WINDOWS
