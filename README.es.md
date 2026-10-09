@@ -56,7 +56,7 @@ móvil — sin construir una app aparte para cada uno.</sub>
 | --- | --- | --- |
 | **Prepárate** | Los dos bancos cívicos oficiales, **2008** (100 preguntas) y **2025** (128 preguntas), cotejados línea por línea con los documentos de USCIS | Tarjetas con repaso espaciado, opción múltiple, escribir la respuesta con un comprobador determinista, un **simulacro que se detiene según las reglas del examen real** (en cuanto el resultado queda decidido), comprobado por un verificador determinista que solo acepta respuestas oficiales y te deja juzgar los casos dudosos, un banco explorable con fuentes, las **grabaciones oficiales de USCIS** de las preguntas de 2008 y una **voz de Citiz** sintética y etiquetada para los dos exámenes, cada una descargada una sola vez como paquete |
 | **Comunícate** | Las listas oficiales de vocabulario de **lectura** y **escritura** | Toca una palabra para escucharla con la voz de Citiz (se descarga una sola vez) o con la de tu dispositivo, práctica de dictado |
-| **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto |
+| **Descubre** | Doce cápsulas "Hoy en Estados Unidos" | Piezas breves con fuentes, enlazadas a las preguntas a las que dan contexto, leídas en voz alta con la voz de Citiz |
 | **Juega y Aprende** | *Reto cívico* | Rondas de diez preguntas de opción múltiple donde cada opción es una respuesta oficial real; los resultados cuentan como práctica |
 | **Idiomas** | 7 idiomas de interfaz | Inglés, español, chino (simplificado y tradicional), filipino, vietnamita, árabe (de derecha a izquierda); el idioma de la interfaz, el de estudio y el de ayuda son independientes |
 
@@ -105,14 +105,16 @@ se reproduce sin conexión. Como cada pista oficial lee la pregunta **y** sus re
 después de revelar la respuesta y en Explorar; "Escuchar" sigue leyendo solo la pregunta. El paquete
 oficial ya funciona: la app descarga una vez las 100 grabaciones (30 MB) y las reproduce sin conexión.
 
-Para lo que USCIS no ha grabado (el examen 2025, "Escuchar" en las preguntas de 2008 y las palabras
-del vocabulario) está la *voz de Citiz*: el responsable la genera una sola vez a partir del texto
-verificado con la voz Sarah de ElevenLabs, y va etiquetada "Voz sintética · no es de USCIS" en todos
-los lugares donde suena. Son tres paquetes: 533 audios con las preguntas y respuestas de 2025
-(9.7 MB), 100 con las preguntas de 2008 (2.5 MB) y 98 palabras (0.9 MB), y cada uno se ofrece una
-vez, en Prepárate o en Comunícate. Un modelo Whisper local transcribió cada audio sin pistas de su
-texto, lo que detectó números leídos dos veces, un nombre mal pronunciado y audios cortados al final;
-después el responsable los escuchó y los aprobó el 13 de septiembre de 2026. Sin paquete, lee el
+Para lo que USCIS no ha grabado (el examen 2025, las preguntas y respuestas de 2008, las palabras del
+vocabulario y las cápsulas) está la *voz de Citiz*: el responsable la genera una sola vez a partir del
+texto verificado con la voz Sarah de ElevenLabs, y va etiquetada "Voz sintética · no es de USCIS" en
+todos los lugares donde suena. Son cuatro paquetes: 533 audios con las preguntas y respuestas de 2025
+(9.7 MB), 371 con las preguntas y respuestas de 2008 (6.1 MB), 98 palabras (0.9 MB) y 24 lecturas de
+las cápsulas, cada una en inglés sencillo y completo (4.3 MB); cada paquete se ofrece una vez donde
+ayuda, en Prepárate, Comunícate o Descubre. Un modelo Whisper local transcribió cada audio sin pistas
+de su texto, lo que detectó números leídos dos veces, nombres mal pronunciados y audios cortados al
+final; después el responsable los escuchó y los aprobó: los tres primeros el 13 de septiembre de 2026
+y los otros dos el 9 de octubre de 2026. Sin paquete, lee el
 texto la voz de tu dispositivo. El servidor de los paquetes ve una descarga, nunca qué pregunta
 estudias; el catálogo es [`content/audio/packs.json`](content/audio/packs.json) y los paquetes se
 construyen con [`tools/audio/`](tools/audio/README.md).

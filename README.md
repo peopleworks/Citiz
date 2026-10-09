@@ -57,7 +57,7 @@ mobile — no separate app to build for either.</sub>
 | --- | --- | --- |
 | **Prepare** | Both official civics banks, **2008** (100 questions) and **2025** (128 questions), verified line by line against the USCIS documents | Flashcards with spaced review, multiple choice, type-the-answer with a deterministic checker, a **practice test that stops by the real test's rules** (the moment the outcome is decided), checked by a deterministic matcher that accepts only official answers and lets you judge the close calls, a browsable bank with sources, **USCIS's own recordings** of the 2008 questions and a labelled synthetic **Citiz voice** for both tests, each downloaded once as a pack |
 | **Communicate** | The official **reading** and **writing** vocabulary lists | Tap a word to hear it in the Citiz voice (downloaded once) or your device's voice, dictation practice |
-| **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for |
+| **Discover** | Twelve "Today in the United States" capsules | Short sourced pieces linked to the questions they give context for, read aloud in the Citiz voice |
 | **Play & Learn** | *Civics challenge* | Ten multiple-choice rounds where every option is a real official answer; results count as practice |
 | **Languages** | 7 interface languages | English, Spanish, Chinese (Simplified and Traditional), Filipino, Vietnamese, Arabic (right-to-left) — interface, study and help language are independent |
 
@@ -106,13 +106,15 @@ Because each official track reads the question **and** its answers, it plays aft
 revealed and in Browse; "Listen" keeps reading the question alone. The official pack is live: the
 app downloads the 100 recordings once (30 MB) and plays them offline.
 
-For what USCIS has not recorded — the 2025 test, "Listen" on the 2008 questions, the vocabulary
-words — there is the *Citiz voice*: generated once by the maintainer from the verified text with
-ElevenLabs' Sarah voice, and labelled "Synthetic voice · not USCIS" wherever it plays. Three packs:
-533 clips with the 2025 questions and answers (9.7 MB), 100 with the 2008 questions (2.5 MB) and 98
-words (0.9 MB), each offered once, on Prepare or on Communicate. A local Whisper model transcribed
-every clip with no hint of its text, which caught numbers read twice, a mispronounced name and clips
-cut off at the end; then the maintainer listened and approved them on 2026-09-13. Without a pack,
+For what USCIS has not recorded — the 2025 test, the 2008 questions and answers, the vocabulary
+words, the capsules — there is the *Citiz voice*: generated once by the maintainer from the verified
+text with ElevenLabs' Sarah voice, and labelled "Synthetic voice · not USCIS" wherever it plays. Four
+packs: 533 clips with the 2025 questions and answers (9.7 MB), 371 with the 2008 questions and
+answers (6.1 MB), 98 words (0.9 MB), and 24 capsule readings, each capsule in simple English and in
+full (4.3 MB); each pack is offered once where it helps, on Prepare, Communicate or Discover. A local
+Whisper model transcribed every clip with no hint of its text, which caught numbers read twice,
+mispronounced names and clips cut off at the end; then the maintainer listened and approved each
+pack, the first three on 2026-09-13 and the other two on 2026-10-09. Without a pack,
 your device's own voice reads the text. The pack host sees one download, never which question you
 study; the catalog is [`content/audio/packs.json`](content/audio/packs.json) and the packs are built
 with [`tools/audio/`](tools/audio/README.md).
