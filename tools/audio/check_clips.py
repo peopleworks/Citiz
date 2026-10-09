@@ -100,7 +100,7 @@ def page(rows: list[dict], flagged: list[dict], sample: list[dict], model: str) 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--set", action="append", choices=["2025", "2008", "words"], required=True, help="pack to check (repeatable)")
+    parser.add_argument("--set", action="append", choices=["2025", "2008", "words", "capsules"], required=True, help="pack to check (repeatable)")
     parser.add_argument("--version", type=int, default=1)
     parser.add_argument("--model", default="small.en", help="faster-whisper model (default: small.en)")
     parser.add_argument("--threshold", type=float, default=0.85, help="lowest similarity between the word sequences that passes")

@@ -231,7 +231,8 @@ public static class ContentMapper
                     "prompt" => AudioClipRole.Prompt,
                     "answer" => AudioClipRole.Answer,
                     "word" => AudioClipRole.Word,
-                    var other => throw new ContentFormatException(path, $"{clipWhere} role '{other}' must be recording, prompt, answer or word."),
+                    "capsule" => AudioClipRole.Capsule,
+                    var other => throw new ContentFormatException(path, $"{clipWhere} role '{other}' must be recording, prompt, answer, word or capsule."),
                 };
 
                 return new AudioClip(
@@ -243,7 +244,10 @@ public static class ContentMapper
                     Require(clip.Sha256, path, $"{clipWhere} sha256").ToLowerInvariant(),
                     Optional(clip.QuestionId),
                     clip.AnswerIndex,
-                    Optional(clip.Word));
+                    Optional(clip.Word),
+                    Optional(clip.TopicId),
+                    Optional(clip.Variant),
+                    Optional(clip.TextSha256)?.ToLowerInvariant());
             }).ToList();
 
             return new AudioPack(

@@ -226,4 +226,35 @@ public sealed class ContentValidatorTests
         Assert.Contains(unknownWord.Issues, i => i.Message.Contains("Lincolnshire", StringComparison.Ordinal));
         Assert.True(knownWord.IsValid, string.Join("; ", knownWord.Issues.Select(i => i.Message)));
     }
+
+    // SHA-256 of the fixture capsule's texts, computed by Python's hashlib exactly as
+    // tools/audio/generate_elevenlabs.py does, so the validator and the generator must agree.
+    private const string SimpleDigest = "a9f51566bd6705f7ea6ad54bb9deb449f795582d6529a0e22207b8981233ec58"; // "E"
+    private const string FullDigest = "8de0b3c47f112c59745f717a626932264c422a7563954872e237b223af4ad643"; // "S"
+
+    private static string CapsulePack(string kind = "synthetic", string topicId = "t", string variant = "simple", string? digest = SimpleDigest) => $$"""
+        { "packs": [ { "id": "citiz-voice-capsules", "kind": "{{kind}}", "title": "T", "description": "D", "versionId": null, "version": 1,
+            "baseUrl": "https://audio.example/citiz-voice-capsules/v1/", "sizeBytes": 10, "license": "L", "voice": "ElevenLabs · Test", "generatedOn": null,
+            "reviewStatus": "approved", "sources": [{{Source}}],
+            "clips": [ { "id": "c-{{topicId}}-{{variant}}", "role": "capsule", "file": "c-{{topicId}}-{{variant}}.mp3", "bytes": 10, "seconds": 9.5, "sha256": "{{Sha}}",
+                         "topicId": "{{topicId}}", "variant": "{{variant}}"{{(digest is null ? "" : $", \"textSha256\": \"{digest}\"")}} } ] } ] }
+        """;
+
+    [Fact]
+    public async Task Capsule_clips_must_read_the_current_text_of_a_real_capsule()
+    {
+        var simple = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack())).ValidateAsync();
+        var full = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack(variant: "full", digest: FullDigest))).ValidateAsync();
+        var stale = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack(variant: "full", digest: SimpleDigest))).ValidateAsync();
+        var undated = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack(digest: null))).ValidateAsync();
+        var unknown = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack(topicId: "nowhere"))).ValidateAsync();
+        var official = await new ContentValidator(Valid().With(ContentPaths.AudioPacks, CapsulePack(kind: "official"))).ValidateAsync();
+
+        Assert.True(simple.IsValid, string.Join("; ", simple.Issues.Select(i => i.Message)));
+        Assert.True(full.IsValid, string.Join("; ", full.Issues.Select(i => i.Message)));
+        Assert.Contains(stale.Issues, i => i.Severity == ContentIssueSeverity.Error && i.Message.Contains("earlier text", StringComparison.Ordinal));
+        Assert.Contains(undated.Issues, i => i.Severity == ContentIssueSeverity.Error && i.Message.Contains("textSha256", StringComparison.Ordinal));
+        Assert.Contains(unknown.Issues, i => i.Severity == ContentIssueSeverity.Error && i.Message.Contains("nowhere", StringComparison.Ordinal));
+        Assert.Contains(official.Issues, i => i.Message.Contains("official packs hold recordings", StringComparison.Ordinal));
+    }
 }

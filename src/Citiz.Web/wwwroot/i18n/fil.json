@@ -295,6 +295,8 @@
   "audio.offer.voice.download": "I-download ang boses ng Citiz",
   "audio.offer.words.title": "Pakinggan ang bawat salita sa malinaw at natural na boses.",
   "audio.offer.words.body": "Ginawa ng Citiz ang boses na ito para sa bokabularyo ng pagbasa at pagsulat. I-download nang isang beses ({0}) at babasahin nito ang mga salita kahit offline, sa device na ito.",
+  "audio.offer.capsules.title": "Pakinggan ang mga kapsula sa malinaw at natural na boses.",
+  "audio.offer.capsules.body": "Ginawa ng Citiz ang boses na ito para sa mga kapsulang \"Ngayong araw sa Estados Unidos\". I-download ito nang isang beses ({0}) at babasahin nito ang mga ito nang malakas kahit offline, sa device na ito.",
   "settings.audio": "Audio",
   "settings.audioHint": "Isang beses lang dina-download ang mga recording, bilang pack, at nananatili sa device na ito. Ang download lang ang nakikita ng host; hindi lumalabas sa device ang pinag-aaralan mo. Kung walang pack, ginagamit ng Pakinggan ang boses ng iyong device.",
   "settings.audio.unsupported": "Hindi kayang itago ng browser na ito ang na-download na audio. Ginagamit ng Pakinggan ang boses ng iyong device.",

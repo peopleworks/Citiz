@@ -295,6 +295,8 @@
   "audio.offer.voice.download": "Descargar la voz de Citiz",
   "audio.offer.words.title": "Escucha cada palabra con una voz clara y natural.",
   "audio.offer.words.body": "Citiz generó esta voz para el vocabulario de lectura y escritura. Descárgala una sola vez ({0}) y leerá las palabras en voz alta sin conexión, en este dispositivo.",
+  "audio.offer.capsules.title": "Escucha las cápsulas con una voz clara y natural.",
+  "audio.offer.capsules.body": "Citiz generó esta voz para las cápsulas \"Hoy en Estados Unidos\". Descárgala una vez ({0}) y las lee en voz alta sin conexión, en este dispositivo.",
   "settings.audio": "Audio",
   "settings.audioHint": "Las grabaciones se descargan una sola vez, como paquete, y se quedan en este dispositivo. La descarga es lo único que ve el servidor; lo que estudias nunca sale de aquí. Sin paquete, Escuchar usa la voz de tu dispositivo.",
   "settings.audio.unsupported": "Este navegador no puede guardar audio descargado. Escuchar usa la voz de tu dispositivo.",

@@ -1,5 +1,6 @@
 using Citiz.Content;
 using Citiz.Core.Audio;
+using Citiz.Core.Discovery;
 using Citiz.Core.Exams;
 
 namespace Citiz.SharedUI.Services;
@@ -128,6 +129,25 @@ public sealed class AudioService(ContentRepository content, IAudioPackStore stor
 
     /// <summary>Reads a vocabulary word: the synthetic clip if downloaded, else the device voice.</summary>
     public Task<AudioSource> PlayWordAsync(string word) => PlayOrSpeakAsync(p => p.WordFor(word), word);
+
+    /// <summary>Which source "Listen" would use for a capsule's simple (<paramref name="simple"/>) or full text right now.</summary>
+    public async Task<AudioSource> CapsuleSourceAsync(DiscoveryTopic topic, bool simple)
+    {
+        ArgumentNullException.ThrowIfNull(topic);
+        if (await FindReadyAsync(p => p.Kind == AudioPackKind.Synthetic && p.CapsuleFor(topic.Id, simple) is not null) is not null)
+        {
+            return AudioSource.SyntheticPack;
+        }
+
+        return await speech.IsAvailableAsync() ? AudioSource.DeviceVoice : AudioSource.None;
+    }
+
+    /// <summary>Reads a capsule: the synthetic clip if downloaded, else the device voice.</summary>
+    public Task<AudioSource> PlayCapsuleAsync(DiscoveryTopic topic, bool simple)
+    {
+        ArgumentNullException.ThrowIfNull(topic);
+        return PlayOrSpeakAsync(p => p.CapsuleFor(topic.Id, simple), simple ? topic.SimpleEnglish : topic.Summary);
+    }
 
     /// <summary>Plays the official recording of a question (question and answers). Never falls back: there is no substitute for the real thing.</summary>
     public async Task<AudioSource> PlayRecordingAsync(CivicsQuestion question)

@@ -295,6 +295,8 @@
   "audio.offer.voice.download": "Tải giọng đọc Citiz",
   "audio.offer.words.title": "Nghe từng từ bằng giọng đọc rõ ràng, tự nhiên.",
   "audio.offer.words.body": "Citiz đã tạo giọng đọc này cho từ vựng đọc và viết. Tải một lần ({0}) để nghe đọc các từ ngoại tuyến, trên thiết bị này.",
+  "audio.offer.capsules.title": "Nghe các bài ngắn bằng giọng đọc rõ ràng, tự nhiên.",
+  "audio.offer.capsules.body": "Citiz đã tạo giọng đọc này cho các bài ngắn \"Hôm nay ở Hoa Kỳ\". Tải về một lần ({0}) và giọng đọc sẽ đọc chúng ngoại tuyến, trên thiết bị này.",
   "settings.audio": "Âm thanh",
   "settings.audioHint": "Bản ghi âm được tải một lần, theo gói, và lưu trên thiết bị này. Máy chủ chỉ thấy lượt tải; những gì bạn học không bao giờ rời khỏi thiết bị. Không có gói, nút Nghe dùng giọng của thiết bị.",
   "settings.audio.unsupported": "Trình duyệt này không thể lưu âm thanh đã tải. Nút Nghe dùng giọng của thiết bị.",

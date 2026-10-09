@@ -392,7 +392,7 @@ public sealed class AudioClipEntry
     /// <inheritdoc cref="Core.Audio.AudioClip.Id"/>
     public string? Id { get; set; }
 
-    /// <summary><c>recording</c>, <c>prompt</c>, <c>answer</c> or <c>word</c>.</summary>
+    /// <summary><c>recording</c>, <c>prompt</c>, <c>answer</c>, <c>word</c> or <c>capsule</c>.</summary>
     public string? Role { get; set; }
 
     /// <inheritdoc cref="Core.Audio.AudioClip.File"/>
@@ -415,4 +415,13 @@ public sealed class AudioClipEntry
 
     /// <inheritdoc cref="Core.Audio.AudioClip.Word"/>
     public string? Word { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.TopicId"/>
+    public string? TopicId { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.Variant"/>
+    public string? Variant { get; set; }
+
+    /// <inheritdoc cref="Core.Audio.AudioClip.TextSha256"/>
+    public string? TextSha256 { get; set; }
 }

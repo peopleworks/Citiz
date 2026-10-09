@@ -26,6 +26,9 @@ public enum AudioClipRole
 
     /// <summary>One word of the reading or writing vocabulary.</summary>
     Word,
+
+    /// <summary>The text of a "Today in the United States" capsule, in simple English or in full.</summary>
+    Capsule,
 }
 
 /// <summary>One audio file in a pack.</summary>
@@ -38,6 +41,9 @@ public enum AudioClipRole
 /// <param name="QuestionId">The question this clip belongs to (<see cref="AudioClipRole.Recording"/>, <see cref="AudioClipRole.Prompt"/>, <see cref="AudioClipRole.Answer"/>).</param>
 /// <param name="AnswerIndex">Zero-based index into the question's accepted answers (<see cref="AudioClipRole.Answer"/>).</param>
 /// <param name="Word">The vocabulary word (<see cref="AudioClipRole.Word"/>), exactly as listed.</param>
+/// <param name="TopicId">The capsule this clip reads (<see cref="AudioClipRole.Capsule"/>).</param>
+/// <param name="Variant">Which text of the capsule it reads: <see cref="SimpleVariant"/> or <see cref="FullVariant"/> (<see cref="AudioClipRole.Capsule"/>).</param>
+/// <param name="TextSha256">Hex SHA-256 of the exact text the clip was generated from (<see cref="TextDigest"/>). Capsules are editorial and change; the validator compares this with the current text so a stale clip is caught before it ships.</param>
 public sealed record AudioClip(
     string Id,
     AudioClipRole Role,
@@ -47,7 +53,24 @@ public sealed record AudioClip(
     string Sha256,
     string? QuestionId,
     int? AnswerIndex,
-    string? Word);
+    string? Word,
+    string? TopicId = null,
+    string? Variant = null,
+    string? TextSha256 = null)
+{
+    /// <summary>The <see cref="Variant"/> of a clip that reads a capsule's simple-English text.</summary>
+    public const string SimpleVariant = "simple";
+
+    /// <summary>The <see cref="Variant"/> of a clip that reads a capsule's full text.</summary>
+    public const string FullVariant = "full";
+
+    /// <summary>The digest recorded in <see cref="TextSha256"/>: lower-case hex SHA-256 of the UTF-8 text, exactly as written in the content.</summary>
+    public static string TextDigest(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        return Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(text)));
+    }
+}
 
 /// <summary>
 /// A set of recordings the learner can download once and keep on the device: the official USCIS
@@ -59,7 +82,7 @@ public sealed record AudioClip(
 /// <param name="Kind">Official or synthetic.</param>
 /// <param name="Title">Shown in Settings, in English like the content it voices.</param>
 /// <param name="Description">One line for Settings: what is inside.</param>
-/// <param name="VersionId">The exam version the clips belong to, or <c>null</c> for vocabulary.</param>
+/// <param name="VersionId">The exam version the clips belong to, or <c>null</c> for vocabulary and capsules.</param>
 /// <param name="Version">Increment when the files change; the device re-downloads.</param>
 /// <param name="BaseUrl">Where the files are served from; every <see cref="AudioClip.File"/> is relative to it.</param>
 /// <param name="SizeBytes">Total size, quoted before the download.</param>
@@ -99,6 +122,10 @@ public sealed record AudioPack(
 
     /// <summary>The clip of a vocabulary word, if this pack has one.</summary>
     public AudioClip? WordFor(string word) => Find(AudioClipRole.Word, c => string.Equals(c.Word, word, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>The clip reading a capsule's simple-English text (<paramref name="simple"/>) or its full text, if this pack has one.</summary>
+    public AudioClip? CapsuleFor(string topicId, bool simple) =>
+        Find(AudioClipRole.Capsule, c => string.Equals(c.TopicId, topicId, StringComparison.Ordinal) && c.Variant == (simple ? AudioClip.SimpleVariant : AudioClip.FullVariant));
 
     private AudioClip? Find(AudioClipRole role, Func<AudioClip, bool> predicate) => Clips.FirstOrDefault(c => c.Role == role && predicate(c));
 }

@@ -11,8 +11,9 @@ Two kinds of pack, labelled differently everywhere they play:
 | --- | --- | --- | --- |
 | `uscis-2008` | official | USCIS's own MP3 track per question (question **and** answers, read by a person); public domain | `fetch_uscis_2008.py` |
 | `citiz-voice-2025` | synthetic | prompt and every accepted answer of the 2025 test, one clip each | `generate_elevenlabs.py --set 2025` |
-| `citiz-voice-2008` | synthetic | prompt of every 2008 question (the answers are in the official track) | `generate_elevenlabs.py --set 2008` |
+| `citiz-voice-2008` | synthetic | prompt and every accepted answer of the 2008 test (v1 had the prompts only) | `generate_elevenlabs.py --set 2008 --version 2` |
 | `citiz-voice-words` | synthetic | the reading and writing vocabulary | `generate_elevenlabs.py --set words` |
+| `citiz-voice-capsules` | synthetic | the simple-English and full text of every "Today in the United States" capsule | `generate_elevenlabs.py --set capsules` |
 
 Synthetic packs are generated **once**, by the maintainer, from the verified text; the ElevenLabs
 key never ships with the app and no learner ever calls ElevenLabs. USCIS has published no audio
@@ -60,14 +61,25 @@ open tools/audio/dist/samples/index.html   # one player per voice, with its name
 # 4. Generate (resumable; already generated clips are skipped)
 .venv/bin/python tools/audio/generate_elevenlabs.py --set 2025 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
 .venv/bin/python tools/audio/generate_elevenlabs.py --set words --voice <id> --base-url https://YOUR-HOST/citiz-audio/
-.venv/bin/python tools/audio/generate_elevenlabs.py --set 2008 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
+.venv/bin/python tools/audio/generate_elevenlabs.py --set 2008 --version 2 --voice <id> --base-url https://YOUR-HOST/citiz-audio/
+.venv/bin/python tools/audio/generate_elevenlabs.py --set capsules --voice <id> --base-url https://YOUR-HOST/citiz-audio/
 
 # 5. Check every clip: a local Whisper model transcribes it, with no hints, and a page lists what to hear
 .venv/bin/pip install -r tools/audio/requirements-check.txt   # once; the model downloads on first use
 .venv/bin/python tools/audio/check_clips.py --set 2025 --set words
 open tools/audio/dist/review/index.html
-.venv/bin/python tools/audio/check_clips.py --set 2008 --review-dir review-2008   # its own page; review/ stays
+.venv/bin/python tools/audio/check_clips.py --set 2008 --version 2 --review-dir review-2008-v2
+.venv/bin/python tools/audio/check_clips.py --set capsules --review-dir review-capsules
 ```
+
+**Capsules change; their audio must follow.** Every capsule clip records the SHA-256 of the exact text
+it reads (`textSha256`). Edit a capsule in `content/discovery/topics.json` and `citiz content validate`
+fails until its clip is regenerated: delete the stale files, run `--set capsules` again with
+`--version` one higher, re-check, upload, and commit `packs.json`.
+
+**A set whose clips change needs a new `--version`.** Devices key a downloaded pack on its version,
+so a device that has `v1` never fetches clips added to `v1` later. The generator refuses to write
+different clips under a version that is already in `packs.json` and names the next one.
 
 Every command writes the pack into `content/audio/packs.json` and the files into
 `tools/audio/dist/<pack-id>/v<version>/` (upload that; never committed). Commit `packs.json` only once

@@ -3,7 +3,8 @@
 @inherits LocalizedComponentBase
 @inject ContentRepository Content
 @inject DiscoveryEngine Discovery
-@inject ISpeechService Speech
+@inject AudioService Audio
+@inject LearnerState Learner
 
 <PageTitle>@(topic?.Title ?? L.T("discover.title")) — @L.T("app.name")</PageTitle>
 
@@ -17,6 +18,7 @@ else if (topics is null)
 }
 else if (TopicId is not null)
 {
+  @CapsuleOffer
   @if (topic is null)
   {
     <PageHeader Title="@L.T("discover.notFound")" />
@@ -30,11 +32,17 @@ else if (TopicId is not null)
 
     <div class="card">
       <div class="segmented" role="group">
-        <button type="button" aria-pressed="@(simple ? "true" : "false")" @onclick="() => simple = true">@L.T("discover.simpleEnglish")</button>
-        <button type="button" aria-pressed="@(simple ? "false" : "true")" @onclick="() => simple = false">@L.T("discover.fullText")</button>
+        <button type="button" aria-pressed="@(simple ? "true" : "false")" @onclick="() => SetSimpleAsync(true)">@L.T("discover.simpleEnglish")</button>
+        <button type="button" aria-pressed="@(simple ? "false" : "true")" @onclick="() => SetSimpleAsync(false)">@L.T("discover.fullText")</button>
       </div>
       <p lang="en" style="font-size: 1.1rem; margin-block-start: 1rem">@(simple ? topic.SimpleEnglish : topic.Summary)</p>
-      <button type="button" class="button ghost small" @onclick="() => Speech.SpeakAsync(simple ? topic.SimpleEnglish : topic.Summary)">@L.T("common.listen")</button>
+      <div class="row listen-row">
+        <button type="button" class="button ghost small" @onclick="() => Audio.PlayCapsuleAsync(topic, simple)" disabled="@(capsuleSource == AudioSource.None)">@L.T("common.listen")</button>
+        @if (capsuleSource == AudioSource.SyntheticPack)
+        {
+          <AudioSourceBadge Source="AudioSource.SyntheticPack" />
+        }
+      </div>
       <p class="muted small" style="margin-block-start: 1rem">@L.T("discover.editorialNote")</p>
       <SourceLine Sources="topic.Sources" />
     </div>
@@ -43,7 +51,7 @@ else if (TopicId is not null)
       <article class="card">
         <h2>@L.T("discover.vocabulary")</h2>
         <div class="chips" lang="en">
-          @foreach (var word in topic.Vocabulary) { <button type="button" @onclick="() => Speech.SpeakAsync(word)">@word</button> }
+          @foreach (var word in topic.Vocabulary) { <button type="button" @onclick="() => Audio.PlayWordAsync(word)">@word</button> }
         </div>
         @if (topic.RelatedPlaces.Count > 0)
         {
@@ -86,6 +94,7 @@ else if (TopicId is not null)
 else
 {
   <PageHeader Title="@L.T("discover.title")" Lead="@L.T("discover.subtitle")" />
+  @CapsuleOffer
 
   @if (today is not null)
   {
@@ -129,10 +138,59 @@ else
   private bool simple = true;
   private string? error;
 
+  // Which voice "Listen" uses for the open capsule, and the one-time offer of the capsule pack: the
+  // Citiz voice for every capsule, offered while it is not on the device and the learner has not
+  // said "not now". Without it, capsules are read by the device's voice.
+  private AudioSource capsuleSource = AudioSource.DeviceVoice;
+  private AudioPackState? offer;
+
+  private RenderFragment CapsuleOffer => __builder =>
+  {
+    if (offer is { } pack)
+    {
+      <AudioOffer State="pack" Title="@L.T("audio.offer.capsules.title")" Body="@L.T("audio.offer.capsules.body", L.T("common.sizeMB", AudioFormat.Megabytes(pack.Pack.SizeBytes)))" DownloadLabel="@L.T("audio.offer.voice.download")" OnDismiss="DismissOfferAsync" />
+    }
+  };
+
+  private async Task SetSimpleAsync(bool value)
+  {
+    simple = value;
+    await RefreshAudioAsync();
+  }
+
+  private async Task RefreshAudioAsync()
+  {
+    capsuleSource = topic is null ? AudioSource.DeviceVoice : await Audio.CapsuleSourceAsync(topic, simple);
+    var states = await Audio.GetStatesAsync();
+    offer = Audio.IsSupported
+      ? states.FirstOrDefault(s => s.Pack.Kind == AudioPackKind.Synthetic && s.Pack.Clips.Any(c => c.Role == AudioClipRole.Capsule)
+        && s.Status != AudioPackStatus.Ready && !Learner.IsAudioOfferDismissed(s.Pack.Id))
+      : null;
+  }
+
+  private async Task DismissOfferAsync()
+  {
+    if (offer is { } pack)
+    {
+      await Learner.DismissAudioOfferAsync(pack.Pack.Id);
+    }
+
+    offer = null;
+  }
+
+  private void OnAudioChanged() => _ = InvokeAsync(async () => { await RefreshAudioAsync(); StateHasChanged(); });
+
+  public override void Dispose()
+  {
+    Audio.Changed -= OnAudioChanged;
+    base.Dispose();
+  }
+
   private List<DiscoveryTopic> Visible => (topics ?? []).Where(t => categoryFilter is null || t.Category == categoryFilter).ToList();
 
   protected override async Task OnInitializedAsync()
   {
+    Audio.Changed += OnAudioChanged;
     try
     {
       topics = await Content.GetDiscoveryTopicsAsync();
@@ -149,9 +207,15 @@ else
     topic = null;
     related = [];
     relatedQuestions = [];
-    if (topics is null || TopicId is null) { return; }
+    if (topics is null) { return; }
+    if (TopicId is null)
+    {
+      await RefreshAudioAsync();
+      return;
+    }
 
     topic = topics.FirstOrDefault(t => string.Equals(t.Id, TopicId, StringComparison.OrdinalIgnoreCase));
+    await RefreshAudioAsync();
     if (topic is null) { return; }
 
     related = Discovery.Related(topic, topics);

@@ -295,6 +295,8 @@
   "audio.offer.voice.download": "下載 Citiz 語音",
   "audio.offer.words.title": "用清晰自然的語音聽每個單字。",
   "audio.offer.words.body": "Citiz 為閱讀和寫作詞彙產生了這個語音。下載一次（{0}），即可在此裝置上離線朗讀單字。",
+  "audio.offer.capsules.title": "用清晰、自然的聲音收聽短文。",
+  "audio.offer.capsules.body": "Citiz 為「今日美國」短文生成了這個聲音。下載一次（{0}），即可在這台裝置上離線朗讀。",
   "settings.audio": "音訊",
   "settings.audioHint": "錄音以語音包形式一次性下載並保存在此裝置上。伺服器只能看到這次下載；你學習的內容絕不會離開此裝置。沒有語音包時，「朗讀」使用你裝置的語音。",
   "settings.audio.unsupported": "此瀏覽器無法保存下載的音訊。「朗讀」使用你裝置的語音。",

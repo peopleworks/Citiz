@@ -5,22 +5,31 @@
     python tools/audio/generate_elevenlabs.py --sample --voice <voice_id> [--voice <voice_id> ...]
     python tools/audio/generate_elevenlabs.py --set 2025 --voice <voice_id> --base-url https://your.host/citiz-audio/
     python tools/audio/generate_elevenlabs.py --set words --voice <voice_id> --base-url https://your.host/citiz-audio/
+    python tools/audio/generate_elevenlabs.py --set capsules --voice <voice_id> --base-url https://your.host/citiz-audio/
 
 The API key is read from the ELEVENLABS_API_KEY environment variable, or from tools/audio/.env
 (a line `ELEVENLABS_API_KEY=...`; the file is git-ignored). The key never ships with the app: the
 app only ever downloads the finished MP3 files from the pack host.
 
-Sets:  2025   -> pack citiz-voice-2025: every prompt and every accepted answer of the 2025 test
-       2008   -> pack citiz-voice-2008: every prompt of the 2008 test (answers are in the official recordings)
-       words  -> pack citiz-voice-words: the reading and writing vocabulary
+Sets:  2025      -> pack citiz-voice-2025: every prompt and every accepted answer of the 2025 test
+       2008      -> pack citiz-voice-2008: every prompt and every accepted answer of the 2008 test
+                    (v1 had the prompts only; answers came in v2)
+       words     -> pack citiz-voice-words: the reading and writing vocabulary
+       capsules  -> pack citiz-voice-capsules: the simple-English and the full text of every
+                    "Today in the United States" capsule, each clip tagged with the SHA-256 of
+                    the text it reads so the validator catches a capsule edited after generation
+Answers of dynamic questions (officeholders) are never voiced: they change.
 Idempotent: clips that already exist under tools/audio/dist/<pack>/v<version>/ are not generated
 again, so an interrupted run resumes and a re-run costs nothing. --dry-run prints the character
-count (ElevenLabs bills one credit per character) without calling the API.
+count (ElevenLabs bills one credit per character) without calling the API. A set whose clips
+differ from the pack already published under the same --version is refused: devices that have
+that version would never fetch the new clips, so the version must go up.
 """
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import html
 import os
 import re
@@ -30,7 +39,7 @@ from pathlib import Path
 
 import requests
 
-from packs_common import DIST, describe, load_content, save_pack, slug
+from packs_common import DIST, describe, load_content, load_packs, save_pack, slug
 
 API = "https://api.elevenlabs.io/v1"
 MODEL = "eleven_multilingual_v2"
@@ -111,7 +120,7 @@ def clips_for(set_name: str) -> list[dict]:
         for q in bank:
             number = f"{q['number']:03}"
             clips.append({"id": f"q-{set_name}-{number}", "role": "prompt", "file": f"q{number}.mp3", "text": q["prompt"], "questionId": q["id"]})
-            if set_name == "2025" and not q.get("dynamicAnswerKey"):
+            if not q.get("dynamicAnswerKey"):
                 for index, answer in enumerate(q["acceptedAnswers"]):
                     clips.append({"id": f"a-{set_name}-{number}-{index}", "role": "answer", "file": f"a{number}-{index}.mp3", "text": answer, "questionId": q["id"], "answerIndex": index})
     elif set_name == "words":
@@ -122,6 +131,12 @@ def clips_for(set_name: str) -> list[dict]:
                     words.setdefault(word.lower(), word)
         for word in sorted(words.values(), key=str.lower):
             clips.append({"id": f"w-{slug(word)}", "role": "word", "file": f"w-{slug(word)}.mp3", "text": word, "word": word})
+    elif set_name == "capsules":
+        for topic in load_content("discovery/topics.json")["topics"]:
+            for variant, field in (("simple", "simpleEnglish"), ("full", "summary")):
+                text = topic[field]
+                clips.append({"id": f"c-{topic['id']}-{variant}", "role": "capsule", "file": f"c-{topic['id']}-{variant}.mp3", "text": text,
+                              "topicId": topic["id"], "variant": variant, "textSha256": hashlib.sha256(text.encode("utf-8")).hexdigest()})
     else:
         sys.exit(f"unknown set '{set_name}'")
     return clips
@@ -169,7 +184,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--list-voices", action="store_true", help="print the voices available to your account")
     parser.add_argument("--sample", action="store_true", help="synthesize one question with each --voice into tools/audio/dist/samples/")
-    parser.add_argument("--set", choices=["2025", "2008", "words"], help="which pack to generate")
+    parser.add_argument("--set", choices=["2025", "2008", "words", "capsules"], help="which pack to generate")
     parser.add_argument("--voice", action="append", default=[], help="ElevenLabs voice id (repeatable with --sample)")
     parser.add_argument("--base-url", help="where the pack folders will be served from, ending with /; the pack id and version are appended")
     parser.add_argument("--version", type=int, default=1)
@@ -210,10 +225,15 @@ def main() -> int:
     if not args.base_url.startswith("https://") or not args.base_url.endswith("/"):
         parser.error("--base-url must start with https:// and end with /")
 
+    pack_id = f"citiz-voice-{args.set}"
+    published = next((p for p in load_packs()["packs"] if p["id"] == pack_id and p["version"] == args.version), None)
+    if published and sorted(c["file"] for c in published["clips"]) != sorted(c["file"] for c in clips):
+        sys.exit(f"{pack_id} v{args.version} is already published with different clips; devices that have it would never "
+                 f"fetch the new ones. Run again with --version {max(p['version'] for p in load_packs()['packs'] if p['id'] == pack_id) + 1}.")
+
     key = api_key()
     voice_id = args.voice[0]
     voice_name = next((v["name"] for v in fetch_voices(key, required=False) if v["voice_id"] == voice_id), voice_id)
-    pack_id = f"citiz-voice-{args.set}"
     folder = DIST / pack_id / f"v{args.version}"
     folder.mkdir(parents=True, exist_ok=True)
 
@@ -227,21 +247,27 @@ def main() -> int:
     manifest_clips = [{k: v for k, v in c.items() if k != "text"} for c in clips]
     titles = {
         "2025": ("Citiz voice · 2025 test", "The 128 questions of the 2025 test and their accepted answers, generated once from the official text"),
-        "2008": ("Citiz voice · 2008 test", "The 100 questions of the 2008 test, generated once from the official text (the official recordings carry the answers)"),
+        "2008": ("Citiz voice · 2008 test", "The 100 questions of the 2008 test and their accepted answers, generated once from the official text"),
         "words": ("Citiz voice · vocabulary words", "The reading and writing words of the English test, generated once from the official lists"),
+        "capsules": ("Citiz voice · Today in the United States", "Every capsule, in simple English and in full, generated once from the capsule text"),
     }
     title, description = titles[args.set]
-    sources = [{"authority": "USCIS", "title": "Text: the verified content in this repository (content/exams, content/english)", "url": "https://github.com/peopleworks/Citiz/tree/main/content", "verifiedOn": dt.date.today().isoformat(), "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"}]
+    if args.set == "capsules":
+        sources = [{"authority": "Citiz", "title": "Text: the capsules in this repository (content/discovery/topics.json)", "url": "https://github.com/peopleworks/Citiz/blob/main/content/discovery/topics.json", "verifiedOn": dt.date.today().isoformat(), "license": "CC BY 4.0"}]
+        license_text = "Generated with ElevenLabs under the paid-plan commercial license; text is Citiz editorial content, CC BY 4.0"
+    else:
+        sources = [{"authority": "USCIS", "title": "Text: the verified content in this repository (content/exams, content/english)", "url": "https://github.com/peopleworks/Citiz/tree/main/content", "verifiedOn": dt.date.today().isoformat(), "license": "Public domain (U.S. Government work, 17 U.S.C. § 105)"}]
+        license_text = ELEVENLABS_LICENSE
     pack = {
         "id": pack_id,
         "kind": "synthetic",
         "title": title,
         "description": description,
-        "versionId": None if args.set == "words" else args.set,
+        "versionId": args.set if args.set in ("2025", "2008") else None,
         "version": args.version,
         "baseUrl": f"{args.base_url}{pack_id}/v{args.version}/",
         "sizeBytes": sum(c["bytes"] for c in manifest_clips),
-        "license": ELEVENLABS_LICENSE,
+        "license": license_text,
         "voice": f"ElevenLabs · {voice_name} ({MODEL}, speed {VOICE_SETTINGS['speed']})",
         "generatedOn": dt.date.today().isoformat(),
         "reviewStatus": "needs-review",

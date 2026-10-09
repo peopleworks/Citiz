@@ -4,7 +4,7 @@
 @inject StudyService Study
 @inject ContentRepository Content
 @inject DiscoveryEngine Discovery
-@inject ISpeechService Speech
+@inject AudioService Audio
 
 <PageTitle>@L.T("app.name") — @L.T("app.tagline")</PageTitle>
 
@@ -55,10 +55,14 @@
       <div class="chips" style="margin-block-start: .75rem">@foreach (var word in today.Vocabulary) { <span lang="en">@word</span> }</div>
       <div class="row" style="margin-block-start: 1.25rem">
         <a class="button primary" href="discover/@today.Id">@L.T("home.todayOpen")</a>
-        <button type="button" class="button ghost" @onclick="SpeakTodayAsync">
+        <button type="button" class="button ghost" @onclick="SpeakTodayAsync" disabled="@(todaySource == AudioSource.None)">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z" /></svg>
           @L.T("common.listen")
         </button>
+        @if (todaySource == AudioSource.SyntheticPack)
+        {
+          <AudioSourceBadge Source="AudioSource.SyntheticPack" />
+        }
         <a class="button ghost" href="discover" style="margin-inline-start: auto">@L.T("home.discoverCta")</a>
       </div>
     }
@@ -199,6 +203,9 @@
   private MultipleChoiceItem? practiceChoice;
   private int? practiceChosen;
 
+  // The capsule's voice: the Citiz voice when its pack is on the device (and labelled so), else the device's.
+  private AudioSource todaySource = AudioSource.DeviceVoice;
+
   // The same rules and pool Prepare uses: a 65/20 learner sees 10/6/5 and "x / 20", not the
   // standard numbers, and vocabulary words practiced in Communicate do not count as questions.
   private bool UseSenior => context is not null && Learner.Exam.SeniorConsideration && context.Version.HasSeniorDesignation;
@@ -210,12 +217,14 @@
   protected override async Task OnInitializedAsync()
   {
     Learner.Changed += StateHasChanged;
+    Audio.Changed += OnAudioChanged;
     ComputeActivity();
     try
     {
       context = await Study.GetContextAsync();
       today = Discovery.SelectDaily(await Content.GetDiscoveryTopicsAsync(), DateOnly.FromDateTime(DateTime.Now));
       NextPractice();
+      await RefreshTodaySourceAsync();
     }
     catch (Exception ex) when (ex is HttpRequestException or ContentFormatException or FileNotFoundException)
     {
@@ -266,7 +275,12 @@
     ComputeActivity();
   }
 
-  private Task SpeakTodayAsync() => today is null ? Task.CompletedTask : Speech.SpeakAsync(today.SimpleEnglish).AsTask();
+  private Task SpeakTodayAsync() => today is null ? Task.CompletedTask : Audio.PlayCapsuleAsync(today, simple: true);
+
+  private async Task RefreshTodaySourceAsync() =>
+    todaySource = today is null ? AudioSource.None : await Audio.CapsuleSourceAsync(today, simple: true);
+
+  private void OnAudioChanged() => _ = InvokeAsync(async () => { await RefreshTodaySourceAsync(); StateHasChanged(); });
 
   private int? InterviewCountdownDays()
   {
@@ -285,6 +299,7 @@
   public override void Dispose()
   {
     Learner.Changed -= StateHasChanged;
+    Audio.Changed -= OnAudioChanged;
     base.Dispose();
   }
 }

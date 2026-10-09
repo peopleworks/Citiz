@@ -142,7 +142,7 @@ public sealed partial class ContentValidator
         var packs = await LoadAsync(ContentPaths.AudioPacks, () => _repository.GetAudioPacksAsync(cancellationToken)).ConfigureAwait(false);
         if (packs is not null)
         {
-            CheckAudioPacks(packs, banks, vocabularies);
+            CheckAudioPacks(packs, banks, vocabularies, topics ?? []);
         }
 
         var ordered = _issues.OrderByDescending(i => i.Severity).ThenBy(i => i.File, StringComparer.Ordinal).ToList();
@@ -452,12 +452,14 @@ public sealed partial class ContentValidator
     /// <summary>
     /// Audio packs must point at real content: every clip names a question that exists in the pack's
     /// version, an answer index inside that question's accepted answers, or a word in a vocabulary
-    /// list; official packs carry recordings only, synthetic packs never do; and the totals add up,
-    /// because the interface quotes them before a download.
+    /// list, or a capsule whose current text is still the text the clip was generated from; official
+    /// packs carry recordings only, synthetic packs never do; and the totals add up, because the
+    /// interface quotes them before a download.
     /// </summary>
-    private void CheckAudioPacks(IReadOnlyList<AudioPack> packs, IReadOnlyDictionary<string, QuestionBank> banks, IReadOnlyList<VocabularyList> vocabularies)
+    private void CheckAudioPacks(IReadOnlyList<AudioPack> packs, IReadOnlyDictionary<string, QuestionBank> banks, IReadOnlyList<VocabularyList> vocabularies, IReadOnlyList<DiscoveryTopic> topics)
     {
         const string path = ContentPaths.AudioPacks;
+        var topicsById = topics.ToDictionary(t => t.Id, StringComparer.Ordinal);
         var words = vocabularies.SelectMany(v => v.AllWords).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var clipIds = new HashSet<string>(StringComparer.Ordinal);
 
@@ -514,7 +516,7 @@ public sealed partial class ContentValidator
                 var officialRole = clip.Role == AudioClipRole.Recording;
                 if (pack.Kind == AudioPackKind.Official != officialRole)
                 {
-                    Error(path, $"{clipWhere} role '{clip.Role}' does not fit a {pack.Kind.ToString().ToLowerInvariant()} pack: official packs hold recordings, synthetic packs hold prompts, answers and words.");
+                    Error(path, $"{clipWhere} role '{clip.Role}' does not fit a {pack.Kind.ToString().ToLowerInvariant()} pack: official packs hold recordings, synthetic packs hold prompts, answers, words and capsules.");
                 }
 
                 switch (clip.Role)
@@ -557,6 +559,26 @@ public sealed partial class ContentValidator
                         else if (!words.Contains(clip.Word))
                         {
                             Error(path, $"{clipWhere} voices '{clip.Word}', which is not in the reading or writing vocabulary.");
+                        }
+
+                        break;
+
+                    case AudioClipRole.Capsule:
+                        if (clip.TopicId is null || !topicsById.TryGetValue(clip.TopicId, out var topic))
+                        {
+                            Error(path, $"{clipWhere} names capsule '{clip.TopicId}', which is not in {ContentPaths.DiscoveryTopics}.");
+                        }
+                        else if (clip.Variant is not (AudioClip.SimpleVariant or AudioClip.FullVariant))
+                        {
+                            Error(path, $"{clipWhere} variant must be '{AudioClip.SimpleVariant}' or '{AudioClip.FullVariant}'.");
+                        }
+                        else if (clip.TextSha256 is null)
+                        {
+                            Error(path, $"{clipWhere} has no textSha256, so a later edit of the capsule could not be detected.");
+                        }
+                        else if (clip.TextSha256 != AudioClip.TextDigest(clip.Variant == AudioClip.SimpleVariant ? topic.SimpleEnglish : topic.Summary))
+                        {
+                            Error(path, $"{clipWhere} was generated from an earlier text of capsule '{topic.Id}'; regenerate it (delete the file, run generate_elevenlabs.py --set capsules again and bump --version).");
                         }
 
                         break;
